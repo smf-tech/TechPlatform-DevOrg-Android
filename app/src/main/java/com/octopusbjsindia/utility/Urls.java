@@ -191,6 +191,7 @@ public class Urls {
     public class OperatorApi {
         public static final String MACHINE_WORKLOG = "api/rwbMachineWorkLog";
         public static final String MACHINE_DATA = "api/getMachineData/%1$s";
+        public static final String MACHINE_DATA_V2 = "api/getMachineDataV2/%1$s";
         public static final String MACHINE_DATA_WORKLOG = "api/getMachineWorkLogData";
         public static final String MACHINE_WORKLOG__DETAILS = "api/logDetails";
         public static final String MACHINE_WORKLOG_EDIT = "api/editWorkLog";

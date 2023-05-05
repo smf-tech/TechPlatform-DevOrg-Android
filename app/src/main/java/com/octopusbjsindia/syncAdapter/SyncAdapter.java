@@ -357,11 +357,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                                     data.getLong(), data.getMachine_id(), data.getMeterReadingDate(), true);
                                 }
 
-                                //to delete all previous record other than this latest entry
+                                //to delete all previous stop record other than this latest entry
                                 if (data.getStatus().equalsIgnoreCase("Stop")) {
                                     long submittedRecordTimestamp = data.getMeterReadingTimestamp();
                                     DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                                             deletePreviousMachineRecord(data.getMachine_id(), submittedRecordTimestamp);
+                                }
+                                //to delete all previous halt record other than this latest entry
+                                if (data.getStatus().equalsIgnoreCase("halt")) {
+                                    long submittedRecordTimestamp = data.getMeterReadingTimestamp();
+                                    DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                            deletePreviousHaltMachineRecord(data.getMachine_id(), submittedRecordTimestamp);
                                 }
                             } else {
                                 Util.showToast(commonResponse.getMessage(), getContext());

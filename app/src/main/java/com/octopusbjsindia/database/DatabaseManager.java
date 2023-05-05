@@ -43,14 +43,7 @@ public class DatabaseManager {
             appDatabase = Room.databaseBuilder(context.getApplicationContext(),
                     AppDatabase.class, Constants.App.DATABASE_NAME)
                     .allowMainThreadQueries()
-                    /*.addMigrations(MIGRATION_OLD_TO_NEW)
-                    .addMigrations(MIGRATION_2_TO_3)
-                    .addMigrations(MIGRATION_3_TO_4)
-                    .addMigrations(MIGRATION_4_TO_5)
-                    .addMigrations(MIGRATION_5_TO_6)
-                    .addMigrations(MIGRATION_6_TO_7)
-                    .addMigrations(MIGRATION_7_TO_8)*/
-                    .fallbackToDestructiveMigration()
+                    .addMigrations(MIGRATION_10_TO_11)
                     .build();
         }
 
@@ -61,7 +54,7 @@ public class DatabaseManager {
         return databaseManager;
     }
 
-    private static final Migration MIGRATION_OLD_TO_NEW = new Migration(1, 2) {
+    private static final Migration MIGRATION_1_TO_2 = new Migration(1, 2) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
 
@@ -125,7 +118,6 @@ public class DatabaseManager {
     private static final Migration MIGRATION_6_TO_7 = new Migration(6, 7) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-
             database.execSQL("ALTER TABLE SSMasterDatabase ADD COLUMN type TEXT");
         }
     };
@@ -134,6 +126,14 @@ public class DatabaseManager {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
 
+        }
+    };
+
+    private static final Migration MIGRATION_10_TO_11 = new Migration(10, 11) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+             // Added one column "haltReason" in table "OperatorRequestResponseModel"
+            database.execSQL("ALTER TABLE OperatorRequestResponseModel ADD COLUMN haltReason TEXT DEFAULT ''");
         }
     };
 

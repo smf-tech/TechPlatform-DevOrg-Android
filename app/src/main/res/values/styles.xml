@@ -124,7 +124,7 @@
     <style name="AppStyleButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">@color/white</item>
         <item name="android:fontFamily">@font/opensans_semibold</item>
-        <item name="cornerRadius">16dp</item>
+        <item name="cornerRadius">24dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
@@ -143,6 +143,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="strokeColor">@color/colorPrimary</item>
+        <item name="cornerRadius">24dp</item>
         <!--<item name="android:background">@drawable/approval_button_border</item>-->
     </style>
 

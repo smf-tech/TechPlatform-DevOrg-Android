@@ -352,11 +352,11 @@
                         style="@style/AppStyleBorderButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="invisible"
                         android:layout_centerInParent="true"
-                        tools:visibility="visible"
+                        android:textAllCaps="false"
+                        android:visibility="invisible"
                         tools:text="Deploy Machine"
-                        android:textAllCaps="false"/>
+                        tools:visibility="visible" />
 
                 </RelativeLayout>
                 <RelativeLayout
