@@ -32,6 +32,10 @@ public interface OperatorRequestResponseModelDao {
 
     @Query("SELECT * FROM operatorrequestresponsemodel WHERE machine_id=:machine_id AND status = 'Stop'" +
             "ORDER BY meterReadingTimestamp DESC LIMIT 1")
+    OperatorRequestResponseModel getPreviousLatestStopRecord(String machine_id);
+
+    @Query("SELECT * FROM operatorrequestresponsemodel WHERE machine_id=:machine_id " +
+            "ORDER BY meterReadingTimestamp DESC LIMIT 1")
     OperatorRequestResponseModel getPreviousLatestRecord(String machine_id);
 
     @Query("SELECT * FROM operatorrequestresponsemodel WHERE machine_id=:machine_id AND " +

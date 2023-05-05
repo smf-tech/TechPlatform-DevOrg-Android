@@ -75,6 +75,10 @@ public class OperatorRequestResponseModel {
     @Expose
     private String reasonId;
 
+   /* @SerializedName("other_reason")
+    @Expose
+    private String otherReason;*/
+
     @SerializedName("structure_id")
     @Expose
     private String structureId;
@@ -198,6 +202,14 @@ public class OperatorRequestResponseModel {
     public String getStartImage() {
         return startImage;
     }
+
+   /* public String getOtherReason() {
+        return otherReason;
+    }
+
+    public void setOtherReason(String otherReason) {
+        this.otherReason = otherReason;
+    }*/
 
     public void setStartImage(String startImage) {
         this.startImage = startImage;
