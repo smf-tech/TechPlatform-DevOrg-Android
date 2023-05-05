@@ -753,6 +753,13 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             machine_status = STATUS_STOP;
             Snackbar.make(toolbar, "Record saved locally", Snackbar.LENGTH_SHORT).show();
             setStoppedMachineData();
+
+            //update serverDbrecord
+//            previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance())
+//                    .getOperatorRequestResponseModelDao().getPreviousLatestRecord(data.getMachine_id());
+            previousDBOrServerRecord = submittedStopRecord;
+            setLastRecordView(previousDBOrServerRecord);
+
             lastHaltRecord.setVisibility(View.GONE);
             if (Util.isConnected(this)) {
                 uploadMachineLog(submittedStopRecord);
@@ -908,6 +915,10 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             if (operatorMachineData.getMachineLastRecord() != null) {
                 previousDBOrServerRecord = operatorMachineData.getMachineLastRecord();
                 setLastRecordView(previousDBOrServerRecord);
+
+                previousDBOrServerRecord.setMachine_id(operatorMachineData.getMachine_id());
+                DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                        insert(previousDBOrServerRecord);
             }
         }
 
@@ -1157,17 +1168,19 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
                             if (data.getStatus().equalsIgnoreCase(STATUS_WORKING)) {
                                 DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().insert(data);
-                            } else {
+                            } else if (data.getStatus().equalsIgnoreCase(STATUS_STOP)) {
                                 DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                                         updateMachineRecord(data.getStatus(), data.getStatus_code(), data.getStopImage(), data.getStop_meter_reading(), data.getLat(),
                                                 data.getLong(), machine_id, data.getMeterReadingDate(), true);
+                            } else {
+                                //todo for halt case
                             }
 
                             if (data.getStatus().equalsIgnoreCase(STATUS_STOP)) {
                                 //update serverDbrecord
-                                previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance())
+                             /*   previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance())
                                         .getOperatorRequestResponseModelDao().getPreviousLatestRecord(data.getMachine_id());
-                                setLastRecordView(previousDBOrServerRecord);
+                                setLastRecordView(previousDBOrServerRecord);*/
 
                                 //to delete all previous record other than this latest entry
                                 long submittedRecordTimestamp = data.getMeterReadingTimestamp();

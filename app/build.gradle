@@ -20,8 +20,8 @@ android {
     defaultConfig {
         minSdkVersion 22
         targetSdkVersion 33
-        versionCode 38
-        versionName "1.38"
+        versionCode 39
+        versionName "1.39"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         applicationId 'com.octopusbjsindia'
         javaCompileOptions {
@@ -111,8 +111,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10' //updated from 2.8.2 & 2.9.0
     implementation 'com.android.volley:volley:1.2.1'
 
-    implementation 'com.google.firebase:firebase-config:21.3.0' //updated from 19.1.0
-    implementation 'com.google.firebase:firebase-crashlytics:18.3.6' //updated from 17.2.2
+    implementation 'com.google.firebase:firebase-config:21.4.0' //updated from 19.1.0
+    implementation 'com.google.firebase:firebase-crashlytics:18.3.7' //updated from 17.2.2
     implementation 'com.google.firebase:firebase-messaging:23.1.2' //updated from 20.1.0
 
     implementation 'com.github.bumptech.glide:glide:4.14.2' //updated from 4.9.0

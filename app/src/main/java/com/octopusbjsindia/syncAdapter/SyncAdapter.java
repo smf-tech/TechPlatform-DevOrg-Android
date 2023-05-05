@@ -349,12 +349,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                 Util.showToast(commonResponse.getMessage(), getContext());
 
                                 //to update db entry to sync
+                                data.setSynced(true);
                                 if (data.getStatus().equalsIgnoreCase("Working")) {
                                     DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().insert(data);
-                                } else {
+                                } else if (data.getStatus().equalsIgnoreCase("Stop")){
                                     DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                                             updateMachineRecord(data.getStatus(), data.getStatus_code(), data.getStopImage(), data.getStop_meter_reading(), data.getLat(),
                                                     data.getLong(), data.getMachine_id(), data.getMeterReadingDate(), true);
+                                } else {
+                                   //todo for halt case
                                 }
 
                                 //to delete all previous stop record other than this latest entry
