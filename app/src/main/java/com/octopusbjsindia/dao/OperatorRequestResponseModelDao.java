@@ -57,6 +57,10 @@ public interface OperatorRequestResponseModelDao {
             " meterReadingTimestamp<:latestReadingTimestamp AND isSynced = 1")
     void deletePreviousMachineRecord(String machine_id, long latestReadingTimestamp);
 
+    @Query("DELETE FROM OperatorRequestResponseModel WHERE machine_id  = :machine_id AND" +
+            " meterReadingTimestamp<:latestReadingTimestamp AND isSynced = 1 AND status = 'halt'")
+    void deletePreviousHaltMachineRecord(String machine_id, long latestReadingTimestamp);
+
     @Query("DELETE FROM OperatorRequestResponseModel WHERE machine_id  = :machine_id AND " +
             "meterReadingTimestamp =:nextDayTimeStamp")
     void deleteSpecificMachineRecord(String machine_id, Long nextDayTimeStamp);

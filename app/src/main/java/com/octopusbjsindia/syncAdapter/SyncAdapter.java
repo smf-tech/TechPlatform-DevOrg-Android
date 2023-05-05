@@ -349,19 +349,28 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                 Util.showToast(commonResponse.getMessage(), getContext());
 
                                 //to update db entry to sync
+                                data.setSynced(true);
                                 if (data.getStatus().equalsIgnoreCase("Working")) {
                                     DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().insert(data);
-                                } else {
+                                } else if (data.getStatus().equalsIgnoreCase("Stop")){
                                     DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                                             updateMachineRecord(data.getStatus(), data.getStatus_code(), data.getStopImage(), data.getStop_meter_reading(), data.getLat(),
                                                     data.getLong(), data.getMachine_id(), data.getMeterReadingDate(), true);
+                                } else {
+                                   //todo for halt case
                                 }
 
-                                //to delete all previous record other than this latest entry
+                                //to delete all previous stop record other than this latest entry
                                 if (data.getStatus().equalsIgnoreCase("Stop")) {
                                     long submittedRecordTimestamp = data.getMeterReadingTimestamp();
                                     DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                                             deletePreviousMachineRecord(data.getMachine_id(), submittedRecordTimestamp);
+                                }
+                                //to delete all previous halt record other than this latest entry
+                                if (data.getStatus().equalsIgnoreCase("halt")) {
+                                    long submittedRecordTimestamp = data.getMeterReadingTimestamp();
+                                    DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                            deletePreviousHaltMachineRecord(data.getMachine_id(), submittedRecordTimestamp);
                                 }
                             } else {
                                 Util.showToast(commonResponse.getMessage(), getContext());

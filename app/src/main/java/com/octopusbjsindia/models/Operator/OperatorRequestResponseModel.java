@@ -3,6 +3,7 @@ package com.octopusbjsindia.models.Operator;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
@@ -75,9 +76,9 @@ public class OperatorRequestResponseModel {
     @Expose
     private String reasonId;
 
-   /* @SerializedName("other_reason")
+    @SerializedName("halt_reason")
     @Expose
-    private String otherReason;*/
+    private String haltReason;
 
     @SerializedName("structure_id")
     @Expose
@@ -203,13 +204,13 @@ public class OperatorRequestResponseModel {
         return startImage;
     }
 
-   /* public String getOtherReason() {
-        return otherReason;
+    public String getHaltReason() {
+        return haltReason;
     }
 
-    public void setOtherReason(String otherReason) {
-        this.otherReason = otherReason;
-    }*/
+    public void setHaltReason(String haltReason) {
+        this.haltReason = haltReason;
+    }
 
     public void setStartImage(String startImage) {
         this.startImage = startImage;

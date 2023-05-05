@@ -49,7 +49,7 @@ public class OperatorMeterReadingRequestCall {
         Response.ErrorListener pendingRequestsErrorListener = error -> listener.onErrorListener(error);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
-        final String getPendingRequestsUrl = BuildConfig.BASE_URL + String.format(Urls.OperatorApi.MACHINE_DATA, machineCode);
+        final String getPendingRequestsUrl = BuildConfig.BASE_URL + String.format(Urls.OperatorApi.MACHINE_DATA_V2, machineCode);
         Log.d(TAG, "getMachineData -> Url: " + getPendingRequestsUrl);
         GsonRequestFactory<JSONObject> gsonRequest = new GsonRequestFactory<>(
                 Request.Method.GET,
