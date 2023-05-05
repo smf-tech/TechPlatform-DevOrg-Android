@@ -57,34 +57,35 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
         return new SSMachineListAdapter.ViewHolder(v);
     }
 
-    private void setTextElseDash(TextView tv,String value){
-        if (value!=null&& !TextUtils.isEmpty(value)){
+    private void setTextElseDash(TextView tv, String value) {
+        if (value != null && !TextUtils.isEmpty(value)) {
             tv.setText(value);
-        }else tv.setText("-");
+        } else tv.setText("-");
     }
+
     @Override
     public void onBindViewHolder(@NonNull SSMachineListAdapter.ViewHolder holder, int position) {
         MachineData machineData = ssDataList.get(position);
         holder.tvStatus.setText(machineData.getStatus());
         holder.tvMachineCode.setText(machineData.getMachineCode());
         //holder.tvSupervisorName.setText(machineData.getSupervisorName());
-        setTextElseDash(holder.tvSupervisorName,machineData.getSupervisorName());
+        setTextElseDash(holder.tvSupervisorName, machineData.getSupervisorName());
         holder.tvMachineModel.setText(machineData.getMakeModel());
-       // holder.tvSupervisorContact.setText(machineData.getMachineMobileNumber());
-        setTextElseDash(holder.tvSupervisorContact,machineData.getMachineMobileNumber());
+        // holder.tvSupervisorContact.setText(machineData.getMachineMobileNumber());
+        setTextElseDash(holder.tvSupervisorContact, machineData.getMachineMobileNumber());
         holder.tvTaluka.setText(machineData.getMachineLocation());
         //holder.tvStructureCode.setText(machineData.getDeployedStrutureCode());
-        setTextElseDash(holder.tvStructureCode,machineData.getDeployedStructureCode());
+        setTextElseDash(holder.tvStructureCode, machineData.getDeployedStructureCode());
         if (machineData.getStatusCode() != Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE &&
                 machineData.getStatusCode() != Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE &&
                 machineData.getStatusCode() != Constants.SSModule.MACHINE_NEW_STATUS_CODE &&
                 machineData.getStatusCode() != Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
             holder.tvOperatorName.setVisibility(View.VISIBLE);
             //holder.tvOperatorName.setText(machineData.getOperatorName());
-            setTextElseDash(holder.tvOperatorName,machineData.getOperatorName());
+            setTextElseDash(holder.tvOperatorName, machineData.getOperatorName());
             holder.tvOperatorContact.setVisibility(View.VISIBLE);
-           // holder.tvOperatorContact.setText(machineData.getOperatorContactNumber());
-            setTextElseDash(holder.tvOperatorContact,machineData.getOperatorContactNumber());
+            // holder.tvOperatorContact.setText(machineData.getOperatorContactNumber());
+            setTextElseDash(holder.tvOperatorContact, machineData.getOperatorContactNumber());
         }
         holder.tvLastUpdatedTime.setText(machineData.getLastUpdatedTime());
 
@@ -198,45 +199,45 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                 public void onClick(View v) {
                     popup = new PopupMenu((activity), v);
                     popup.inflate(R.menu.machine_forms_menu);
-                    //popup.getMenu().findItem(R.id.action_machine_worklog).setVisible(true);
-                    //popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
-                    if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                            Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
-                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_HALTED_STATUS_CODE) {
-                        //popup.getMenu().findItem(R.id.action_machine_non_utilization).setVisible(true);
-//                        if (fragment.isSiltTransportForm) {
-//                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
-//                        }
-//                        if (fragment.isDieselRecordForm) {
-//                            popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
-//                        }
-//                        if (fragment.isMachineVisitValidationForm) {
-//                            popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
-//                        }
-//                        if (fragment.isMachineShiftForm) {
-//                            popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
-//                        }
-                    }
 
-                    if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                            Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
-                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
-                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_BREAK_STATUS_CODE ||
-                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
-                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_HALTED_STATUS_CODE ||
-                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
-                        if(fragment.isDailyMachineRecord) {
+                    if (fragment.isDailyMachineRecord) {
+                        if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_BREAK_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_HALTED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
+
                             popup.getMenu().findItem(R.id.action_daily_machine_record).setVisible(true);
                         } else {
                             popup.getMenu().findItem(R.id.action_daily_machine_record).setVisible(false);
                         }
-                        if (fragment.isReleaseOperator) {
+                    } else {
+                        popup.getMenu().findItem(R.id.action_daily_machine_record).setVisible(false);
+                    }
+
+                    if (fragment.isReleaseOperator) {
+                        if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_BREAK_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_HALTED_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_PAUSE_STATUS_CODE ||
+                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                        Constants.SSModule.MACHINE_REALEASED_STATUS_CODE) {
+
                             if (ssDataList.get(getAdapterPosition()).getOperatorassigned()) {
                                 popup.getMenu().findItem(R.id.action_release_supervisor).setVisible(true);
                             } else {
@@ -247,7 +248,6 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                         }
                     } else {
                         popup.getMenu().findItem(R.id.action_release_supervisor).setVisible(false);
-                        popup.getMenu().findItem(R.id.action_daily_machine_record).setVisible(false);
                     }
 
                     if (fragment.isAssignOperator) {
@@ -276,23 +276,6 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     }
 
                     if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                            Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
-                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_BREAK_STATUS_CODE) {
-//                        if (fragment.isSiltTransportForm) {
-//                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
-//                        }
-//                        if (fragment.isDieselRecordForm) {
-//                            popup.getMenu().findItem(R.id.action_diesel_record).setVisible(true);
-//                        }
-//                        if (fragment.isMachineVisitValidationForm) {
-//                            popup.getMenu().findItem(R.id.action_machine_visit).setVisible(true);
-//                        }
-//                        if (fragment.isMachineShiftForm) {
-//                            popup.getMenu().findItem(R.id.action_machine_shifting).setVisible(true);
-//                        }
-                    }
-                    if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
                             Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE ||
                             ssDataList.get(getAdapterPosition()).getStatusCode() ==
                                     Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
@@ -306,37 +289,6 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                     Constants.SSModule.MACHINE_HALTED_STATUS_CODE) {
                         if (fragment.isMachineRelease) {
                             popup.getMenu().findItem(R.id.action_machine_release).setVisible(true);
-                        }
-                    }
-//                    if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
-//                            Constants.SSModule.MACHINE_MOU_TERMINATED_STATUS_CODE ||
-//                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
-//                                    Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
-//                        if (fragment.isSiltTransportForm) {
-//                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
-//                        }
-//                    }
-                    if (!ssDataList.get(getAdapterPosition()).getMouUploaded()) {
-                        if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                Constants.SSModule.MACHINE_DEPLOYED_STATUS_CODE ||
-                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                        Constants.SSModule.MACHINE_WORKING_STATUS_CODE ||
-                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                        Constants.SSModule.MACHINE_BREAK_STATUS_CODE ||
-                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                        Constants.SSModule.MACHINE_STOPPED_STATUS_CODE ||
-                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                        Constants.SSModule.MACHINE_HALTED_STATUS_CODE ||
-                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                        Constants.SSModule.MACHINE_REALEASED_STATUS_CODE ||
-                                ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                        Constants.SSModule.MACHINE_PAUSE_STATUS_CODE) {
-//                            if (fragment.isMouImagesUpload) {
-//                                popup.getMenu().findItem(R.id.action_machine_mou_upload).setVisible(true);
-//                            }
-//                            if (fragment.isMachineSignoff && !ssDataList.get(getAdapterPosition()).getMachineSignOff()) {
-//                                popup.getMenu().findItem(R.id.action_machine_signoff).setVisible(true);
-//                            }
                         }
                     }
                     popup.show();
