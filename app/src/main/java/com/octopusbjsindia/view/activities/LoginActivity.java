@@ -121,11 +121,11 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String number = editable.toString();
+              /*  String number = editable.toString();
                 if (number.length() == 10) {
                     Util.hideKeyboardWithView(LoginActivity.this, etMobileNo);
                     lytMobileNo.clearFocus();
-                }
+                }*/
             }
         });
 

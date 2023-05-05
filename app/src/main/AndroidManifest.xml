@@ -74,6 +74,7 @@
         <activity
             android:name=".view.activities.OperatorActivity"
             android:exported="true"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"/>
         <activity android:name=".view.activities.MissionRahat.FilterActivity" />
         <activity android:name=".view.activities.MissionRahat.OxyMachinesAssignActivity" />

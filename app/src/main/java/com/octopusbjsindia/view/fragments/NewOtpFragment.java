@@ -1,5 +1,7 @@
 package com.octopusbjsindia.view.fragments;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -18,6 +20,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -112,6 +116,8 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
 
         mOtp1.requestFocus();
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
         mOtp1.addTextChangedListener(new OtpTextWatcher(mOtp2, mOtp1, txtError));
         mOtp2.addTextChangedListener(new OtpTextWatcher(mOtp3, mOtp1, txtError));
         mOtp3.addTextChangedListener(new OtpTextWatcher(mOtp4, mOtp2, txtError));
