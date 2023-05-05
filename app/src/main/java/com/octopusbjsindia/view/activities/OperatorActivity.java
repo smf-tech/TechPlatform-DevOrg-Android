@@ -243,7 +243,8 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
 
-        if (machine_id != null && structure_id != null && machine_code != null) { // For NON-FA roles
+        /**For Non-FA role*/
+        if (machine_id != null && structure_id != null && machine_code != null) {
             isOperator = false;
             toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24);
 
@@ -256,7 +257,24 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 updateUIForNewEntry();
             }
 
-            //api call to get list of halt reason
+            /**to get last record from db for reference**/
+            previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                    getPreviousLatestRecord(machine_id);
+            if (previousDBOrServerRecord != null) {
+                if (previousDBOrServerRecord.getStatus().equalsIgnoreCase(STATUS_STOP)) {
+                    setLastRecordView(previousDBOrServerRecord);
+                } else if (previousDBOrServerRecord.getStatus().equalsIgnoreCase(STATUS_HALT)) {
+                    //following data is actually used for calculating next date for record entry
+                    OnMachineHalt(previousDBOrServerRecord);
+
+                    //following record used only for reference for user to see what his last stop entry was
+                    OperatorRequestResponseModel previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                            getPreviousLatestStopRecord(machine_id);
+                    setLastRecordView(previousDBOrServerRecord);
+                }
+            }
+
+            //api call to get list of halt reason & last meter record
             if (Util.isConnected(this)) {
                 presenter.getAllFiltersRequests(machine_code);
             } else {
@@ -276,7 +294,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 Snackbar.make(toolbar, "No internet connection", Snackbar.LENGTH_SHORT).show();
             }
 
-        } else {   // For FA/Operator roles
+        } else {   /** For FA/Operator roles */
             toolbar.setNavigationIcon(null);
             isOperator = true;
 
@@ -295,10 +313,32 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     isImagesMandatory = sharedPrefOperatorMachineData.isImagesMandatory();
                     //serverCurrentTimeStamp = sharedPrefOperatorMachineData.getCurrentTimeStamp();
                     allowedPastDaysForRecord = sharedPrefOperatorMachineData.getAllowedPastDaysForRecord();
-                    if (previousDBOrServerRecord == null &&
+
+                   /* if (previousDBOrServerRecord == null &&
                             sharedPrefOperatorMachineData.getMachineLastRecord() != null) {
                         previousDBOrServerRecord = sharedPrefOperatorMachineData.getMachineLastRecord();
+                    }*/
+
+                    /**to get last record from db for reference*/
+                    previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                            getPreviousLatestRecord(machine_id);
+
+                    if (previousDBOrServerRecord != null) {
+                        if (previousDBOrServerRecord.getStatus().equalsIgnoreCase(STATUS_STOP)) {
+                            setLastRecordView(previousDBOrServerRecord);
+                        } else if (previousDBOrServerRecord.getStatus().equalsIgnoreCase(STATUS_HALT)) {
+                            //following data is actually used for calculating next date for record entry
+                            OnMachineHalt(previousDBOrServerRecord);
+
+                            //following record used only for reference for user to see what his last stop entry was
+                            OperatorRequestResponseModel previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                    getPreviousLatestStopRecord(machine_id);
+                            setLastRecordView(previousDBOrServerRecord);
+                        }
+                    }else if (previousDBOrServerRecord == null && sharedPrefOperatorMachineData.getMachineLastRecord() != null) {
+                        previousDBOrServerRecord = sharedPrefOperatorMachineData.getMachineLastRecord();
                     }
+
 
                     lastWorkingRecordData = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                             getLastWorkingRecord(machine_id);
@@ -310,7 +350,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             }
         }
 
-        //todo get last record from db for reference
+       /* //to get last record from db for reference
         previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                 getPreviousLatestRecord(machine_id);
 
@@ -318,13 +358,15 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             if (previousDBOrServerRecord.getStatus().equalsIgnoreCase(STATUS_STOP)) {
                 setLastRecordView(previousDBOrServerRecord);
             } else if (previousDBOrServerRecord.getStatus().equalsIgnoreCase(STATUS_HALT)) {
+                //following data is actually used for calculating next date for record entry
                 OnMachineHalt(previousDBOrServerRecord);
 
-                previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                //following record used only for reference for user to see what his last stop entry was
+                OperatorRequestResponseModel previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                         getPreviousLatestStopRecord(machine_id);
                 setLastRecordView(previousDBOrServerRecord);
             }
-        }
+        }*/
 
         //get lat,long of location
         gpsTracker = new GPSTracker(this);
@@ -364,7 +406,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 else if (etDate.getText().toString().isEmpty()) {
                     msg = "Please select meter reading date.";
                 }
-                if (msg.length() <= 0) {
+                if (msg.length() == 0) {
                     // Get previous machine reading entry for validation
                     Long selectedTimestamp = getDateInLong(etDate.getText().toString());
                     //todo need validation when previous latest record from db is of the days after current selected date
@@ -402,7 +444,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 } else if (machine_code.isEmpty()) {
                     msg = "Machine not assigned. Contact to DPM.";
                 }
-                if (msg.length() <= 0) {
+                if (msg.length() == 0) {
                     addStopMeterRecord();
                 } else {
                     // Util.showToast(msg, OperatorActivity.this);
@@ -911,16 +953,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         serverCurrentTimeStamp = operatorMachineData.getCurrentTimeStamp();
         allowedPastDaysForRecord = operatorMachineData.getAllowedPastDaysForRecord();
         isImagesMandatory = operatorMachineData.isImagesMandatory();
-        if (previousDBOrServerRecord == null) {
-            if (operatorMachineData.getMachineLastRecord() != null) {
-                previousDBOrServerRecord = operatorMachineData.getMachineLastRecord();
-                setLastRecordView(previousDBOrServerRecord);
-
-                previousDBOrServerRecord.setMachine_id(operatorMachineData.getMachine_id());
-                DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                        insert(previousDBOrServerRecord);
-            }
-        }
 
         if (isOperator) {
             machine_id = operatorMachineData.getMachine_id();
@@ -942,6 +974,55 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 setWorkingMachineData(lastWorkingRecordData);
             } else { //new date entry
                 updateUIForNewEntry();
+            }
+
+            /**to get last record from db for reference*/
+            //here we get "machine_id" which is needed to get last record from db
+            previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                    getPreviousLatestRecord(machine_id);
+
+            if (previousDBOrServerRecord != null) {
+                if (previousDBOrServerRecord.getStatus().equalsIgnoreCase(STATUS_STOP)) {
+                    setLastRecordView(previousDBOrServerRecord);
+                } else if (previousDBOrServerRecord.getStatus().equalsIgnoreCase(STATUS_HALT)) {
+                    //following data is actually used for calculating next date for record entry
+                    OnMachineHalt(previousDBOrServerRecord);
+
+                    //following record used only for reference for user to see what his last stop entry was
+                    OperatorRequestResponseModel previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                            getPreviousLatestStopRecord(machine_id);
+                    setLastRecordView(previousDBOrServerRecord);
+                }
+            }else {
+                if (operatorMachineData.getMachineLastRecord() != null) {
+                    previousDBOrServerRecord = operatorMachineData.getMachineLastRecord();
+                    setLastRecordView(previousDBOrServerRecord);
+
+                    //following entries needed for adding record to db
+                    previousDBOrServerRecord.setMachine_id(operatorMachineData.getMachine_id());
+                    previousDBOrServerRecord.setStructureId(operatorMachineData.getStructure_id());
+
+                    //add record to db for offline case
+                    DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                            insert(previousDBOrServerRecord);
+                }
+            }
+
+        } else {
+            //for non FA case if last record doesn't exists in db
+            if (previousDBOrServerRecord == null) {
+                if (operatorMachineData.getMachineLastRecord() != null) {
+                    previousDBOrServerRecord = operatorMachineData.getMachineLastRecord();
+                    setLastRecordView(previousDBOrServerRecord);
+
+                    //following entries needed for adding record to db
+                    previousDBOrServerRecord.setMachine_id(operatorMachineData.getMachine_id());
+                    previousDBOrServerRecord.setStructureId(operatorMachineData.getStructure_id());
+
+                    //add record to db for offline case
+                    DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                            insert(previousDBOrServerRecord);
+                }
             }
         }
 
@@ -1163,25 +1244,19 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                             imageHashmap.clear();
                             startUri = null;
                             stopUri = null;
+
                             //to update db entry to sync
                             data.setSynced(true);
-
-                            if (data.getStatus().equalsIgnoreCase(STATUS_WORKING)) {
+                            if (data.getStatus().equalsIgnoreCase(STATUS_WORKING) || data.getStatus().equalsIgnoreCase(STATUS_HALT)) {
                                 DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().insert(data);
                             } else if (data.getStatus().equalsIgnoreCase(STATUS_STOP)) {
                                 DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                                         updateMachineRecord(data.getStatus(), data.getStatus_code(), data.getStopImage(), data.getStop_meter_reading(), data.getLat(),
                                                 data.getLong(), machine_id, data.getMeterReadingDate(), true);
-                            } else {
-                                //todo for halt case
                             }
 
+                            //to delete unwanted db records
                             if (data.getStatus().equalsIgnoreCase(STATUS_STOP)) {
-                                //update serverDbrecord
-                             /*   previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance())
-                                        .getOperatorRequestResponseModelDao().getPreviousLatestRecord(data.getMachine_id());
-                                setLastRecordView(previousDBOrServerRecord);*/
-
                                 //to delete all previous record other than this latest entry
                                 long submittedRecordTimestamp = data.getMeterReadingTimestamp();
                                 DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
@@ -1193,6 +1268,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                                 DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                                         deletePreviousHaltMachineRecord(data.getMachine_id(), submittedRecordTimestamp);
                             }
+
                         } else {
                             Util.showToast(commonResponse.getMessage(), OperatorActivity.this);
                         }
