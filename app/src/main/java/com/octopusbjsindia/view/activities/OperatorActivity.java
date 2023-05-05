@@ -896,7 +896,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 Toast.makeText(this, "Location permission not granted.", Toast.LENGTH_LONG).show();
             }
         }
-
     }
 
     public void showPendingApprovalRequests(OperatorMachineCodeDataModel operatorMachineData) {
