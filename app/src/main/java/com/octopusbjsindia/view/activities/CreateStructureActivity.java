@@ -1101,13 +1101,14 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     }
 
     private void uploadImage(Structure structure) {
-
+        btSubmit.setEnabled(false);
         showProgressBar();
         Log.d("request -", new Gson().toJson(structure));
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, upload_URL,
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
+                        btSubmit.setEnabled(true);
                         hideProgressBar();
                         rQueue.getCache().clear();
                         try {
@@ -1129,6 +1130,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
                     }
                 },
                 error -> {
+                    btSubmit.setEnabled(true);
                     hideProgressBar();
                     Toast.makeText(this, error.getMessage(), Toast.LENGTH_SHORT).show();
                 }) {
@@ -1359,7 +1361,7 @@ public class CreateStructureActivity extends AppCompatActivity implements APIDat
     @Override
     public void showProgressBar() {
         runOnUiThread(() -> {
-            if (progressBar != null && progressBar != null) {
+            if (progressBar != null) {
                 progressBar.setVisibility(View.VISIBLE);
             }
         });

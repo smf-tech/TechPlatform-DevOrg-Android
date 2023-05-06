@@ -344,6 +344,8 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                             getLastWorkingRecord(machine_id);
                     if (lastWorkingRecordData != null) {
                         setWorkingMachineData(lastWorkingRecordData);
+                    } else { //new date entry
+                        updateUIForNewEntry();
                     }
                 }
                 Snackbar.make(toolbar, "No internet connection", Snackbar.LENGTH_SHORT).show();
