@@ -316,10 +316,14 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     //serverCurrentTimeStamp = sharedPrefOperatorMachineData.getCurrentTimeStamp();
                     allowedPastDaysForRecord = sharedPrefOperatorMachineData.getAllowedPastDaysForRecord();
 
-                   /* if (previousDBOrServerRecord == null &&
-                            sharedPrefOperatorMachineData.getMachineLastRecord() != null) {
-                        previousDBOrServerRecord = sharedPrefOperatorMachineData.getMachineLastRecord();
-                    }*/
+                    lastWorkingRecordData = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                            getLastWorkingRecord(machine_id);
+                    if (lastWorkingRecordData != null) {
+                        setWorkingMachineData(lastWorkingRecordData);
+                        machine_status = STATUS_WORKING;
+                    } else { //new date entry
+                        updateUIForNewEntry();
+                    }
 
                     /**to get last record from db for reference*/
                     previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
@@ -341,37 +345,10 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                         previousDBOrServerRecord = sharedPrefOperatorMachineData.getMachineLastRecord();
                     }
 
-
-                    lastWorkingRecordData = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                            getLastWorkingRecord(machine_id);
-                    if (lastWorkingRecordData != null) {
-                        setWorkingMachineData(lastWorkingRecordData);
-                        machine_status = STATUS_WORKING;
-                    } else { //new date entry
-                        updateUIForNewEntry();
-                    }
                 }
                 Snackbar.make(toolbar, "No internet connection", Snackbar.LENGTH_SHORT).show();
             }
         }
-
-       /* //to get last record from db for reference
-        previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                getPreviousLatestRecord(machine_id);
-
-        if (previousDBOrServerRecord != null) {
-            if (previousDBOrServerRecord.getStatus().equalsIgnoreCase(STATUS_STOP)) {
-                setLastRecordView(previousDBOrServerRecord);
-            } else if (previousDBOrServerRecord.getStatus().equalsIgnoreCase(STATUS_HALT)) {
-                //following data is actually used for calculating next date for record entry
-                OnMachineHalt(previousDBOrServerRecord);
-
-                //following record used only for reference for user to see what his last stop entry was
-                OperatorRequestResponseModel previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                        getPreviousLatestStopRecord(machine_id);
-                setLastRecordView(previousDBOrServerRecord);
-            }
-        }*/
 
         //get lat,long of location
         gpsTracker = new GPSTracker(this);
@@ -666,7 +643,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     String.format(Locale.getDefault(), "%s", Util.getTwoDigit(dayOfMonth));
 
             editText.setText(date);
-            updateUIOnDateSelected();
+            updateUIOnDateSelected(true);
         }, mYear, mMonth, mDay);
 
         dateDialog.setTitle(context.getString(R.string.select_date_title));
@@ -692,7 +669,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     String.format(Locale.getDefault(), "%s", Util.getTwoDigit(dayOfMonth));
 
             editText.setText(date1);
-            updateUIOnDateSelected();
+            updateUIOnDateSelected(true);
         }, mYear, mMonth, mDay);
 
         dateDialog.getDatePicker().setMaxDate(dateLong);
@@ -1117,8 +1094,8 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         btnStopService.setEnabled(false);
     }
 
-    private void updateUIOnDateSelected() {
-        etDate.setEnabled(true);
+    private void updateUIOnDateSelected(boolean isDateEnabled) {
+        etDate.setEnabled(isDateEnabled);
         Glide.with(OperatorActivity.this)
                 .load(R.drawable.jcb_stopped)
                 .into(iv_jcb);
@@ -1417,6 +1394,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     }
 
     private void OnMachineHalt(OperatorRequestResponseModel data) {
+        etDate.setEnabled(false);
         etDate.setText(data.getMeterReadingDate());
         lastHaltRecord.setVisibility(View.VISIBLE);
         tv_lastHaltReadingDate.setText(data.getMeterReadingDate());
@@ -1428,13 +1406,13 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         btnEnterTodayRecord.setOnClickListener(v -> {
             meterReadingCard.setVisibility(View.VISIBLE);
             lytActionOnHalt.setVisibility(View.GONE);
-            updateUIOnDateSelected();
+            updateUIOnDateSelected(false);
         });
 
         btnSkipToNextDay.setOnClickListener(v -> {
             meterReadingCard.setVisibility(View.VISIBLE);
             lytActionOnHalt.setVisibility(View.GONE);
-
+            etDate.setEnabled(true);
             etDate.setText(null);
             previousDBOrServerRecord = data;
 
