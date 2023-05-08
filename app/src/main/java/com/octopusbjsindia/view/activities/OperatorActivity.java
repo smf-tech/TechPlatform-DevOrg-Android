@@ -182,6 +182,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     private OperatorRequestResponseModel previousDBOrServerRecord;
     final Handler handler = new Handler();
     private boolean isOperator = false;
+    private boolean isMachineFirstRecord = false; // here if machine is new machine then first time user can select any date between given range instead on entering in sequence from first date
 
     private ConstraintLayout lastRecordLayout, lastHaltRecord;
     private TextView tv_lastReadingDate, tv_lastStartReading, tv_lastStopReading,
@@ -273,6 +274,8 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                             getPreviousLatestStopRecord(machine_id);
                     setLastRecordView(previousDBOrServerRecord);
                 }
+            } else { //here machine is new with no last records
+                isMachineFirstRecord = true;
             }
 
             //api call to get list of halt reason & last meter record
@@ -341,8 +344,10 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                                     getPreviousLatestStopRecord(machine_id);
                             setLastRecordView(previousDBOrServerRecord);
                         }
-                    }else if (previousDBOrServerRecord == null && sharedPrefOperatorMachineData.getMachineLastRecord() != null) {
+                    } else if (previousDBOrServerRecord == null && sharedPrefOperatorMachineData.getMachineLastRecord() != null) {
                         previousDBOrServerRecord = sharedPrefOperatorMachineData.getMachineLastRecord();
+                    } else { //here machine is new with no last records
+                        isMachineFirstRecord = true;
                     }
 
                 }
@@ -437,14 +442,14 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 long currentDateTimeStamp = System.currentTimeMillis();
                 if (serverCurrentTimeStamp != 0) {
                     Date serverCurrentDate = Util.getDateFromTimestamp2(serverCurrentTimeStamp, FORM_DATE);
-                    //String serverCurrentDateString = new SimpleDateFormat(FORM_DATE).format(serverCurrentDate);
+                    String serverCurrentDateString = new SimpleDateFormat(FORM_DATE).format(serverCurrentDate);
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(serverCurrentDate);
                     calendar.add(Calendar.DAY_OF_YEAR, -allowedPastDaysForRecord);
                     Date allowedPastDate = calendar.getTime();
                     long longAllowedPastDate = allowedPastDate.getTime();
 
-                    //String allowedPastDateString = new SimpleDateFormat(FORM_DATE).format(allowedPastDate);
+                    String allowedPastDateString = new SimpleDateFormat(FORM_DATE).format(allowedPastDate);
                     if (previousDBOrServerRecord != null) {
                         long nextDayTimestamp = Util.getNextDayTimestamp(previousDBOrServerRecord.getMeterReadingTimestamp());
                         Date nextDate = Util.getDateFromTimestamp2(nextDayTimestamp, FORM_DATE);
@@ -459,7 +464,9 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                             }
                         }
                     } else {
-                        showDateDialogForDate(this, etDate, allowedPastDate);
+                        if (isMachineFirstRecord)
+                            showDateDialogEnableBetweenMinMax(this, etDate, allowedPastDateString, serverCurrentDateString);
+                        else showDateDialogForDate(this, etDate, allowedPastDate);
                     }
                 } else {
                     if (sharedPrefOperatorMachineData != null) {
@@ -467,17 +474,17 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                             Snackbar.make(toolbar, "Your system date seems to be wrong. Please update it or contact to admin.", Snackbar.LENGTH_SHORT).show();
                         } else {
                             Date serverCurrentDate = Util.getDateFromTimestamp2(serverCurrentTimeStamp, FORM_DATE);
-                            // String serverCurrentDateString = new SimpleDateFormat(FORM_DATE).format(serverCurrentDate);
+                            String serverCurrentDateString = new SimpleDateFormat(FORM_DATE).format(serverCurrentDate);
                             Calendar calendar = Calendar.getInstance();
                             calendar.setTime(serverCurrentDate);
                             calendar.add(Calendar.DAY_OF_YEAR, -allowedPastDaysForRecord);
                             Date allowedPastDate = calendar.getTime();
 
-                            SimpleDateFormat formatterWithoutTimezone = new SimpleDateFormat(FORM_DATE,Locale.getDefault());
+                            SimpleDateFormat formatterWithoutTimezone = new SimpleDateFormat(FORM_DATE, Locale.getDefault());
                             String formattedDate = formatterWithoutTimezone.format(allowedPastDate);
                             long longAllowedPastDate = Util.getDateInLong(formattedDate);
 
-                            //String allowedPastDateString = new SimpleDateFormat(FORM_DATE).format(allowedPastDate);
+                            String allowedPastDateString = new SimpleDateFormat(FORM_DATE).format(allowedPastDate);
                             if (previousDBOrServerRecord != null) {
                                 long nextDayTimestamp = Util.getNextDayTimestamp(previousDBOrServerRecord.getMeterReadingTimestamp());
                                 Date nextDate = Util.getDateFromTimestamp2(nextDayTimestamp, FORM_DATE);
@@ -492,19 +499,21 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                                     }
                                 }
                             } else {
-                                showDateDialogForDate(this, etDate, allowedPastDate);
+                                if (isMachineFirstRecord)
+                                    showDateDialogEnableBetweenMinMax(this, etDate, allowedPastDateString, serverCurrentDateString);
+                                else showDateDialogForDate(this, etDate, allowedPastDate);
                             }
                         }
                     } else {
                         Date serverCurrentDate = Util.getDateFromTimestamp2(serverCurrentTimeStamp, FORM_DATE);
-                        //String serverCurrentDateString = new SimpleDateFormat(FORM_DATE).format(serverCurrentDate);
+                        String serverCurrentDateString = new SimpleDateFormat(FORM_DATE).format(serverCurrentDate);
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(serverCurrentDate);
                         calendar.add(Calendar.DAY_OF_YEAR, -allowedPastDaysForRecord);
                         Date allowedPastDate = calendar.getTime();
                         long longAllowedPastDate = allowedPastDate.getTime();
 
-                        // String allowedPastDateString = new SimpleDateFormat(FORM_DATE).format(allowedPastDate);
+                         String allowedPastDateString = new SimpleDateFormat(FORM_DATE).format(allowedPastDate);
                         if (previousDBOrServerRecord != null) {
                             long nextDayTimestamp = Util.getNextDayTimestamp(previousDBOrServerRecord.getMeterReadingTimestamp());
                             Date nextDate = Util.getDateFromTimestamp2(nextDayTimestamp, FORM_DATE);
@@ -519,7 +528,9 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                                 }
                             }
                         } else {
-                            showDateDialogForDate(this, etDate, allowedPastDate);
+                            if (isMachineFirstRecord)
+                                showDateDialogEnableBetweenMinMax(this, etDate, allowedPastDateString, serverCurrentDateString);
+                            else showDateDialogForDate(this, etDate, allowedPastDate);
                         }
                     }
                 }
@@ -779,6 +790,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
         if (rowId != -1) {
             machine_status = STATUS_STOP;
+            isMachineFirstRecord = false;
             Snackbar.make(toolbar, "Record saved locally", Snackbar.LENGTH_SHORT).show();
             setStoppedMachineData();
 
@@ -980,7 +992,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                             getPreviousLatestStopRecord(machine_id);
                     setLastRecordView(previousDBOrServerRecord);
                 }
-            }else {
+            } else {
                 if (operatorMachineData.getMachineLastRecord() != null) {
                     previousDBOrServerRecord = operatorMachineData.getMachineLastRecord();
                     setLastRecordView(previousDBOrServerRecord);
@@ -993,6 +1005,8 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     previousDBOrServerRecord.setSynced(true);
                     DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                             insert(previousDBOrServerRecord);
+                } else { //here machine is new with no last records
+                    isMachineFirstRecord = true;
                 }
             }
 
@@ -1011,6 +1025,8 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     previousDBOrServerRecord.setSynced(true);
                     DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                             insert(previousDBOrServerRecord);
+                } else { //here machine is new with no last records
+                    isMachineFirstRecord = true;
                 }
             }
         }
@@ -1453,7 +1469,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         // on successful data entry, it returns rowId. After this entry, we set halt action UI.
         if (rowId != -1) {
             machine_status = STATUS_HALT;
-
+            isMachineFirstRecord = false;
             Snackbar.make(toolbar, "Halt record saved locally", Snackbar.LENGTH_SHORT).show();
 
             //no image in halt case to clear imageHashmap
