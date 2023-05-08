@@ -253,6 +253,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             tv_machine_code.setText(machine_code);
             if (lastWorkingRecordData != null) {
                 setWorkingMachineData(lastWorkingRecordData);
+                machine_status = STATUS_WORKING;
             } else { //new date entry
                 updateUIForNewEntry();
             }
@@ -309,6 +310,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 if (sharedPrefOperatorMachineData != null && !sharedPrefOperatorMachineData.getMachine_id().isEmpty()) {
                     machine_id = sharedPrefOperatorMachineData.getMachine_id();
                     machine_code = sharedPrefOperatorMachineData.getMachine_code();
+                    structure_id = sharedPrefOperatorMachineData.getStructure_id();
                     tv_machine_code.setText(machine_code);
                     isImagesMandatory = sharedPrefOperatorMachineData.isImagesMandatory();
                     //serverCurrentTimeStamp = sharedPrefOperatorMachineData.getCurrentTimeStamp();
@@ -344,6 +346,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                             getLastWorkingRecord(machine_id);
                     if (lastWorkingRecordData != null) {
                         setWorkingMachineData(lastWorkingRecordData);
+                        machine_status = STATUS_WORKING;
                     } else { //new date entry
                         updateUIForNewEntry();
                     }
@@ -492,7 +495,10 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                             calendar.setTime(serverCurrentDate);
                             calendar.add(Calendar.DAY_OF_YEAR, -allowedPastDaysForRecord);
                             Date allowedPastDate = calendar.getTime();
-                            long longAllowedPastDate = allowedPastDate.getTime();
+
+                            SimpleDateFormat formatterWithoutTimezone = new SimpleDateFormat(FORM_DATE,Locale.getDefault());
+                            String formattedDate = formatterWithoutTimezone.format(allowedPastDate);
+                            long longAllowedPastDate = Util.getDateInLong(formattedDate);
 
                             //String allowedPastDateString = new SimpleDateFormat(FORM_DATE).format(allowedPastDate);
                             if (previousDBOrServerRecord != null) {
@@ -767,6 +773,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         submittedStopRecord.setStatus(status);
         submittedStopRecord.setStatus_code(status_code);
         submittedStopRecord.setStop_meter_reading(stopMeterReading);
+        submittedStopRecord.setStart_meter_reading(et_smeter_read.getText().toString());
         submittedStopRecord.setStructureId(structure_id);
         submittedStopRecord.setSynced(false);
 
@@ -974,6 +981,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
             if (lastWorkingRecordData != null) {
                 setWorkingMachineData(lastWorkingRecordData);
+                machine_status = STATUS_WORKING;
             } else { //new date entry
                 updateUIForNewEntry();
             }
@@ -1005,6 +1013,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     previousDBOrServerRecord.setStructureId(operatorMachineData.getStructure_id());
 
                     //add record to db for offline case
+                    previousDBOrServerRecord.setSynced(true);
                     DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                             insert(previousDBOrServerRecord);
                 }
@@ -1018,10 +1027,11 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     setLastRecordView(previousDBOrServerRecord);
 
                     //following entries needed for adding record to db
-                    previousDBOrServerRecord.setMachine_id(operatorMachineData.getMachine_id());
-                    previousDBOrServerRecord.setStructureId(operatorMachineData.getStructure_id());
+                    previousDBOrServerRecord.setMachine_id(machine_id);
+                    previousDBOrServerRecord.setStructureId(structure_id);
 
                     //add record to db for offline case
+                    previousDBOrServerRecord.setSynced(true);
                     DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                             insert(previousDBOrServerRecord);
                 }
