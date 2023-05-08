@@ -344,17 +344,21 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
                     Util.showToast(getString(R.string.msg_no_network), this);
                 }*/
 
-                if (etMobileNo.getText().toString().equals("")) {
-                    lytMobileNo.setError("Please enter mobile number");
-                } else if (etMobileNo.getText().toString().trim().length() != 10) {
-                    lytMobileNo.setError("Please enter valid mobile number");
-                } else {
-                    if (Util.isConnected(this)) {
-                        Util.hideKeyboardWithView(this, this.getCurrentFocus());
-                        goToVerifyOtpScreen();
+                if (Util.isConnected(this)) {
+                    if (etMobileNo.getText().toString().equals("")) {
+                        lytMobileNo.setError("Please enter mobile number");
+                    } else if (etMobileNo.getText().toString().trim().length() != 10) {
+                        lytMobileNo.setError("Please enter valid mobile number");
                     } else {
-                        Util.showToast(getString(R.string.msg_no_network), this);
+                        if (Util.isConnected(this)) {
+                            Util.hideKeyboardWithView(this, this.getCurrentFocus());
+                            goToVerifyOtpScreen();
+                        } else {
+                            Util.showToast(getString(R.string.msg_no_network), this);
+                        }
                     }
+                }else {
+                    Snackbar.make(view,"No internet connection!",Snackbar.LENGTH_SHORT).show();
                 }
                 break;
 
