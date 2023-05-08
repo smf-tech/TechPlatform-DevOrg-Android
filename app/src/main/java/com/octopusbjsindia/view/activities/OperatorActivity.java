@@ -182,7 +182,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     private OperatorRequestResponseModel previousDBOrServerRecord;
     final Handler handler = new Handler();
     private boolean isOperator = false;
-
     private ConstraintLayout lastRecordLayout, lastHaltRecord;
     private TextView tv_lastReadingDate, tv_lastStartReading, tv_lastStopReading,
             tv_lastHaltReadingDate, tv_haltReason;
@@ -221,7 +220,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         btnSkipToNextDay = findViewById(R.id.btn_skip_to_next);
         meterReadingCard = findViewById(R.id.lyt_reading_card);
 
-
         // toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
         iv_jcb = findViewById(R.id.jcb);
 
@@ -242,7 +240,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-
         if (machine_id != null && structure_id != null && machine_code != null) { // For NON-FA roles
             isOperator = false;
             toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24);
@@ -255,7 +252,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             } else { //new date entry
                 updateUIForNewEntry();
             }
-
             //api call to get list of halt reason
             if (Util.isConnected(this)) {
                 presenter.getAllFiltersRequests(machine_code);
@@ -275,11 +271,9 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 }
                 Snackbar.make(toolbar, "No internet connection", Snackbar.LENGTH_SHORT).show();
             }
-
         } else {   // For FA/Operator roles
             toolbar.setNavigationIcon(null);
             isOperator = true;
-
             if (Util.isConnected(this)) {
                 presenter.getAllFiltersRequests("no_machine");
                 SyncAdapterUtils.manualRefresh();
@@ -299,11 +293,12 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                             sharedPrefOperatorMachineData.getMachineLastRecord() != null) {
                         previousDBOrServerRecord = sharedPrefOperatorMachineData.getMachineLastRecord();
                     }
-
                     lastWorkingRecordData = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                             getLastWorkingRecord(machine_id);
                     if (lastWorkingRecordData != null) {
                         setWorkingMachineData(lastWorkingRecordData);
+                    } else { //new date entry
+                        updateUIForNewEntry();
                     }
                 }
                 Snackbar.make(toolbar, "No internet connection", Snackbar.LENGTH_SHORT).show();
@@ -319,7 +314,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 setLastRecordView(previousDBOrServerRecord);
             } else if (previousDBOrServerRecord.getStatus().equalsIgnoreCase(STATUS_HALT)) {
                 OnMachineHalt(previousDBOrServerRecord);
-
                 previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                         getPreviousLatestStopRecord(machine_id);
                 setLastRecordView(previousDBOrServerRecord);
@@ -335,7 +329,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 gpsTracker.showSettingsAlert();
             }
         }
-
     }
 
     private void setDeviceInfo() {
@@ -699,7 +692,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         } else {
             Snackbar.make(toolbar, "Something went wrong", Snackbar.LENGTH_SHORT).show();
         }
-
     }
 
     private void addStopMeterRecord() {
@@ -755,9 +747,9 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             setStoppedMachineData();
 
             //update serverDbrecord
-//            previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance())
-//                    .getOperatorRequestResponseModelDao().getPreviousLatestRecord(data.getMachine_id());
-            previousDBOrServerRecord = submittedStopRecord;
+            previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance())
+                    .getOperatorRequestResponseModelDao().getPreviousLatestRecord(machine_id);
+            //previousDBOrServerRecord = submittedStopRecord;
             setLastRecordView(previousDBOrServerRecord);
 
             lastHaltRecord.setVisibility(View.GONE);
@@ -1173,9 +1165,11 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                                         updateMachineRecord(data.getStatus(), data.getStatus_code(), data.getStopImage(), data.getStop_meter_reading(), data.getLat(),
                                                 data.getLong(), machine_id, data.getMeterReadingDate(), true);
                             } else {
-                                //todo for halt case
+                                //for halt case
+                                DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                        updateMachineRecord(data.getStatus(), data.getStatus_code(), null, null, data.getLat(),
+                                                data.getLong(), machine_id, data.getMeterReadingDate(), true);
                             }
-
                             if (data.getStatus().equalsIgnoreCase(STATUS_STOP)) {
                                 //update serverDbrecord
                              /*   previousDBOrServerRecord = DatabaseManager.getDBInstance(Platform.getInstance())
@@ -1187,7 +1181,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                                 DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                                         deletePreviousMachineRecord(data.getMachine_id(), submittedRecordTimestamp);
                             }
-
                             if (data.getStatus().equalsIgnoreCase(STATUS_HALT)) {
                                 long submittedRecordTimestamp = data.getMeterReadingTimestamp();
                                 DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
@@ -1408,9 +1401,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         } else {
             Snackbar.make(toolbar, "Something went wrong", Snackbar.LENGTH_SHORT).show();
         }
-
     }
-
 
     /* @Override
      public void onValuesSelected(int selectedPosition, String spinnerName, String selectedValues) {

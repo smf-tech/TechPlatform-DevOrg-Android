@@ -357,9 +357,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                             updateMachineRecord(data.getStatus(), data.getStatus_code(), data.getStopImage(), data.getStop_meter_reading(), data.getLat(),
                                                     data.getLong(), data.getMachine_id(), data.getMeterReadingDate(), true);
                                 } else {
-                                   //todo for halt case
+                                    //for halt case
+                                    DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                                            updateMachineRecord(data.getStatus(), data.getStatus_code(), null, null, data.getLat(),
+                                                    data.getLong(), data.getMachine_id(), data.getMeterReadingDate(), true);
                                 }
-
                                 //to delete all previous stop record other than this latest entry
                                 if (data.getStatus().equalsIgnoreCase("Stop")) {
                                     long submittedRecordTimestamp = data.getMeterReadingTimestamp();
