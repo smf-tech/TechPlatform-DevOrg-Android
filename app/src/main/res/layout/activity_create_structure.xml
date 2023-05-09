@@ -569,7 +569,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/structure_img1"
                         android:layout_centerHorizontal="true"
-                        android:text="Struture image 1" />
+                        android:text="Structure image 1" />
 
                 </RelativeLayout>
 
@@ -596,7 +596,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/structure_img2"
                         android:layout_centerHorizontal="true"
-                        android:text="Struture image 2" />
+                        android:text="Structure image 2" />
                 </RelativeLayout>
 
             </LinearLayout>

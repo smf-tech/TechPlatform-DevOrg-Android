@@ -108,14 +108,36 @@
                     android:visibility="visible" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/lyt_machine_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linearLayout"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+                    android:text="Current Status"/>
+                <TextView
+                    android:id="@+id/tv_machine_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextViewRegularStyle"
+                    android:textColor="@color/colorPrimary"
+                    android:text="-"/>
+            </LinearLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/lyt_past_record"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/linearLayout"
+                android:layout_below="@+id/lyt_machine_status"
                 android:layout_marginHorizontal="16dp"
                 android:background="@drawable/bg_rounded_rect_gray"
                 android:padding="12dp"
+                android:layout_marginTop="12dp"
                 android:animateLayoutChanges="true"
                 android:visibility="gone"
                 tools:visibility="visible">
@@ -529,5 +551,15 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

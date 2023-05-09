@@ -10,315 +10,327 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
+    <TextView
+        android:id="@+id/hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_primary_level3"
+        android:layout_below="@id/toolbar"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="16dp"
+        android:textColor="?android:textColorPrimary"
+        android:text="Please fill all the fields."/>
 
-        <ScrollView
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hint">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_below="@+id/toolbar"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:endIconDrawable="@drawable/ic_calendar_today_24"
+                app:endIconMode="custom">
+
+                <EditText
+                    android:id="@+id/et_date"
+                    style="@style/RegistrationEditTextLayout"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:hint="Slit transportation date"
+                    android:inputType="date"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp">
+
+                <EditText
+                    android:id="@+id/et_b_mobile"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Beneficiary mobile number"
+                    android:inputType="number"
+                    android:maxLength="10" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp">
+
+                <EditText
+                    android:id="@+id/et_b_fname"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Beneficiary first name"
+                    android:inputType="textCapWords"
+                    android:maxLength="100" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp">
+
+                <EditText
+                    android:id="@+id/et_b_lname"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Beneficiary last name"
+                    android:inputType="textCapWords"
+                    android:maxLength="100" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp">
+
+                <EditText
+                    android:id="@+id/et_survey_no"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Survey number"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp">
+
+                <EditText
+                    android:id="@+id/et_area"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Field Area(Hectors)"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-             android:padding="16dp">
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/textinputstyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_calendar_today_24">
+                    android:layout_marginEnd="@dimen/dimen_05dp"
+                    android:layout_weight="1"
+                    app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
+                    app:endIconMode="custom">
 
                     <EditText
-                        android:id="@+id/et_date"
+                        android:id="@+id/et_state"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="Slit transportation date"
-                        android:focusable="false"
-                        android:longClickable="false"
-                        android:clickable="false"
-                        android:inputType="date"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp">
-
-                    <EditText
-                        android:id="@+id/et_b_mobile"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary mobile number"
-                        android:inputType="number"
-                        android:maxLength="10"/>
+                        android:hint="@string/state" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/textinputstyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp">
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:layout_weight="1"
+                    app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
+                    app:endIconMode="custom">
 
                     <EditText
-                        android:id="@+id/et_b_fname"
+                        android:id="@+id/et_district"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary first name"
-                        android:inputType="textCapWords"
-                        android:maxLength="100"/>
+                        android:hint="@string/district" />
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="4dp"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_b_lname"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Beneficiary last name"
-                        android:inputType="textCapWords"
-                        android:maxLength="100"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="4dp"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_survey_no"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Survey number"
-                        android:inputType="text"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="4dp"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_area"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Field Area(Hectors)"
-                        android:inputType="numberDecimal"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-                    android:layout_marginTop="@dimen/dimen_10dp">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/textinputstyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:endIconMode="custom"
-                        app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                        android:layout_marginEnd="@dimen/dimen_05dp">
-
-                        <EditText
-                            android:id="@+id/et_state"
-                            style="@style/RegistrationEditTextLayout"
-                            android:hint="@string/state"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/textinputstyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:endIconMode="custom"
-                        app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                        android:layout_marginStart="@dimen/dimen_05dp">
-
-                        <EditText
-                            android:id="@+id/et_district"
-                            style="@style/RegistrationEditTextLayout"
-                            android:hint="@string/district"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-
-                    android:layout_marginTop="@dimen/dimen_10dp">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/textinputstyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:endIconMode="custom"
-                        app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                        android:layout_marginEnd="@dimen/dimen_05dp">
-
-                        <EditText
-                            android:id="@+id/et_taluka"
-                            style="@style/RegistrationEditTextLayout"
-                            android:hint="@string/taluka"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/textinputstyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:endIconMode="custom"
-                        app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                        android:layout_marginStart="@dimen/dimen_05dp">
-
-                        <EditText
-                            android:id="@+id/et_village"
-                            style="@style/RegistrationEditTextLayout"
-                            android:hint="@string/village"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </LinearLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    app:endIconMode="custom"
-                    app:endIconDrawable="@drawable/ic_arrow_drop_down_24">
-
-                    <EditText
-                        android:id="@+id/et_b_type"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Select Beneficiary type" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="4dp"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_trolley_trips_count"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Tractor trips count"
-                        android:inputType="number"
-                        android:maxLength="3"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="4dp"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/et_tipper_trips_count"
-                        style="@style/RegistrationEditTextLayout"
-                        android:hint="Tipper trips count"
-                        android:inputType="number"
-                        android:maxLength="3"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!--                <com.google.android.material.textfield.TextInputLayout-->
-                <!--                    style="@style/textinputstyle"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content">-->
-
-                <!--                    <EditText-->
-                <!--                        android:id="@+id/et_total_silt"-->
-                <!--                        style="@style/RegistrationEditTextLayout"-->
-                <!--                        android:hint="Total silt"/>-->
-                <!--                </com.google.android.material.textfield.TextInputLayout>-->
-
-                <!--                <com.google.android.material.textfield.TextInputLayout-->
-                <!--                    style="@style/textinputstyle"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content">-->
-
-                <!--                    <EditText-->
-                <!--                        android:id="@+id/et_farmers_count"-->
-                <!--                        style="@style/RegistrationEditTextLayout"-->
-                <!--                        android:hint="Number of farmers"-->
-                <!--                        android:inputType="number"/>-->
-                <!--                </com.google.android.material.textfield.TextInputLayout>-->
-
-                <!--                <com.google.android.material.textfield.TextInputLayout-->
-                <!--                    style="@style/textinputstyle"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content">-->
-
-                <!--                    <EditText-->
-                <!--                        android:id="@+id/et_beneficiaries_count"-->
-                <!--                        style="@style/RegistrationEditTextLayout"-->
-                <!--                        android:hint="Number of beneficiaries"-->
-                <!--                        android:inputType="number"/>-->
-                <!--                </com.google.android.material.textfield.TextInputLayout>-->
-
-                <!--                <ImageView-->
-                <!--                    android:id="@+id/img_register_one"-->
-                <!--                    android:layout_width="150dp"-->
-                <!--                    android:layout_height="150dp"-->
-                <!--                    android:layout_marginTop="@dimen/dimen_10dp"-->
-                <!--                    android:src="@drawable/ic_add_img"-->
-                <!--                    android:layout_gravity="center_horizontal"-->
-                <!--                    android:visibility="gone"/>-->
-
-                <!--                <TextView-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:text="Image"-->
-                <!--                    android:layout_gravity="center_horizontal"-->
-                <!--                    android:visibility="gone"/>-->
-
-                <!--                <ImageView-->
-                <!--                    android:id="@+id/img_register_two"-->
-                <!--                    android:layout_width="150dp"-->
-                <!--                    android:layout_height="150dp"-->
-                <!--                    android:layout_marginTop="@dimen/dimen_10dp"-->
-                <!--                    android:src="@drawable/ic_add_img"-->
-                <!--                    android:layout_gravity="center_horizontal"/>-->
-
-                <!--                <TextView-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:text="Image 2 of Register"-->
-                <!--                    android:layout_gravity="center_horizontal"/>-->
-
-                <!--                <ImageView-->
-                <!--                    android:id="@+id/img_register_three"-->
-                <!--                    android:layout_width="150dp"-->
-                <!--                    android:layout_height="150dp"-->
-                <!--                    android:layout_marginTop="@dimen/dimen_10dp"-->
-                <!--                    android:src="@drawable/ic_add_img"-->
-                <!--                    android:layout_gravity="center_horizontal"/>-->
-
-                <!--                <TextView-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:text="Image 3 of Register"-->
-                <!--                    android:layout_gravity="center_horizontal"/>-->
-
-                <Button
-                    android:id="@+id/btn_submit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/RegistrationEditTextLayout"
-                    android:layout_marginTop="12dp"
-                    android:textColor="@android:color/white"
-                    android:text="@string/submit" />
 
             </LinearLayout>
-        </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:orientation="horizontal"
+
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dimen_05dp"
+                    android:layout_weight="1"
+                    app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
+                    app:endIconMode="custom">
+
+                    <EditText
+                        android:id="@+id/et_taluka"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/taluka" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/textinputstyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
+                    android:layout_weight="1"
+                    app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
+                    app:endIconMode="custom">
+
+                    <EditText
+                        android:id="@+id/et_village"
+                        style="@style/RegistrationEditTextLayout"
+                        android:hint="@string/village" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
+                app:endIconMode="custom">
+
+                <EditText
+                    android:id="@+id/et_b_type"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Select Beneficiary type" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp">
+
+                <EditText
+                    android:id="@+id/et_trolley_trips_count"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Tractor trips count"
+                    android:inputType="number"
+                    android:maxLength="3" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp">
+
+                <EditText
+                    android:id="@+id/et_tipper_trips_count"
+                    style="@style/RegistrationEditTextLayout"
+                    android:hint="Tipper trips count"
+                    android:inputType="number"
+                    android:maxLength="3" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--                <com.google.android.material.textfield.TextInputLayout-->
+            <!--                    style="@style/textinputstyle"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content">-->
+
+            <!--                    <EditText-->
+            <!--                        android:id="@+id/et_total_silt"-->
+            <!--                        style="@style/RegistrationEditTextLayout"-->
+            <!--                        android:hint="Total silt"/>-->
+            <!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+            <!--                <com.google.android.material.textfield.TextInputLayout-->
+            <!--                    style="@style/textinputstyle"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content">-->
+
+            <!--                    <EditText-->
+            <!--                        android:id="@+id/et_farmers_count"-->
+            <!--                        style="@style/RegistrationEditTextLayout"-->
+            <!--                        android:hint="Number of farmers"-->
+            <!--                        android:inputType="number"/>-->
+            <!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+            <!--                <com.google.android.material.textfield.TextInputLayout-->
+            <!--                    style="@style/textinputstyle"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content">-->
+
+            <!--                    <EditText-->
+            <!--                        android:id="@+id/et_beneficiaries_count"-->
+            <!--                        style="@style/RegistrationEditTextLayout"-->
+            <!--                        android:hint="Number of beneficiaries"-->
+            <!--                        android:inputType="number"/>-->
+            <!--                </com.google.android.material.textfield.TextInputLayout>-->
+
+            <!--                <ImageView-->
+            <!--                    android:id="@+id/img_register_one"-->
+            <!--                    android:layout_width="150dp"-->
+            <!--                    android:layout_height="150dp"-->
+            <!--                    android:layout_marginTop="@dimen/dimen_10dp"-->
+            <!--                    android:src="@drawable/ic_add_img"-->
+            <!--                    android:layout_gravity="center_horizontal"-->
+            <!--                    android:visibility="gone"/>-->
+
+            <!--                <TextView-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:text="Image"-->
+            <!--                    android:layout_gravity="center_horizontal"-->
+            <!--                    android:visibility="gone"/>-->
+
+            <!--                <ImageView-->
+            <!--                    android:id="@+id/img_register_two"-->
+            <!--                    android:layout_width="150dp"-->
+            <!--                    android:layout_height="150dp"-->
+            <!--                    android:layout_marginTop="@dimen/dimen_10dp"-->
+            <!--                    android:src="@drawable/ic_add_img"-->
+            <!--                    android:layout_gravity="center_horizontal"/>-->
+
+            <!--                <TextView-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:text="Image 2 of Register"-->
+            <!--                    android:layout_gravity="center_horizontal"/>-->
+
+            <!--                <ImageView-->
+            <!--                    android:id="@+id/img_register_three"-->
+            <!--                    android:layout_width="150dp"-->
+            <!--                    android:layout_height="150dp"-->
+            <!--                    android:layout_marginTop="@dimen/dimen_10dp"-->
+            <!--                    android:src="@drawable/ic_add_img"-->
+            <!--                    android:layout_gravity="center_horizontal"/>-->
+
+            <!--                <TextView-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:text="Image 3 of Register"-->
+            <!--                    android:layout_gravity="center_horizontal"/>-->
+
+            <Button
+                android:id="@+id/btn_submit"
+                style="@style/RegistrationEditTextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/submit"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"

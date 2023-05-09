@@ -25,6 +25,7 @@ public class OperatorActivityPresenter implements TMFilterListRequestCallListene
     }
 
     public void getAllFiltersRequests(String machineCode) {
+        fragmentWeakReference.get().showProgressBar();
         OperatorMeterReadingRequestCall requestCall = new OperatorMeterReadingRequestCall();
         requestCall.setListener(this);
 
@@ -34,6 +35,7 @@ public class OperatorActivityPresenter implements TMFilterListRequestCallListene
 
     @Override
     public void onFilterListRequestsFetched(String response) {
+        fragmentWeakReference.get().hideProgressBar();
         OperatorMachineData pendingRequestsResponse = new Gson().fromJson(response, OperatorMachineData.class);
         if(pendingRequestsResponse.getStatus() == 200){
             if (!TextUtils.isEmpty(response)) {
@@ -61,11 +63,13 @@ public class OperatorActivityPresenter implements TMFilterListRequestCallListene
 
     @Override
     public void onFailureListener(String message) {
+        fragmentWeakReference.get().hideProgressBar();
         Log.e(TAG, "onErrorListener: "+ message);
     }
 
     @Override
     public void onErrorListener(VolleyError error) {
+        fragmentWeakReference.get().hideProgressBar();
         Log.e(TAG, "onErrorListener: "+ error);
     }
 }

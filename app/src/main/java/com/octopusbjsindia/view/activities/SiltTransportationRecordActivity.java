@@ -86,7 +86,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
     private SiltTransportationRecordFragmentPresenter presenter;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    private String machineId, currentStructureId;
+    private String /*machineId,*/ currentStructureId;
     //private ImageView imgRegisterOne, clickedImageView; //imgRegisterTwo, imgRegisterThree, ;
     private Uri outputUri;
     private Uri finalUri;
@@ -111,7 +111,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_silt_transportation_record);
-        machineId = getIntent().getStringExtra("machineId");
+        //machineId = getIntent().getStringExtra("machineId");
         currentStructureId = getIntent().getStringExtra("structureId");
 
         presenter = new SiltTransportationRecordFragmentPresenter(this);

@@ -24,11 +24,21 @@ public interface OperatorRequestResponseModelDao {
     @Query("SELECT * FROM operatorrequestresponsemodel WHERE machine_id=:machineId AND status = 'Working'")
     OperatorRequestResponseModel getLastWorkingRecord(String machineId);
 
+    @Query("SELECT * FROM operatorrequestresponsemodel WHERE machine_id=:machineId AND (status = 'Working'" +
+            "OR (status='halt' AND start_meter_reading IS NOT NULL))")
+    OperatorRequestResponseModel getLastWorkingRecord2(String machineId);
+
     @Query("UPDATE operatorrequestresponsemodel SET status=:status, status_code=:status_code, " +
             "stopImage=:stopImage, stop_meter_reading=:stopMeterReading, lat=:latitude, _long=:longitude, isSynced=:isSync " +
             "WHERE machine_id =:machine_id AND meterReadingDate=:reading_date")
     int updateMachineRecord(String status, String status_code, String stopImage, String stopMeterReading,
                             String latitude, String longitude, String machine_id, String reading_date, boolean isSync);
+
+    @Query("UPDATE operatorrequestresponsemodel SET status=:status, status_code=:status_code, " +
+            "reasonId=:reasonId, haltReason=:reason, isSynced=:isSync " +
+            "WHERE machine_id =:machine_id AND meterReadingDate=:reading_date")
+    int updateMachineToHalt(String machine_id, String reading_date, String status, String status_code,
+                            String reasonId, String reason, boolean isSync);
 
     @Query("SELECT * FROM operatorrequestresponsemodel WHERE machine_id=:machine_id AND status = 'Stop'" +
             "ORDER BY meterReadingTimestamp DESC LIMIT 1")
@@ -37,6 +47,10 @@ public interface OperatorRequestResponseModelDao {
     @Query("SELECT * FROM operatorrequestresponsemodel WHERE machine_id=:machine_id AND status != 'Working'" +
             "ORDER BY meterReadingTimestamp DESC LIMIT 1")
     OperatorRequestResponseModel getPreviousLatestRecord(String machine_id);
+
+    @Query("SELECT * FROM operatorrequestresponsemodel WHERE machine_id=:machine_id AND (status == 'Stop' OR (status='halt' AND start_meter_reading IS NULL))" +
+            "ORDER BY meterReadingTimestamp DESC LIMIT 1")
+    OperatorRequestResponseModel getPreviousLatestRecord2(String machine_id);
 
     @Query("SELECT * FROM operatorrequestresponsemodel WHERE machine_id=:machine_id AND " +
             "meterReadingTimestamp<:selectedTimestamp AND status = 'Stop' ORDER BY meterReadingTimestamp DESC LIMIT 1")

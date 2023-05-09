@@ -1,9 +1,12 @@
 package com.octopusbjsindia.presenter;
 
+import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.UserRequestCallListener;
@@ -15,6 +18,7 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.LoginActivity;
 
 import java.lang.ref.WeakReference;
+import java.nio.charset.StandardCharsets;
 
 public class LoginActivityPresenter implements UserRequestCallListener {
 
@@ -104,4 +108,6 @@ public class LoginActivityPresenter implements UserRequestCallListener {
     private void detachReferences() {
         this.loginActivity = null;
     }
+
+
 }

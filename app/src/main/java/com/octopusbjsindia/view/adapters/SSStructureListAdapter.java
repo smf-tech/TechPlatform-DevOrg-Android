@@ -303,8 +303,8 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                    // siltTransportationIntent.putExtra("SwitchToFragment", "SiltTransportationRecordFragment");
                                   //  siltTransportationIntent.putExtra("title", "Silt Transportation Record");
                                   //  siltTransportationIntent.putExtra("type", "siltTransportRecord");
-                                    siltTransportationIntent.putExtra("machineId",
-                                            ssDataList.get(getAdapterPosition()).getDeployedMachineDetails().get(0).getMachineId());
+                                   /* siltTransportationIntent.putExtra("machineId",
+                                            ssDataList.get(getAdapterPosition()).getDeployedMachineDetails().get(0).getMachineId());*/
                                     siltTransportationIntent.putExtra("structureId", ssDataList.get
                                             (getAdapterPosition()).getStructureId());
                                     activity.startActivity(siltTransportationIntent);

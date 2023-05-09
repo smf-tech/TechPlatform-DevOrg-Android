@@ -17,6 +17,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -40,6 +41,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.octopusbjsindia.BuildConfig;
 import com.octopusbjsindia.Platform;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.PlatformTaskListener;
@@ -51,6 +53,8 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.widgets.PlatformEditTextView;
 
 import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
+
+import java.nio.charset.StandardCharsets;
 
 public class LoginActivity extends BaseActivity implements PlatformTaskListener,
         View.OnClickListener, TextView.OnEditorActionListener {
@@ -274,7 +278,9 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
 
     @Override
     public <T> void showNextScreen(T data) {
+
         if (data != null && ((Login) data).getLoginData() != null) {
+            printOtpForlocalUse(((Login) data).getLoginData().getOtp());
             loginInfo.setOneTimePassword(((Login) data).getLoginData().getOtp());
             addDeviceId();
             try {
@@ -286,6 +292,19 @@ public class LoginActivity extends BaseActivity implements PlatformTaskListener,
             }
         }
     }
+
+    private void printOtpForlocalUse(String otp) {
+        try {
+            byte[] decodeValue = Base64.decode(otp, Base64.DEFAULT);
+            String str = new String(decodeValue, StandardCharsets.UTF_8);
+            if (BuildConfig.DEBUG){
+                Toast.makeText(this,str,Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void addDeviceId() {
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.

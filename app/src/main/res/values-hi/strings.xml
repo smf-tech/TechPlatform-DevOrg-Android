@@ -423,8 +423,8 @@
     <string name="chasis_number">Machine chasis number *</string>
     <string name="excavation_capacity">Excavation capacity of machine per hour *</string>
     <string name="diesel_capacity">Diesel tank capacity in litres *</string>
-    <string name="provider_name">Machine Provider Name</string>
-    <string name="provider_contact">Machine Provider Contact Number *</string>
+    <string name="provider_name">Machine Provider Name*</string>
+    <string name="provider_contact">Machine Provider Contact Number</string>
     <string name="machine_mobile">Machine Attached Mobile Number</string>
     <string name="ownership_type">Type of Ownership</string>
     <string name="trade_name">Provider Trade Name (if firm)</string>
@@ -440,7 +440,7 @@
     <string name="account_holder_name">Account Holder\'s Name</string>
     <string name="account_type">Account Type</string>
     <string name="operator_name">Machine Operator Name</string>
-    <string name="operator_contact">Machine Operator Contact Number</string>
+    <string name="operator_contact">Machine Operator Contact Number*</string>
     <string name="operator_license_number">Machine Operator\'s License Number</string>
     <string name="license_image">Machine Operator\'s License Image</string>
     <string name="operator_training">Operator\'s training completed?</string>
@@ -453,7 +453,7 @@
     <string name="travel_distance">Approximate travel distance(Km)</string>
     <string name="travel_time">Approximate travel time(Hr)</string>
     <string name="diesel_provided_by">Diesel provided by</string>
-    <string name="provider_last_name">Machine Provider Last name</string>
+    <string name="provider_last_name">Machine Provider Last name*</string>
     <string name="enter_rate1_start_date">Please select start date for rate 1.</string>
     <string name="enter_rate2_start_date">Please select start date for rate2.</string>
     <string name="enter_rate3_start_date">Please select start date for rate3.</string>
@@ -598,8 +598,8 @@
     <string name="structure_status">Structure status</string>
     <string name="fa_first_name">Field Associate First Name</string>
     <string name="fa_last_name">Field Associate Last Name</string>
-    <string name="operator_first_name">Operator First Name</string>
-    <string name="operator_last_name">Operator Last Name</string>
+    <string name="operator_first_name">Operator First Name*</string>
+    <string name="operator_last_name">Operator Last Name*</string>
     <string name="enter_fa_first_name">Please enter Field Associate\'s first name</string>
     <string name="enter_fa_last_name">Please enter Field Associate\'s last name</string>
     <string name="enter_operator_first_name">Enter machine operator\'s first name</string>
