@@ -143,14 +143,14 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     public static final int RC_CAMERA_AND_LOCATION = 4;
     private final String TAG = "OperatorActivity";
     private ImageView img_start_meter, img_end_meter, clickedImageView;
-    private TextView tv_machine_code, tvVersionCode, tvDeviceName, tvMachineStatus;
+    private TextView tv_machine_code,tv_structure_code, tvVersionCode, tvDeviceName, tvMachineStatus;
     private ImageView iv_jcb;
     private EditText et_emeter_read, et_smeter_read, etDate;
     private Button btnStartService, btnStopService;
     private MaterialButton btnEnterTodayRecord, btnSkipToNextDay;
     private MaterialCardView meterReadingCard;
     private LinearLayout lytActionOnHalt;
-    private String machine_id = "", machine_code = "", machine_status = "", structure_id = "";
+    private String machine_id = "", machine_code = "", machine_status = "", structure_id = "",structure_code = "";
     private ArrayList<SelectionListObject> ListHaltReasons = new ArrayList<>();
     private Uri outputUri, finalUri, startUri, stopUri;
     private String imageType;
@@ -208,6 +208,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         tvVersionCode = findViewById(R.id.tv_version_code);
         tvDeviceName = findViewById(R.id.tv_device_name);
         tv_machine_code = findViewById(R.id.tv_machine_code_new);
+        tv_structure_code = findViewById(R.id.tv_structure_code);
         etDate = findViewById(R.id.et_date);
         etDate.setOnClickListener(this);
         et_emeter_read = findViewById(R.id.et_emeter_read);
@@ -237,6 +238,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         machine_code = getIntent().getStringExtra("machineCode");
         machine_id = getIntent().getStringExtra("machineId");
         structure_id = getIntent().getStringExtra("structureId");
+        structure_code = getIntent().getStringExtra("structureCode");
         setDeviceInfo();
 
         etDate.setFocusable(false);
@@ -259,6 +261,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             lastWorkingRecordData = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                     getLastWorkingRecord2(machine_id);
             tv_machine_code.setText(machine_code);
+            tv_structure_code.setText("  |  " + structure_code);
             if (lastWorkingRecordData != null) {
                 setWorkingMachineData(lastWorkingRecordData);
             } else { //new date entry
@@ -320,7 +323,9 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     machine_id = sharedPrefOperatorMachineData.getMachine_id();
                     machine_code = sharedPrefOperatorMachineData.getMachine_code();
                     structure_id = sharedPrefOperatorMachineData.getStructure_id();
+                    structure_code = sharedPrefOperatorMachineData.getStructure_code();
                     tv_machine_code.setText(machine_code);
+                    tv_structure_code.setText("  |  " + structure_code);
                     isImagesMandatory = sharedPrefOperatorMachineData.isImagesMandatory();
                     //serverCurrentTimeStamp = sharedPrefOperatorMachineData.getCurrentTimeStamp();
                     allowedPastDaysForRecord = sharedPrefOperatorMachineData.getAllowedPastDaysForRecord();
@@ -945,11 +950,15 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             machine_id = operatorMachineData.getMachine_id();
             structure_id = operatorMachineData.getStructure_id();
             machine_code = operatorMachineData.getMachine_code();
+            structure_code = operatorMachineData.getStructure_code();
 
-            if (machine_code != null && !(machine_code.isEmpty())) {
+            if (machine_code != null && !(machine_code.isEmpty()) &&
+                    structure_code != null && !(structure_code.isEmpty())) {
                 tv_machine_code.setText(machine_code);
+                tv_structure_code.setText("  |  " + structure_code);
             } else {
                 tv_machine_code.setText("Not Assigned");
+                tv_structure_code.setVisibility(View.GONE);
                 Util.showToast("Machine not assigned. Contact to DPM.", this);
             }
 

@@ -390,6 +390,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                                         dailyRecordIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).getMachineId());
                                         dailyRecordIntent.putExtra("machineCode", ssDataList.get(getAdapterPosition()).getMachineCode());
                                         dailyRecordIntent.putExtra("structureId", ssDataList.get(getAdapterPosition()).getDeployedStructureId());
+                                        dailyRecordIntent.putExtra("structureCode", ssDataList.get(getAdapterPosition()).getDeployedStructureCode());
                                         activity.startActivity(dailyRecordIntent);
                                 }
                             } else {

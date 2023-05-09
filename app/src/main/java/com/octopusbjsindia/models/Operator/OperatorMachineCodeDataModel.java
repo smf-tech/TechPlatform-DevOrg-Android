@@ -23,6 +23,10 @@ public class OperatorMachineCodeDataModel {
     @Expose
     private String structure_id;
 
+    @SerializedName("structure_code")
+    @Expose
+    private String structure_code;
+
     @SerializedName("machine_id")
     @Expose
     private String machine_id;
@@ -77,6 +81,14 @@ public class OperatorMachineCodeDataModel {
 
     public void setNonutilisationTypeData(NonutilisationTypeDataList nonutilisationTypeData) {
         this.nonutilisationTypeData = nonutilisationTypeData;
+    }
+
+    public String getStructure_code() {
+        return structure_code;
+    }
+
+    public void setStructure_code(String structure_code) {
+        this.structure_code = structure_code;
     }
 
     public OperatorRequestResponseModel getMachineLastRecord() {

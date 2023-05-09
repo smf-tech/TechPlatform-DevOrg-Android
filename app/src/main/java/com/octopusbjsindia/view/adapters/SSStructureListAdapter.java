@@ -524,7 +524,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         rvDeployedMachine.setLayoutManager(new LinearLayoutManager(activity));
         DeployedMachineListAdapter adapter = new DeployedMachineListAdapter(
                 ssDataList.get(adapterPosition).getDeployedMachineDetails(),ssDataList.get(adapterPosition).getStructureId(),
-                activity, isDailyMachineRecord);
+                ssDataList.get(adapterPosition).getStructureCode(),activity, isDailyMachineRecord);
         rvDeployedMachine.setAdapter(adapter);
 
         ImageView ivClose = dialog.findViewById(R.id.iv_close);

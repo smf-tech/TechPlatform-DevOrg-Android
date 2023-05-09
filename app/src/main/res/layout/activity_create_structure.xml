@@ -533,7 +533,6 @@
                     android:imeOptions="actionNext"
                     android:inputType="textMultiLine"
                     android:singleLine="false" />
-                />
             </com.google.android.material.textfield.TextInputLayout>
 
 

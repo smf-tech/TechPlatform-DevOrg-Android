@@ -21,15 +21,16 @@ import java.util.List;
 public class DeployedMachineListAdapter extends RecyclerView.Adapter<DeployedMachineListAdapter.ViewHolder> {
 
     private ArrayList<DeployedMachine> dataList;
-    private String StructureId;
+    private String StructureId,StructureCode;
     private Context mContext;
     private boolean isDailyMachineRecord;
 
-    public DeployedMachineListAdapter(List<DeployedMachine> dataList,String structureId ,Context mContext, boolean isDailyMachineRecord) {
+    public DeployedMachineListAdapter(List<DeployedMachine> dataList,String structureId,String structureCode ,Context mContext, boolean isDailyMachineRecord) {
         this.dataList = (ArrayList<DeployedMachine>)dataList;
         this.mContext = mContext;
         this.isDailyMachineRecord = isDailyMachineRecord;
         this.StructureId = structureId;
+        this.StructureCode = structureCode;
     }
 
     @NonNull
@@ -69,6 +70,7 @@ public class DeployedMachineListAdapter extends RecyclerView.Adapter<DeployedMac
                         dailyRecordIntent.putExtra("machineCode", dataList.get(getAdapterPosition()).getCode());
                         dailyRecordIntent.putExtra("machineId", dataList.get(getAdapterPosition()).getMachineId());
                         dailyRecordIntent.putExtra("structureId", StructureId);
+                        dailyRecordIntent.putExtra("structureCode", StructureCode);
                         mContext.startActivity(dailyRecordIntent);
                     }
                 });
