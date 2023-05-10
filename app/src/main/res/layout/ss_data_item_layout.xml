@@ -344,7 +344,7 @@
                     android:layout_marginStart="0dp"
                     android:gravity="center_vertical"
                     android:layout_weight="1"
-                    tools:visibility="visible"
+                    tools:visibility="gone"
                     android:visibility="gone">
 
                     <Button
@@ -366,6 +366,7 @@
                     android:layout_marginStart="8dp"
                     android:gravity="center_vertical"
                     android:layout_weight="1"
+                    tools:visibility="visible"
                     android:visibility="gone">
 
                     <TextView
@@ -376,6 +377,10 @@
                     <TextView
                         android:id="@+id/tv_reason"
                         style="@style/TextViewRegularStyle"
+                        android:text="-"
+                        android:layout_width="match_parent"
+                        android:singleLine="true"
+                        android:ellipsize="marquee"
                         android:layout_below="@+id/tv_reason_lebal"
                         android:textColor="@color/tab_select" />
 

@@ -86,7 +86,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
     private SiltTransportationRecordFragmentPresenter presenter;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    private String machineId, currentStructureId;
+    private String /*machineId,*/ currentStructureId;
     //private ImageView imgRegisterOne, clickedImageView; //imgRegisterTwo, imgRegisterThree, ;
     private Uri outputUri;
     private Uri finalUri;
@@ -111,7 +111,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_silt_transportation_record);
-        machineId = getIntent().getStringExtra("machineId");
+        //machineId = getIntent().getStringExtra("machineId");
         currentStructureId = getIntent().getStringExtra("structureId");
 
         presenter = new SiltTransportationRecordFragmentPresenter(this);
@@ -121,6 +121,8 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
         etDate.setOnClickListener(this);
         etState = findViewById(R.id.et_state);
         etState.setOnClickListener(this);
+        etState.setEnabled(false);// so that user cannot change district in this case
+
         etDistrict = findViewById(R.id.et_district);
         etDistrict.setOnClickListener(this);
         etTaluka = findViewById(R.id.et_taluka);
@@ -193,6 +195,13 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
         customSpinnerObject2.set_id("624ae6dd750ea48291611f06");
         customSpinnerObject2.setSelected(false);
         bTypeList.add(customSpinnerObject2);
+
+        CustomSpinnerObject customSpinnerObject3 = new CustomSpinnerObject();
+        customSpinnerObject3.setName("BDO/ Govt Administration");
+        customSpinnerObject3.set_id("645b35d8403cfb5d7f69ffcb");
+        customSpinnerObject3.setSelected(false);
+        bTypeList.add(customSpinnerObject3);
+
 
 //        List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
 //                getSSMasterDatabaseDao().getSSMasterData("SS");

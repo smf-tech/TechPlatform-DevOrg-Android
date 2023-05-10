@@ -62,8 +62,10 @@
                     <TextView
                         android:id="@+id/tv_structure_name"
                         style="@style/TextViewRegularStyle"
-                        android:layout_marginEnd="24dp"
-                        android:layout_below="@+id/tv_structure_lable" />
+                        android:layout_marginEnd="2dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/tv_structure_lable"
+                        android:layout_toStartOf="@id/btn_popmenu"/>
 
                     <ImageView
                         android:id="@+id/btn_popmenu"

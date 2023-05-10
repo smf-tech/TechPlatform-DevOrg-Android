@@ -303,8 +303,8 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                    // siltTransportationIntent.putExtra("SwitchToFragment", "SiltTransportationRecordFragment");
                                   //  siltTransportationIntent.putExtra("title", "Silt Transportation Record");
                                   //  siltTransportationIntent.putExtra("type", "siltTransportRecord");
-                                    siltTransportationIntent.putExtra("machineId",
-                                            ssDataList.get(getAdapterPosition()).getDeployedMachineDetails().get(0).getMachineId());
+                                   /* siltTransportationIntent.putExtra("machineId",
+                                            ssDataList.get(getAdapterPosition()).getDeployedMachineDetails().get(0).getMachineId());*/
                                     siltTransportationIntent.putExtra("structureId", ssDataList.get
                                             (getAdapterPosition()).getStructureId());
                                     activity.startActivity(siltTransportationIntent);
@@ -524,7 +524,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         rvDeployedMachine.setLayoutManager(new LinearLayoutManager(activity));
         DeployedMachineListAdapter adapter = new DeployedMachineListAdapter(
                 ssDataList.get(adapterPosition).getDeployedMachineDetails(),ssDataList.get(adapterPosition).getStructureId(),
-                activity, isDailyMachineRecord);
+                ssDataList.get(adapterPosition).getStructureCode(),activity, isDailyMachineRecord);
         rvDeployedMachine.setAdapter(adapter);
 
         ImageView ivClose = dialog.findViewById(R.id.iv_close);

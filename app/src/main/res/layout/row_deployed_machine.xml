@@ -40,7 +40,7 @@
                     <TextView
                         android:id="@+id/tv_machin_code"
                         style="@style/TextViewRegularStyle"
-
+                        android:text="-"
                         android:layout_below="@+id/tv_machin_code_lable"
                         android:fontFamily="@font/opensans_semibold" />
                 </RelativeLayout>
@@ -59,7 +59,8 @@
                     <TextView
                         android:id="@+id/tv_machin_status"
                         style="@style/TextViewRegularStyle"
-                        android:layout_below="@+id/tv_machin_status_label"
+                        android:text="-"
+                        android:layout_below="@id/tv_machin_status_label"
                         android:fontFamily="@font/opensans_semibold" />
 
                 </RelativeLayout>

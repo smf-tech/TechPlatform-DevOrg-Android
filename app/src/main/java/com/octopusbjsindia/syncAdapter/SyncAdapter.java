@@ -352,16 +352,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                 data.setSynced(true);
                                 if (data.getStatus().equalsIgnoreCase("Working")) {
                                     DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().insert(data);
-                                } else if (data.getStatus().equalsIgnoreCase("Stop")){
+                                } else if (data.getStatus().equalsIgnoreCase("Stop")) {
                                     DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                                             updateMachineRecord(data.getStatus(), data.getStatus_code(), data.getStopImage(), data.getStop_meter_reading(), data.getLat(),
                                                     data.getLong(), data.getMachine_id(), data.getMeterReadingDate(), true);
-                                } else {
-                                    //for halt case
+                                } else { //halt case
                                     DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                                            updateMachineRecord(data.getStatus(), data.getStatus_code(), null, null, data.getLat(),
-                                                    data.getLong(), data.getMachine_id(), data.getMeterReadingDate(), true);
+                                            updateMachineToHalt(data.getMachine_id(), data.getMeterReadingDate(),
+                                                    data.getStatus(), data.getStatus_code(), data.getReasonId(), data.getHaltReason(), true);
                                 }
+
                                 //to delete all previous stop record other than this latest entry
                                 if (data.getStatus().equalsIgnoreCase("Stop")) {
                                     long submittedRecordTimestamp = data.getMeterReadingTimestamp();
