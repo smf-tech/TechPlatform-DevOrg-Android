@@ -194,6 +194,13 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
         customSpinnerObject2.setSelected(false);
         bTypeList.add(customSpinnerObject2);
 
+        CustomSpinnerObject customSpinnerObject3 = new CustomSpinnerObject();
+        customSpinnerObject3.setName("BDO/ Govt Administration");
+        customSpinnerObject3.set_id("645b35d8403cfb5d7f69ffcb");
+        customSpinnerObject3.setSelected(false);
+        bTypeList.add(customSpinnerObject3);
+
+
 //        List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
 //                getSSMasterDatabaseDao().getSSMasterData("SS");
 //        String masterDbString = list.get(0).getData();

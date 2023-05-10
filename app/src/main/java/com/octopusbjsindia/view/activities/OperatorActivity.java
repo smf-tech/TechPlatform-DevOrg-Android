@@ -84,6 +84,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.octopusbjsindia.BuildConfig;
@@ -142,15 +143,14 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
     public static final int RC_CAMERA_AND_LOCATION = 4;
     private final String TAG = "OperatorActivity";
-    private ImageView img_start_meter, img_end_meter, clickedImageView;
-    private TextView tv_machine_code,tv_structure_code, tvVersionCode, tvDeviceName, tvMachineStatus;
-    private ImageView iv_jcb;
+    private ImageView img_start_meter, img_end_meter, clickedImageView, iv_jcb;
+    private TextView tv_machine_code, tv_structure_code, tvVersionCode, tvDeviceName, tvMachineStatus;
     private EditText et_emeter_read, et_smeter_read, etDate;
     private Button btnStartService, btnStopService;
     private MaterialButton btnEnterTodayRecord, btnSkipToNextDay;
     private MaterialCardView meterReadingCard;
     private LinearLayout lytActionOnHalt;
-    private String machine_id = "", machine_code = "", machine_status = "", structure_id = "",structure_code = "";
+    private String machine_id = "", machine_code = "", machine_status = "", structure_id = "", structure_code = "";
     private ArrayList<SelectionListObject> ListHaltReasons = new ArrayList<>();
     private Uri outputUri, finalUri, startUri, stopUri;
     private String imageType;
@@ -158,36 +158,28 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
     private String currentPhotoPath = "";
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
     private SingleSelectBottomSheet bottomSheetDialogFragment;
-    private int state_start = 112;
-    private int state_stop = 110;
-    private int state_halt = 111;
+    private int state_start = 112, state_stop = 110, state_halt = 111;
     private RequestQueue rQueue;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
-    private SimpleDateFormat df;
-    private String strReasonId = "";
-    private String strReason = "";
+    private String strReasonId = "", strReason = "";
     private GPSTracker gpsTracker;
     private Location location;
     private MaterialToolbar toolbar;
     private long serverCurrentTimeStamp;
     private int allowedPastDaysForRecord;
     private boolean isImagesMandatory = true;
-    private static final String STATUS_IDLE = "Idle";
-    private static final String STATUS_WORKING = "Working";
-    private static final String STATUS_STOP = "Stop";
-    private static final String STATUS_HALT = "halt";
-    private static final String STATUS_WORKING_HALT = "WorkingHalt";
-    private OperatorRequestResponseModel lastWorkingRecordData;
-    private OperatorRequestResponseModel previousLatestRecord;
-    //private OperatorRequestResponseModel nextLatestRecord;
-    private OperatorRequestResponseModel submittedStopRecord;
+    private static final String STATUS_IDLE = "Idle", STATUS_WORKING = "Working", STATUS_STOP = "Stop",
+            STATUS_HALT = "halt";
+    private OperatorRequestResponseModel lastWorkingRecordData, previousLatestRecord, submittedStopRecord,
+            previousDBOrServerRecord;
     private OperatorMachineCodeDataModel sharedPrefOperatorMachineData;
-    private OperatorRequestResponseModel previousDBOrServerRecord;
     final Handler handler = new Handler();
     private boolean isOperator = false;
-    private boolean isMachineFirstRecord = false; // here if machine is new machine then first time user can select any date between given range instead on entering in sequence from first date
-
+    private boolean isMachineFirstRecord = false;
+    /**
+     * here if machine is new machine then first time user can select any date between given range instead on entering in sequence from first date
+     */
     private ConstraintLayout lastRecordLayout, lastHaltRecord;
     private TextView tv_lastReadingDate, tv_lastStartReading, tv_lastStopReading,
             tv_lastHaltReadingDate, tv_haltReason;
@@ -201,63 +193,29 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
         preferences = getPreferences(Context.MODE_PRIVATE);
         editor = preferences.edit();
-        df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 
         toolbar = findViewById(R.id.operator_toolbar);
         setSupportActionBar(toolbar);
-        tvVersionCode = findViewById(R.id.tv_version_code);
-        tvDeviceName = findViewById(R.id.tv_device_name);
-        tv_machine_code = findViewById(R.id.tv_machine_code_new);
-        tv_structure_code = findViewById(R.id.tv_structure_code);
-        etDate = findViewById(R.id.et_date);
-        etDate.setOnClickListener(this);
-        et_emeter_read = findViewById(R.id.et_emeter_read);
-        et_smeter_read = findViewById(R.id.et_smeter_read);
-        img_start_meter = findViewById(R.id.img_start_meter);
-        img_end_meter = findViewById(R.id.img_end_meter);
-        btnStartService = findViewById(R.id.buttonStartService);
-        btnStopService = findViewById(R.id.buttonStopService);
-        lastRecordLayout = findViewById(R.id.lyt_past_record);
-        lastHaltRecord = findViewById(R.id.lyt_halt_record);
-        tv_lastReadingDate = findViewById(R.id.txt_last_reading_date);
-        tv_lastHaltReadingDate = findViewById(R.id.txt_last_halt_reading_date);
-        tv_lastStartReading = findViewById(R.id.txt_last_start_reading);
-        tv_lastStopReading = findViewById(R.id.txt_last_stop_reading);
-        tv_haltReason = findViewById(R.id.txt_halt_reason);
-        tvMachineStatus = findViewById(R.id.tv_machine_status);
-        lytActionOnHalt = findViewById(R.id.lyt_action_on_halt);
-        btnEnterTodayRecord = findViewById(R.id.btn_enter_record);
-        btnSkipToNextDay = findViewById(R.id.btn_skip_to_next);
-        meterReadingCard = findViewById(R.id.lyt_reading_card);
-        progressIndicator = findViewById(R.id.progressbar);
 
-        // toolbar_edit_action = findViewById(R.id.toolbar_edit_action);
-        iv_jcb = findViewById(R.id.jcb);
+        initViews();
 
         OperatorActivityPresenter presenter = new OperatorActivityPresenter(this);
         machine_code = getIntent().getStringExtra("machineCode");
         machine_id = getIntent().getStringExtra("machineId");
         structure_id = getIntent().getStringExtra("structureId");
         structure_code = getIntent().getStringExtra("structureCode");
-        setDeviceInfo();
 
-        etDate.setFocusable(false);
-        etDate.setOnClickListener(this);
-        btnStartService.setOnClickListener(this);
-        btnStopService.setOnClickListener(this);
-        img_start_meter.setOnClickListener(this);
-        img_end_meter.setOnClickListener(this);
-        //toolbar_edit_action.setOnClickListener(this);
-        //toolbar_back_action.setOnClickListener(this);
+        setDeviceInfo();
 
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-
+        // to set initial conditions
         /**For Non-FA role*/
         if (machine_id != null && structure_id != null && machine_code != null) {
             isOperator = false;
             toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24);
 
+            //to get last working record and restrict user to first add stop reading for this record
             lastWorkingRecordData = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                     getLastWorkingRecord2(machine_id);
             tv_machine_code.setText(machine_code);
@@ -299,6 +257,8 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     //serverCurrentTimeStamp = sharedPrefOperatorMachineData.getCurrentTimeStamp();
                     allowedPastDaysForRecord = sharedPrefOperatorMachineData.getAllowedPastDaysForRecord();
                     isImagesMandatory = sharedPrefOperatorMachineData.isImagesMandatory();
+
+                    //if record was not found in db and there is no connection to get data from server then
                     if (previousDBOrServerRecord == null &&
                             sharedPrefOperatorMachineData.getMachineLastRecord() != null) {
                         previousDBOrServerRecord = sharedPrefOperatorMachineData.getMachineLastRecord();
@@ -330,6 +290,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     //serverCurrentTimeStamp = sharedPrefOperatorMachineData.getCurrentTimeStamp();
                     allowedPastDaysForRecord = sharedPrefOperatorMachineData.getAllowedPastDaysForRecord();
 
+                    //to get last working record and restrict user to first add stop reading for this record
                     lastWorkingRecordData = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                             getLastWorkingRecord2(machine_id);
                     if (lastWorkingRecordData != null) {
@@ -354,12 +315,12 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                                     getPreviousLatestStopRecord(machine_id);
                             setLastRecordView(previousDBOrServerRecord);
                         }
+                        //if record was not found in db and there is no connection to get data from server then
                     } else if (previousDBOrServerRecord == null && sharedPrefOperatorMachineData.getMachineLastRecord() != null) {
                         previousDBOrServerRecord = sharedPrefOperatorMachineData.getMachineLastRecord();
                     } else { //here machine is new with no last records
                         isMachineFirstRecord = true;
                     }
-
                 }
                 Snackbar.make(toolbar, "No internet connection", Snackbar.LENGTH_SHORT).show();
             }
@@ -375,6 +336,42 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             }
         }
 
+    }
+
+    private void initViews() {
+        tvVersionCode = findViewById(R.id.tv_version_code);
+        tvDeviceName = findViewById(R.id.tv_device_name);
+        tv_machine_code = findViewById(R.id.tv_machine_code_new);
+        tv_structure_code = findViewById(R.id.tv_structure_code);
+        etDate = findViewById(R.id.et_date);
+        et_emeter_read = findViewById(R.id.et_emeter_read);
+        et_smeter_read = findViewById(R.id.et_smeter_read);
+        img_start_meter = findViewById(R.id.img_start_meter);
+        img_end_meter = findViewById(R.id.img_end_meter);
+        btnStartService = findViewById(R.id.buttonStartService);
+        btnStopService = findViewById(R.id.buttonStopService);
+        lastRecordLayout = findViewById(R.id.lyt_past_record);
+        lastHaltRecord = findViewById(R.id.lyt_halt_record);
+        tv_lastReadingDate = findViewById(R.id.txt_last_reading_date);
+        tv_lastHaltReadingDate = findViewById(R.id.txt_last_halt_reading_date);
+        tv_lastStartReading = findViewById(R.id.txt_last_start_reading);
+        tv_lastStopReading = findViewById(R.id.txt_last_stop_reading);
+        tv_haltReason = findViewById(R.id.txt_halt_reason);
+        tvMachineStatus = findViewById(R.id.tv_machine_status);
+        lytActionOnHalt = findViewById(R.id.lyt_action_on_halt);
+        btnEnterTodayRecord = findViewById(R.id.btn_enter_record);
+        btnSkipToNextDay = findViewById(R.id.btn_skip_to_next);
+        meterReadingCard = findViewById(R.id.lyt_reading_card);
+        progressIndicator = findViewById(R.id.progressbar);
+        iv_jcb = findViewById(R.id.jcb);
+
+        etDate.setFocusable(false);
+
+        etDate.setOnClickListener(this);
+        btnStartService.setOnClickListener(this);
+        btnStopService.setOnClickListener(this);
+        img_start_meter.setOnClickListener(this);
+        img_end_meter.setOnClickListener(this);
     }
 
     private void setDeviceInfo() {
@@ -406,7 +403,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 if (msg.length() == 0) {
                     // Get previous machine reading entry for validation
                     Long selectedTimestamp = getDateInLong(etDate.getText().toString());
-                    //todo need validation when previous latest record from db is of the days after current selected date
                     previousLatestRecord = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
                             getPreviousLatestRecord(machine_id, selectedTimestamp);
 
@@ -423,7 +419,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                         addStartMeterRecord();
                     }
                 } else {
-                    // Util.showToast(msg, OperatorActivity.this);
                     Snackbar.make(toolbar, msg, Snackbar.LENGTH_SHORT).show();
                 }
                 break;
@@ -444,7 +439,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 if (msg.length() == 0) {
                     addStopMeterRecord();
                 } else {
-                    // Util.showToast(msg, OperatorActivity.this);
                     Snackbar.make(toolbar, msg, Snackbar.LENGTH_SHORT).show();
                 }
                 break;
@@ -753,7 +747,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         } else {
             Snackbar.make(toolbar, "Something went wrong", Snackbar.LENGTH_SHORT).show();
         }
-
     }
 
     private void addStopMeterRecord() {
@@ -825,6 +818,212 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         } else {
             Snackbar.make(toolbar, "Something went wrong", Snackbar.LENGTH_SHORT).show();
         }
+    }
+
+    private void setLastRecordView(OperatorRequestResponseModel model) {
+        if (model != null) {
+            lastRecordLayout.setVisibility(View.VISIBLE);
+            if (model.getMeterReadingDate() != null) {
+                Util.setTextElseDash(tv_lastReadingDate, model.getMeterReadingDate());
+            }
+            if (model.getStart_meter_reading() != null) {
+                Util.setTextElseDash(tv_lastStartReading, model.getStart_meter_reading());
+            }
+            if (model.getStop_meter_reading() != null) {
+                Util.setTextElseDash(tv_lastStopReading, model.getStop_meter_reading());
+            }
+        }
+    }
+
+    private void setWorkingMachineData(OperatorRequestResponseModel lastWorkingRecordData) {
+        machine_status = STATUS_WORKING;
+        etDate.setText(lastWorkingRecordData.getMeterReadingDate());
+        et_smeter_read.setText(lastWorkingRecordData.getStart_meter_reading());
+        if (lastWorkingRecordData.getStartImage() != null) {
+            Bitmap bitmap = BitmapFactory.decodeFile(lastWorkingRecordData.getStartImage());
+            img_start_meter.setImageBitmap(bitmap);
+        }
+        etDate.setEnabled(false);
+        Glide.with(OperatorActivity.this)
+                .load(R.drawable.jcb_gif)
+                .into(iv_jcb);
+        et_smeter_read.setEnabled(false);
+        img_start_meter.setEnabled(false);
+        btnStartService.setEnabled(false);
+
+        if (lastWorkingRecordData.getStatus().equalsIgnoreCase("halt")) {
+            tvMachineStatus.setText("Working Halt");
+            if (menuHalt != null) menuHalt.setEnabled(false);
+        } else tvMachineStatus.setText("Working");
+    }
+
+    private void setStartMachineData() {
+        etDate.setEnabled(false);
+        et_smeter_read.setEnabled(false);
+        img_start_meter.setEnabled(false);
+        btnStartService.setEnabled(false);
+        et_emeter_read.setEnabled(true);
+        img_end_meter.setEnabled(true);
+        Glide.with(OperatorActivity.this)
+                .load(R.drawable.jcb_gif)
+                .into(iv_jcb);
+        btnStopService.setEnabled(true);
+
+        tvMachineStatus.setText("Working");
+    }
+
+    private void setStoppedMachineData() {
+        etDate.setEnabled(true);
+        etDate.setText(null);
+        Glide.with(OperatorActivity.this)
+                .load(R.drawable.jcb_stopped)
+                .into(iv_jcb);
+        et_smeter_read.setEnabled(false);
+        et_emeter_read.setEnabled(false);
+        et_smeter_read.setText(null);
+        et_emeter_read.setText(null);
+        img_start_meter.setEnabled(false);
+        img_end_meter.setEnabled(false);
+        img_start_meter.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_start_meter_reading, null));
+        img_end_meter.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_end_meter_reading, null));
+        btnStartService.setEnabled(false);
+        btnStopService.setEnabled(false);
+
+        tvMachineStatus.setText("Idle");
+    }
+
+    private void updateUIForNewEntry() {
+        machine_status = "";
+        etDate.setEnabled(true);
+        etDate.setText(null);
+        Glide.with(OperatorActivity.this)
+                .load(R.drawable.jcb_stopped)
+                .into(iv_jcb);
+        et_smeter_read.setEnabled(false);
+        et_emeter_read.setEnabled(false);
+        et_smeter_read.setText(null);
+        et_emeter_read.setText(null);
+
+        img_start_meter.setEnabled(false);
+        img_end_meter.setEnabled(false);
+        img_start_meter.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_start_meter_reading, null));
+        img_end_meter.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_end_meter_reading, null));
+
+        btnStartService.setEnabled(false);
+        btnStopService.setEnabled(false);
+
+        tvMachineStatus.setText("Idle");
+    }
+
+    private void updateUIOnDateSelected(boolean isDateEnabled) {
+        etDate.setEnabled(isDateEnabled);
+        Glide.with(OperatorActivity.this)
+                .load(R.drawable.jcb_stopped)
+                .into(iv_jcb);
+        et_smeter_read.setEnabled(true);
+        et_emeter_read.setEnabled(false);
+        et_smeter_read.setText(null);
+        img_start_meter.setEnabled(true);
+        btnStartService.setEnabled(true);
+        btnStopService.setEnabled(false);
+    }
+
+    private void OnMachineHalt(OperatorRequestResponseModel data) {
+        lastHaltRecord.setVisibility(View.VISIBLE);
+        tv_lastHaltReadingDate.setText(data.getMeterReadingDate());
+        tv_haltReason.setText(data.getHaltReason());
+
+        if (lastWorkingRecordData == null) {
+            machine_status = STATUS_HALT;
+            tvMachineStatus.setText("Halt");
+
+            etDate.setEnabled(false);
+            etDate.setText(data.getMeterReadingDate());
+
+            lytActionOnHalt.setVisibility(View.VISIBLE);
+            meterReadingCard.setVisibility(View.GONE);
+
+            btnEnterTodayRecord.setOnClickListener(v -> {
+                meterReadingCard.setVisibility(View.VISIBLE);
+                lytActionOnHalt.setVisibility(View.GONE);
+                updateUIOnDateSelected(false);
+            });
+
+            btnSkipToNextDay.setOnClickListener(v -> {
+                meterReadingCard.setVisibility(View.VISIBLE);
+                lytActionOnHalt.setVisibility(View.GONE);
+                previousDBOrServerRecord = data;
+
+                updateUIForNewEntry();
+            });
+        }
+    }
+
+    private void addHaltRecord() {
+        OperatorRequestResponseModel operatorRequestResponseModel = new OperatorRequestResponseModel();
+        operatorRequestResponseModel.setMachine_id(machine_id);
+        operatorRequestResponseModel.setMeterReadingDate(etDate.getText().toString());
+        operatorRequestResponseModel.setMeterReadingTimestamp(getDateInLong(etDate.getText().toString()));
+        operatorRequestResponseModel.setStatus_code("" + state_halt);
+        operatorRequestResponseModel.setStatus(STATUS_HALT);
+        operatorRequestResponseModel.setReasonId(strReasonId);
+        operatorRequestResponseModel.setHaltReason(strReason);
+        operatorRequestResponseModel.setStructureId(structure_id);
+        operatorRequestResponseModel.setSynced(false);
+        //set location
+        if (location != null) {
+            operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
+            operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
+        } else {
+            if (gpsTracker.canGetLocation()) {
+                location = gpsTracker.getLocation();
+                Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
+                if (location != null) {
+                    operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
+                    operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
+                }
+            } else {
+                Toast.makeText(this, "Not able to get location.", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        long rowId = -1;
+        if (machine_status.equalsIgnoreCase(STATUS_WORKING)) {
+            rowId = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                    updateMachineToHalt(machine_id, operatorRequestResponseModel.getMeterReadingDate(),
+                            STATUS_HALT, "" + state_halt, strReasonId, strReason, false);
+        } else
+            rowId = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
+                    insert(operatorRequestResponseModel);
+
+        // on successful data entry, it returns rowId. After this entry, we set halt action UI.
+        if (rowId != -1) {
+            if (machine_status.equalsIgnoreCase(STATUS_WORKING)) {
+                setStartMachineData();
+                tvMachineStatus.setText("Working Halt");
+            } else {
+                //no image in halt case to clear imageHashmap
+                imageHashmap.clear();
+                startUri = null;
+                stopUri = null;
+                tvMachineStatus.setText("Halt");
+                OnMachineHalt(operatorRequestResponseModel);
+            }
+
+            Snackbar.make(toolbar, "Halt record saved locally", Snackbar.LENGTH_SHORT).show();
+            machine_status = STATUS_HALT;
+            isMachineFirstRecord = false;
+            if (Util.isConnected(this)) {
+                uploadMachineLog(operatorRequestResponseModel);
+            } else {
+                //this to show below snackbar after db entry successful info snack shown
+                handler.postDelayed(() -> {
+                    Snackbar.make(toolbar, "No internet to upload machine record", Snackbar.LENGTH_SHORT).show();
+                }, 1000);
+            }
+        } else {
+            Snackbar.make(toolbar, "Something went wrong", Snackbar.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -860,21 +1059,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                     "You have denied some permissions. In order to upload meter record app need this permission. Now you can turn on this permission manually from apps permission settings. Click to go to the settings page.");
 
         }*/
-    }
-
-    private void setLastRecordView(OperatorRequestResponseModel model) {
-        if (model != null) {
-            lastRecordLayout.setVisibility(View.VISIBLE);
-            if (model.getMeterReadingDate() != null) {
-                Util.setTextElseDash(tv_lastReadingDate, model.getMeterReadingDate());
-            }
-            if (model.getStart_meter_reading() != null) {
-                Util.setTextElseDash(tv_lastStartReading, model.getStart_meter_reading());
-            }
-            if (model.getStop_meter_reading() != null) {
-                Util.setTextElseDash(tv_lastStopReading, model.getStop_meter_reading());
-            }
-        }
     }
 
     @Override
@@ -1040,100 +1224,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         editor.apply();
     }
 
-    private void setWorkingMachineData(OperatorRequestResponseModel lastWorkingRecordData) {
-        machine_status = STATUS_WORKING;
-        etDate.setText(lastWorkingRecordData.getMeterReadingDate());
-        et_smeter_read.setText(lastWorkingRecordData.getStart_meter_reading());
-        if (lastWorkingRecordData.getStartImage() != null) {
-            Bitmap bitmap = BitmapFactory.decodeFile(lastWorkingRecordData.getStartImage());
-            img_start_meter.setImageBitmap(bitmap);
-        }
-        etDate.setEnabled(false);
-        Glide.with(OperatorActivity.this)
-                .load(R.drawable.jcb_gif)
-                .into(iv_jcb);
-        et_smeter_read.setEnabled(false);
-        img_start_meter.setEnabled(false);
-        btnStartService.setEnabled(false);
-
-        if (lastWorkingRecordData.getStatus().equalsIgnoreCase("halt")) {
-            tvMachineStatus.setText("Working Halt");
-            if (menuHalt != null) menuHalt.setEnabled(false);
-        } else tvMachineStatus.setText("Working");
-    }
-
-    private void setStartMachineData() {
-        etDate.setEnabled(false);
-        et_smeter_read.setEnabled(false);
-        img_start_meter.setEnabled(false);
-        btnStartService.setEnabled(false);
-        et_emeter_read.setEnabled(true);
-        img_end_meter.setEnabled(true);
-        Glide.with(OperatorActivity.this)
-                .load(R.drawable.jcb_gif)
-                .into(iv_jcb);
-        btnStopService.setEnabled(true);
-
-        tvMachineStatus.setText("Working");
-    }
-
-    private void setStoppedMachineData() {
-        etDate.setEnabled(true);
-        etDate.setText(null);
-        Glide.with(OperatorActivity.this)
-                .load(R.drawable.jcb_stopped)
-                .into(iv_jcb);
-        et_smeter_read.setEnabled(false);
-        et_emeter_read.setEnabled(false);
-        et_smeter_read.setText(null);
-        et_emeter_read.setText(null);
-        img_start_meter.setEnabled(false);
-        img_end_meter.setEnabled(false);
-        img_start_meter.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_start_meter_reading, null));
-        img_end_meter.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_end_meter_reading, null));
-        btnStartService.setEnabled(false);
-        btnStopService.setEnabled(false);
-
-        tvMachineStatus.setText("Idle");
-    }
-
-    private void updateUIForNewEntry() {
-        machine_status = "";
-        etDate.setEnabled(true);
-        etDate.setText(null);
-        Glide.with(OperatorActivity.this)
-                .load(R.drawable.jcb_stopped)
-                .into(iv_jcb);
-        et_smeter_read.setEnabled(false);
-        et_emeter_read.setEnabled(false);
-        et_smeter_read.setText(null);
-        et_emeter_read.setText(null);
-
-        img_start_meter.setEnabled(false);
-        img_end_meter.setEnabled(false);
-        img_start_meter.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_start_meter_reading, null));
-        img_end_meter.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_end_meter_reading, null));
-
-        btnStartService.setEnabled(false);
-        btnStopService.setEnabled(false);
-
-        tvMachineStatus.setText("Idle");
-    }
-
-    private void updateUIOnDateSelected(boolean isDateEnabled) {
-        etDate.setEnabled(isDateEnabled);
-        Glide.with(OperatorActivity.this)
-                .load(R.drawable.jcb_stopped)
-                .into(iv_jcb);
-        et_smeter_read.setEnabled(true);
-        et_emeter_read.setEnabled(false);
-        et_smeter_read.setText(null);
-        img_start_meter.setEnabled(true);
-        btnStartService.setEnabled(true);
-        btnStopService.setEnabled(false);
-    }
-
-
     public void removeMachineid() {
         editor.putBoolean("isMachineRemoved", true);
         editor.apply();
@@ -1141,10 +1231,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
     @AfterPermissionGranted(RC_CAMERA_AND_LOCATION)
     private void onAddImageClick() {
-        /*if (Permissions.checkAndRequestStorageCameraPermissions(this, this)) {
-            showPictureDialog();
-        }*/
-
         if (EasyPermissions.hasPermissions(this, Permissions.storagePermissionsList())) {
             showPictureDialog();
         } else {
@@ -1170,7 +1256,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
             new AppSettingsDialog.Builder(this).build().show();
         }
     }
-
 
     private void showPictureDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -1243,7 +1328,6 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
         currentPhotoPath = file.getPath();
         return file;
     }
-
 
     private void uploadMachineLog(OperatorRequestResponseModel data) {
         final String upload_URL = BuildConfig.BASE_URL + Urls.OperatorApi.MACHINE_WORKLOG;
@@ -1428,114 +1512,40 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
     }
 
-    private void OnMachineHalt(OperatorRequestResponseModel data) {
+    private void handleOnOtherHaltReasonSelected() {
+        final View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_input_lyout, null);
+        TextInputEditText etReason = dialogView.findViewById(R.id.et_reason);
+        TextInputLayout lytReason = dialogView.findViewById(R.id.lyt_reason);
 
-        lastHaltRecord.setVisibility(View.VISIBLE);
-        tv_lastHaltReadingDate.setText(data.getMeterReadingDate());
-        tv_haltReason.setText(data.getHaltReason());
-
-        if (lastWorkingRecordData == null) {
-            machine_status = STATUS_HALT;
-            tvMachineStatus.setText("Halt");
-
-            etDate.setEnabled(false);
-            etDate.setText(data.getMeterReadingDate());
-
-            lytActionOnHalt.setVisibility(View.VISIBLE);
-            meterReadingCard.setVisibility(View.GONE);
-
-            btnEnterTodayRecord.setOnClickListener(v -> {
-                meterReadingCard.setVisibility(View.VISIBLE);
-                lytActionOnHalt.setVisibility(View.GONE);
-                updateUIOnDateSelected(false);
-            });
-
-            btnSkipToNextDay.setOnClickListener(v -> {
-                meterReadingCard.setVisibility(View.VISIBLE);
-                lytActionOnHalt.setVisibility(View.GONE);
-                previousDBOrServerRecord = data;
-
-                updateUIForNewEntry();
-            });
-        }
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setView(dialogView)
+                .setTitle("Enter other reason")
+                .setPositiveButton("Submit", (dialog, which) -> {
+                    //Do nothing here because we override this button later to change the close behaviour.
+                    //However, we still need this because on older versions of Android unless we
+                    //pass a handler the button doesn't get instantiated
+                })
+                .setNegativeButton("cancel", (dialog, which) -> dialog.dismiss());
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+        //Overriding the handler immediately after show is probably a better approach than OnShowListener as described below
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String reason = etReason.getText().toString().trim();
+            if (!TextUtils.isEmpty(reason)) {
+                strReason = reason;
+                addHaltRecord();
+                dialog.dismiss();
+            } else {
+                lytReason.setErrorEnabled(true);
+                lytReason.setError("Reason cannot be empty");
+            }
+        });
     }
 
-    private void addHaltRecord() {
-        OperatorRequestResponseModel operatorRequestResponseModel = new OperatorRequestResponseModel();
-        operatorRequestResponseModel.setMachine_id(machine_id);
-        operatorRequestResponseModel.setMeterReadingDate(etDate.getText().toString());
-        operatorRequestResponseModel.setMeterReadingTimestamp(getDateInLong(etDate.getText().toString()));
-        operatorRequestResponseModel.setStatus_code("" + state_halt);
-        operatorRequestResponseModel.setStatus(STATUS_HALT);
-        operatorRequestResponseModel.setReasonId(strReasonId);
-        operatorRequestResponseModel.setHaltReason(strReason);
-        operatorRequestResponseModel.setStructureId(structure_id);
-        operatorRequestResponseModel.setSynced(false);
-        //set location
-        if (location != null) {
-            operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
-            operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
-        } else {
-            if (gpsTracker.canGetLocation()) {
-                location = gpsTracker.getLocation();
-                Toast.makeText(this, "Location permission granted.", Toast.LENGTH_LONG).show();
-                if (location != null) {
-                    operatorRequestResponseModel.setLat(String.valueOf(location.getLatitude()));
-                    operatorRequestResponseModel.setLong(String.valueOf(location.getLongitude()));
-                }
-            } else {
-                Toast.makeText(this, "Not able to get location.", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        long rowId = -1;
-        if (machine_status.equalsIgnoreCase(STATUS_WORKING)) {
-            rowId = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                    updateMachineToHalt(machine_id, operatorRequestResponseModel.getMeterReadingDate(),
-                            STATUS_HALT, "" + state_halt, strReasonId, strReason, false);
-        } else
-            rowId = DatabaseManager.getDBInstance(Platform.getInstance()).getOperatorRequestResponseModelDao().
-                    insert(operatorRequestResponseModel);
-
-        // on successful data entry, it returns rowId. After this entry, we set halt action UI.
-        if (rowId != -1) {
-            if (machine_status.equalsIgnoreCase(STATUS_WORKING)) {
-                setStartMachineData();
-                tvMachineStatus.setText("Working Halt");
-                //todo show that machine is working halt
-            } else {
-                //no image in halt case to clear imageHashmap
-                imageHashmap.clear();
-                startUri = null;
-                stopUri = null;
-                tvMachineStatus.setText("Halt");
-                OnMachineHalt(operatorRequestResponseModel);
-            }
-
-            Snackbar.make(toolbar, "Halt record saved locally", Snackbar.LENGTH_SHORT).show();
-            machine_status = STATUS_HALT;
-            isMachineFirstRecord = false;
-            if (Util.isConnected(this)) {
-                uploadMachineLog(operatorRequestResponseModel);
-            } else {
-                //this to show below snackbar after db entry successful info snack shown
-                handler.postDelayed(() -> {
-                    Snackbar.make(toolbar, "No internet to upload machine record", Snackbar.LENGTH_SHORT).show();
-                }, 1000);
-            }
-        } else {
-            Snackbar.make(toolbar, "Something went wrong", Snackbar.LENGTH_SHORT).show();
-        }
-
-    }
 
     @Override
     public void onCustomBottomSheetSelection(@NonNull String s) {
         if (s.equalsIgnoreCase("Halt Reason")) {
-            String operatorMachineDataStr = preferences.getString("operatorMachineData", "");
-            Gson gson = new Gson();
-            OperatorMachineCodeDataModel operatorMachineData = gson.fromJson(operatorMachineDataStr, OperatorMachineCodeDataModel.class);
-
             for (SelectionListObject obj : ListHaltReasons) {
                 if (obj.isSelected()) {
                     strReasonId = obj.getId();
@@ -1544,30 +1554,16 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 }
             }
 
+            /**
+             * If selected halt reason is "Other" (i.e
+             * @param strReason) then show user a dialog with edittext
+             * to enter their custom halt reason
+             */
+
             if (strReason != null && !TextUtils.isEmpty(strReason)
                     && !strReason.equalsIgnoreCase("")) {
                 if (strReason.equalsIgnoreCase("others")) {
-
-                    final View dialogView = LayoutInflater.from(this)
-                            .inflate(R.layout.dialog_input_lyout, null);
-
-                    TextInputEditText etReason = dialogView.findViewById(R.id.et_reason);
-
-                    new MaterialAlertDialogBuilder(this)
-                            .setTitle("Enter other reason")
-                            .setCancelable(false)
-                            .setView(dialogView)
-                            .setPositiveButton("Submit", (dialog, whichButton) -> {
-                                String reason = etReason.getText().toString().trim();
-                                if (!TextUtils.isEmpty(reason)) {
-                                    strReason = reason;
-                                    addHaltRecord();
-                                } else {
-                                    Snackbar.make(toolbar, "Reason cannot be blank", Snackbar.LENGTH_SHORT).show();
-                                }
-                            })
-                            .setNegativeButton("Cancel", (dialog, whichButton) -> dialog.dismiss())
-                            .show();
+                    handleOnOtherHaltReasonSelected();
                 } else {
                     addHaltRecord();
                 }

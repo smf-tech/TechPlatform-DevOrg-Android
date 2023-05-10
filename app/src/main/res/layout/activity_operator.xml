@@ -109,7 +109,7 @@
                         android:layout_gravity="center"
                         android:fontFamily="sans-serif-medium"
                         android:gravity="center_horizontal"
-                        android:text=" | Structure Code"
+                        android:text="  |  Structure Code"
                         android:textColor="@color/colorPrimary"
                         android:textSize="16sp" />
 
