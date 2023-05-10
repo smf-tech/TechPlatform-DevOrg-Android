@@ -799,6 +799,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
 
         if (rowId != -1) {
             machine_status = STATUS_STOP;
+            lastWorkingRecordData = null;
             isMachineFirstRecord = false;
             Snackbar.make(toolbar, "Record saved locally", Snackbar.LENGTH_SHORT).show();
             setStoppedMachineData();

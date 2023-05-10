@@ -91,7 +91,7 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
 
         if (machineData.getStatusCode() == Constants.SSModule.MACHINE_HALTED_STATUS_CODE) {
             holder.lyReason.setVisibility(View.VISIBLE);
-            holder.tvReason.setText(machineData.getHaltReason());
+            setTextElseDash(holder.tvReason, machineData.getHaltReason());
             holder.lyAction.setVisibility(View.GONE);
         } else {
             holder.lyReason.setVisibility(View.GONE);

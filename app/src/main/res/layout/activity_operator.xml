@@ -395,8 +395,7 @@
                 android:layout_below="@+id/tl_date"
                 android:layout_margin="16dp"
                 app:cardCornerRadius="12dp"
-                app:strokeColor="@color/grey"
-                tools:visibility="gone">
+                app:strokeColor="@color/grey">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -506,6 +505,7 @@
                                 android:layout_margin="12dp"
                                 android:layout_weight="1"
                                 android:text="@string/meter_start"
+                                android:enabled="false"
                                 android:textColor="#fff"
                                 app:cornerRadius="24dp" />
 
@@ -516,6 +516,7 @@
                                 android:layout_margin="12dp"
                                 android:layout_weight="1"
                                 android:text="@string/meter_stop"
+                                android:enabled="false"
                                 android:textColor="#fff"
                                 app:cornerRadius="24dp" />
                         </LinearLayout>
@@ -537,8 +538,7 @@
                 android:layout_marginBottom="16dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:visibility="gone">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_enter_record"
