@@ -121,6 +121,8 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
         etDate.setOnClickListener(this);
         etState = findViewById(R.id.et_state);
         etState.setOnClickListener(this);
+        etState.setEnabled(false);// so that user cannot change district in this case
+
         etDistrict = findViewById(R.id.et_district);
         etDistrict.setOnClickListener(this);
         etTaluka = findViewById(R.id.et_taluka);

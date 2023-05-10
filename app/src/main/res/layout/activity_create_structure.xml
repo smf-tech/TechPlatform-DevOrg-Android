@@ -167,8 +167,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/gat_no"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:maxLength="5" />
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
             <!--Water Shed No.-->
             <com.google.android.material.textfield.TextInputLayout
