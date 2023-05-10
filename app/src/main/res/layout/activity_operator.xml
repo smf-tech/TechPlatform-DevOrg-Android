@@ -505,7 +505,6 @@
                                 android:layout_margin="12dp"
                                 android:layout_weight="1"
                                 android:text="@string/meter_start"
-                                android:enabled="false"
                                 android:textColor="#fff"
                                 app:cornerRadius="24dp" />
 
@@ -516,7 +515,6 @@
                                 android:layout_margin="12dp"
                                 android:layout_weight="1"
                                 android:text="@string/meter_stop"
-                                android:enabled="false"
                                 android:textColor="#fff"
                                 app:cornerRadius="24dp" />
                         </LinearLayout>

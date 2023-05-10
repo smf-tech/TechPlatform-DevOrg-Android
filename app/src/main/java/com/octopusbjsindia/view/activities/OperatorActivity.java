@@ -139,7 +139,7 @@ import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class OperatorActivity extends AppCompatActivity implements APIDataListener,
-        /* SingleSelectBottomSheet.MultiSpinnerListener*/CustomBottomSheetDialogInterface, View.OnClickListener, EasyPermissions.PermissionCallbacks {
+      CustomBottomSheetDialogInterface, View.OnClickListener, EasyPermissions.PermissionCallbacks {
 
     public static final int RC_CAMERA_AND_LOCATION = 4;
     private final String TAG = "OperatorActivity";
