@@ -62,7 +62,6 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.utility.VolleyMultipartRequest;
 import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
-import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONObject;
 

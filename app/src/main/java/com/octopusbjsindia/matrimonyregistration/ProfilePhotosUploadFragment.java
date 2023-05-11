@@ -40,8 +40,6 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.ShowImagesPageRecyclerAdapter;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -351,7 +349,7 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
             });
 
 
-    private void onAddImageClick(int position) {
+   /* private void onAddImageClick(int position) {
         if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
             if (position == 0) {
 
@@ -387,7 +385,7 @@ public class ProfilePhotosUploadFragment extends Fragment implements View.OnClic
                         .start(getContext(), this);
             }
         }
-    }
+    }*/
 
 /*
     private void showPictureDialog() {

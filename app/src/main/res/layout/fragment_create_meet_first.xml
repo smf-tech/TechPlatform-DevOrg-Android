@@ -462,13 +462,12 @@
                             android:text="@string/age_range"
                             android:layout_margin="@dimen/dimen_10dp" />
 
-                        <me.bendik.simplerangeview.SimpleRangeView
+                        <com.google.android.material.slider.RangeSlider
                             android:id="@+id/fixed_rangeview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen_10dp"
-                            android:layout_marginStart="@dimen/dimen_05dp"
-                            android:layout_marginEnd="@dimen/dimen_05dp" />
+                            app:values="@array/initial_slider_values"
+                            android:stepSize="1.0" />
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -509,9 +508,7 @@
                                 style="@style/RegistrationEditTextLayout"
                                 android:focusable="false"
                                 android:hint="Select education"
-                                android:inputType="textMultiLine|textCapWords"
-                                android:longClickable="false"
-                                android:maxLength="50" />
+                                android:longClickable="false" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <!--Marital status-->

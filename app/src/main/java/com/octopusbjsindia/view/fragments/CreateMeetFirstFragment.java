@@ -31,6 +31,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.octopusbjsindia.BuildConfig;
@@ -56,7 +57,6 @@ import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 import com.sagar.selectiverecycleviewinbottonsheetdialog.CustomBottomSheetDialogFragment;
 import com.sagar.selectiverecycleviewinbottonsheetdialog.interfaces.CustomBottomSheetDialogInterface;
 import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
-import com.soundcloud.android.crop.Crop;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -67,8 +67,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-
-import me.bendik.simplerangeview.SimpleRangeView;
 
 import static android.app.Activity.RESULT_OK;
 import static com.google.firebase.remoteconfig.FirebaseRemoteConfig.TAG;
@@ -89,7 +87,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     private EditText edtMeetName, edtMeetVenue, etMeetWebLink, edtMeetDate, edtMeetStartTime, edtMeetEndTime, edtMeetRegStartDate,
             edtMeetRegEndDate, edtRegAmt, etEducation, etMaritalStatus, etPaymentInfo, etNote;
     private TextInputLayout lyRegAmt, lyPaymentInfo;
-    private SimpleRangeView rangeView;
+    private RangeSlider rangeView;
     private RadioGroup rgPaidFree, rgOnlinePayment;
     private RadioButton rbPaid, rbFree, rbOnlineYes, rbOnlineNo;
     private ProgressBar progressBar;
@@ -176,24 +174,26 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         tvMinAge = view.findViewById(R.id.tvMinAge);
         tvMaxAge = view.findViewById(R.id.tvMaxAge);
         rangeView = view.findViewById(R.id.fixed_rangeview);
-        rangeView.setCount(48);
-        rangeView.setStart(0);
-        rangeView.setEnd(48);
-        rangeView.setStartFixed(0);
-        rangeView.setEndFixed(48);
-        tvMinAge.setText(String.valueOf(rangeView.getStart() + 18));
-        tvMaxAge.setText(String.valueOf(rangeView.getEnd() + 18));
 
-        rangeView.setOnTrackRangeListener(new SimpleRangeView.OnTrackRangeListener() {
+        rangeView.setValueFrom(18f);
+        rangeView.setValueTo(60f);
+        rangeView.setStepSize(1f);
+
+        tvMinAge.setText(String.valueOf(18));
+        tvMaxAge.setText(String.valueOf(60));
+
+        rangeView.addOnSliderTouchListener(new RangeSlider.OnSliderTouchListener() {
             @Override
-            public void onStartRangeChanged(@NotNull SimpleRangeView rangeView, int start) {
-                start = start + 18;
-                tvMinAge.setText(String.valueOf(start));
+            public void onStartTrackingTouch(@NonNull RangeSlider slider) {
+                //no need
             }
 
             @Override
-            public void onEndRangeChanged(@NotNull SimpleRangeView rangeView, int end) {
-                end = end + 18;
+            public void onStopTrackingTouch(@NonNull RangeSlider slider) {
+                List<Float> values = slider.getValues();
+                int start = Math.round(values.get(0));
+                int end = Math.round(values.get(1));
+                tvMinAge.setText(String.valueOf(start));
                 tvMaxAge.setText(String.valueOf(end));
             }
         });

@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.octopusbjsindia.BuildConfig;
@@ -40,8 +41,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.bendik.simplerangeview.SimpleRangeView;
-
 public class MatrimonyUsersFilterFragment extends Fragment implements APIDataListener, View.OnClickListener, CustomSpinnerListener {
     private View view;
     private ImageView toolbar_back_action, ivClearFilter;
@@ -55,7 +54,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
     private EditText etMobile, etUniqueId, etName, etMeetStatus, etVerificationStatus, etCountry, etState, etGender, etSect, etQualification,et_education_level, etMaritalStatus, etPaidOrFree;
     private String selectedMeetStatus, selectedVerificationStatus, selectedCountry, selectedState, selectedQualification, selectedGender, selectedSect,
             selectedMaritalStatus, selectedPaidOrFree;
-    private SimpleRangeView rangeView;
+    private RangeSlider rangeView;
     private MatrimonyUserFilterData matrimonyUserFilterData;
 
     @Override
@@ -132,24 +131,26 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
         btnApply.setOnClickListener(this);
         matrimonyUserFilterData = new MatrimonyUserFilterData();
         rangeView = view.findViewById(R.id.fixed_rangeview);
-        rangeView.setCount(43);
-        rangeView.setStart(0);
-        rangeView.setEnd(42);
-        rangeView.setStartFixed(0);
-        rangeView.setEndFixed(42);
-        txtMinAge.setText(String.valueOf(rangeView.getStart() + 18));
-        txtMaxAge.setText(String.valueOf(rangeView.getEnd() + 18));
 
-        rangeView.setOnTrackRangeListener(new SimpleRangeView.OnTrackRangeListener() {
+        rangeView.setValueFrom(18f);
+        rangeView.setValueTo(60f);
+        rangeView.setStepSize(1f);
+
+        txtMinAge.setText(String.valueOf(18));
+        txtMaxAge.setText(String.valueOf(60));
+
+        rangeView.addOnSliderTouchListener(new RangeSlider.OnSliderTouchListener() {
             @Override
-            public void onStartRangeChanged(@NotNull SimpleRangeView rangeView, int start) {
-                start = start + Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge());
-                txtMinAge.setText(String.valueOf(start));
+            public void onStartTrackingTouch(@NonNull RangeSlider slider) {
+                //no need
             }
 
             @Override
-            public void onEndRangeChanged(@NotNull SimpleRangeView rangeView, int end) {
-                end = end + Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge());
+            public void onStopTrackingTouch(@NonNull RangeSlider slider) {
+                List<Float> values = slider.getValues();
+                int start = Math.round(values.get(0));
+                int end = Math.round(values.get(1));
+                txtMinAge.setText(String.valueOf(start));
                 txtMaxAge.setText(String.valueOf(end));
             }
         });
@@ -182,6 +183,16 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
 //            }
 //        });
     }
+
+    private void setRangeView() {
+        rangeView.setValueFrom(Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge()));
+        rangeView.setValueTo(Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMaxAge()));
+
+        txtMinAge.setText(String.valueOf(Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge())));
+        txtMaxAge.setText(String.valueOf(Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMaxAge())));
+
+    }
+
 
     private void setFilterData() {
         matrimonyUserFilterData = ((MatrimonyProfileListActivity) getActivity()).
@@ -225,24 +236,14 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
         if (matrimonyUserFilterData.getAge_ranges() != null) {
             String min = matrimonyUserFilterData.getAge_ranges().substring(0, 2);
             String max = matrimonyUserFilterData.getAge_ranges().substring(3, 5);
-            rangeView.setStart(Integer.parseInt(min) - Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge()));
-            rangeView.setEnd(Integer.parseInt(max) - Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge()));
+
+            Float start = Float.parseFloat(min);
+            Float end = Float.parseFloat(max);
+
+            rangeView.setValues(start,end);
             txtMinAge.setText(min);
             txtMaxAge.setText(max);
         }
-    }
-
-    private void setRangeView() {
-        rangeView.setCount((Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMaxAge()) -
-                Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge())) + 1);
-        rangeView.setStart(0);
-        rangeView.setEnd((Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMaxAge()) -
-                Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge())));
-        rangeView.setStartFixed(0);
-        rangeView.setEndFixed((Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMaxAge()) -
-                Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge())));
-        txtMinAge.setText(String.valueOf(rangeView.getStart() + Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge())));
-        txtMaxAge.setText(String.valueOf(rangeView.getEnd() + Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge())));
     }
 
     public void setMasterData(List<MatrimonyMasterRequestModel.DataList.Master_data> data) {
@@ -567,11 +568,10 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 etSect.setText("");
                 etPaidOrFree.setText("");
                 etMaritalStatus.setText("");
-                rangeView.setStart(0);
-                rangeView.setEnd((Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMaxAge()) -
-                        Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge())));
-                txtMinAge.setText(String.valueOf(rangeView.getStart() + Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge())));
-                txtMaxAge.setText(String.valueOf(rangeView.getEnd() + Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMinAge())));
+
+                rangeView.setValues(18f,(Float.parseFloat(((MatrimonyProfileListActivity) getActivity()).getMaxAge())));
+                txtMinAge.setText(String.valueOf(((MatrimonyProfileListActivity) getActivity()).getMinAge()));
+                txtMaxAge.setText(String.valueOf(((MatrimonyProfileListActivity) getActivity()).getMaxAge()));
 
                 matrimonyUserFilterData.setMobile_number(null);
                 matrimonyUserFilterData.setUser_name(null);

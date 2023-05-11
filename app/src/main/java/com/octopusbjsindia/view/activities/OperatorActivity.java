@@ -112,7 +112,6 @@ import com.octopusbjsindia.widgets.SingleSelectBottomSheet;
 import com.sagar.selectiverecycleviewinbottonsheetdialog.CustomBottomSheetDialogFragment;
 import com.sagar.selectiverecycleviewinbottonsheetdialog.interfaces.CustomBottomSheetDialogInterface;
 import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
-import com.soundcloud.android.crop.Crop;
 import com.yalantis.ucrop.UCrop;
 
 import org.jetbrains.annotations.NotNull;

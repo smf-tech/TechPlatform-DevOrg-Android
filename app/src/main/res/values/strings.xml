@@ -550,7 +550,7 @@
     <string name="excavation_capacity">Excavation capacity of machine per hour *</string>
     <string name="diesel_capacity">Diesel tank capacity in litres *</string>
     <string name="provider_name">Machine Provider First Name*</string>
-    <string name="provider_contact">Machine Provider Contact Number</string>
+    <string name="provider_contact">Machine Provider Contact Number*</string>
     <string name="machine_mobile">Machine Attached Mobile Number</string>
     <string name="ownership_type">Type of Ownership</string>
     <string name="trade_name">Provider Trade Name (if firm)</string>
