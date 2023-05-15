@@ -31,7 +31,7 @@ public class HomeActivityPresenter implements UserRequestCallListener, APIPresen
 
     private final String TAG = HomeActivityPresenter.class.getName();
     private WeakReference<HomeFragment> homeFragment;
-    public static final String GET_ROLE_ACCESS ="getRoleAccesss";
+    public static final String GET_ROLE_ACCESS = "getRoleAccesss";
 
     public HomeActivityPresenter(HomeFragment activity) {
         homeFragment = new WeakReference<>(activity);
@@ -63,19 +63,21 @@ public class HomeActivityPresenter implements UserRequestCallListener, APIPresen
 
     @Override
     public void onSuccessListener(String response) {
+        homeFragment.get().hideProgressBar();
         Home models = PlatformGson.getPlatformGsonInstance().fromJson(response, Home.class);
-        if(models.getStatus() == 1000) {
+        if (models.getStatus() == 1000) {
             Util.logOutUser(homeFragment.get().getActivity());
-        }else if (models.getStatus() == 200) {
+        } else if (models.getStatus() == 200) {
             homeFragment.get().showNextScreen(models);
-        }else {
-            Util.showToast(models.getMessage(),homeFragment);
+        } else {
+            Util.showToast(models.getMessage(), homeFragment);
         }
-        }
+    }
 
 
     @Override
     public void onUserProfileSuccessListener(String response) {
+        homeFragment.get().hideProgressBar();
         User user = new Gson().fromJson(response, User.class);
         if (response != null && user.getUserInfo() != null) {
             Util.saveUserObjectInPref(new Gson().toJson(user.getUserInfo()));
@@ -86,6 +88,7 @@ public class HomeActivityPresenter implements UserRequestCallListener, APIPresen
 
     @Override
     public void onFailureListener(String message) {
+        homeFragment.get().hideProgressBar();
         if (!TextUtils.isEmpty(message)) {
             Log.e(TAG, "onFailureListener :" + message);
         }
@@ -94,7 +97,7 @@ public class HomeActivityPresenter implements UserRequestCallListener, APIPresen
     @Override
     public void onErrorListener(VolleyError error) {
         Log.e(TAG, "onErrorListener :" + error);
-
+        homeFragment.get().hideProgressBar();
         if (error.networkResponse != null) {
             if (error.networkResponse.statusCode == Constants.TIMEOUT_ERROR_CODE) {
                 if (error.networkResponse.data != null) {
@@ -122,10 +125,10 @@ public class HomeActivityPresenter implements UserRequestCallListener, APIPresen
     public void onFailureListener(String requestID, String message) {
         if (homeFragment != null && homeFragment.get() != null) {
             Activity activity = homeFragment.get().getActivity();
-            if(activity != null && homeFragment.get().isAdded()) {
+            if (activity != null && homeFragment.get().isAdded()) {
                 homeFragment.get().initiateViewPager();
                 homeFragment.get().hideProgressBar();
-                homeFragment.get().onFailureListener(requestID,message);
+                homeFragment.get().onFailureListener(requestID, message);
             }
         }
     }
@@ -134,11 +137,11 @@ public class HomeActivityPresenter implements UserRequestCallListener, APIPresen
     public void onErrorListener(String requestID, VolleyError error) {
         if (homeFragment != null && homeFragment.get() != null) {
             Activity activity = homeFragment.get().getActivity();
-            if(activity != null && homeFragment.get().isAdded()) {
+            if (activity != null && homeFragment.get().isAdded()) {
                 homeFragment.get().hideProgressBar();
                 homeFragment.get().initiateViewPager();
                 if (error != null) {
-                    homeFragment.get().onErrorListener(requestID,error);
+                    homeFragment.get().onErrorListener(requestID, error);
                 }
             }
         }
@@ -154,9 +157,9 @@ public class HomeActivityPresenter implements UserRequestCallListener, APIPresen
             if (response != null) {
                 if (requestID.equalsIgnoreCase(HomeActivityPresenter.GET_ROLE_ACCESS)) {
                     RoleAccessAPIResponse roleAccessAPIResponse = new Gson().fromJson(response, RoleAccessAPIResponse.class);
-                    if(roleAccessAPIResponse.getStatus() == 1000) {
+                    if (roleAccessAPIResponse.getStatus() == 1000) {
                         Util.logOutUser(homeFragment.get().getActivity());
-                    }else if(roleAccessAPIResponse.getStatus() == 200 && roleAccessAPIResponse.getData() != null) {
+                    } else if (roleAccessAPIResponse.getStatus() == 200 && roleAccessAPIResponse.getData() != null) {
                         Util.saveRoleAccessObjectInPref(response);
                         homeFragment.get().initiateViewPager();
                     } else {

@@ -161,6 +161,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
 
     @Override
     public void onFailureListener(String requestID, String message) {
+
         Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
     }
 
@@ -176,12 +177,12 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
 
     @Override
     public void showProgressBar() {
-
+        ((HomeActivity) getActivity()).lytProgress.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressBar() {
-
+        ((HomeActivity) getActivity()).lytProgress.setVisibility(View.GONE);
     }
 
     @Override
