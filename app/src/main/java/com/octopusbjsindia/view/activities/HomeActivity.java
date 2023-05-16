@@ -93,6 +93,8 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     private String toOpen;
     View headerLayout;
 
+    public LinearLayout lytProgress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +106,9 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
             startActivity(intent);
             finish();
         }
+
+        lytProgress = findViewById(R.id.lyt_progress);
+
         initMenuView();
         initBrodcastResiver();
         subscribedToFirebaseTopics();
@@ -315,7 +320,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
     public void showBackArrow() {
         if (toggle != null) {
             toggle.setDrawerIndicatorEnabled(false);
-            toolbar.setNavigationIcon(R.drawable.ic_back_white);
+            toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24);
             toolbar.setNavigationOnClickListener(view -> {
                 if (toggle.isDrawerIndicatorEnabled()) {
                     DrawerLayout drawer = findViewById(R.id.home_drawer_layout);

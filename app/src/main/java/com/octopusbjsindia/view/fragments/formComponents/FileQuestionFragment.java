@@ -33,7 +33,6 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.FormDisplayActivity;
-import com.soundcloud.android.crop.Crop;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;

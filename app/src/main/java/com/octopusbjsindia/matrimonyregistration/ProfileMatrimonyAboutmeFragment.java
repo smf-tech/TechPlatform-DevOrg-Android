@@ -34,8 +34,6 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -249,7 +247,7 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
     }
 
 
-    private void onAddImageClick() {
+   /* private void onAddImageClick() {
         if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
             if (isSquare) {
                 CropImage.activity()
@@ -262,7 +260,7 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
                         .start(getContext(), this);
             }
         }
-    }
+    }*/
 
     public void launchPhotoPicker() {
         if (isPhotoPickerAvailable()) {
@@ -297,6 +295,7 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
 
 
 
+/*
     private void showPictureDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
         dialog.setTitle(getString(R.string.title_choose_picture));
@@ -325,6 +324,7 @@ public class ProfileMatrimonyAboutmeFragment extends Fragment implements View.On
 
         dialog.show();
     }
+*/
 
     private void choosePhotoFromGallery() {
         try {

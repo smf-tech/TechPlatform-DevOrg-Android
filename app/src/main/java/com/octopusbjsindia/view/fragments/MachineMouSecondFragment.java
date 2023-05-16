@@ -46,7 +46,6 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.MachineMouActivity;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 import com.octopusbjsindia.view.customs.TextViewSemiBold;
-import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
