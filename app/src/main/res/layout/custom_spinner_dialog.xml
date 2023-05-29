@@ -34,7 +34,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_apply"
-                style="@style/AppStyleBorderButton"
+                style="@style/AppStylePrimaryButton"
                 android:layout_width="wrap_content"
                 android:text="Apply"
                 android:visibility="visible"

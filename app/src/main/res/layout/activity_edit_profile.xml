@@ -115,6 +115,8 @@
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_calendar_today_24"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -322,6 +324,8 @@
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                 android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -341,6 +345,8 @@
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                 android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -361,6 +367,8 @@
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                 android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -381,6 +389,8 @@
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                 android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -402,6 +412,8 @@
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <EditText
@@ -421,6 +433,8 @@
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                 android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -441,6 +455,8 @@
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                 android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -460,6 +476,8 @@
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
@@ -480,6 +498,8 @@
                 android:layout_marginStart="@dimen/dimen_10dp"
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
@@ -501,6 +521,8 @@
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                 android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
@@ -521,6 +543,8 @@
                 android:layout_marginEnd="@dimen/dimen_10dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_width="match_parent"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                 android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 

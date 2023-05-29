@@ -55,7 +55,7 @@
     <string name="gender">लिंग *</string>
     <string name="male">पुरुष</string>
     <string name="female">स्त्री</string>
-    <string name="other">इतर(कृपया निर्दिष्ट करा)</string>
+    <string name="other">इतर</string>
     <string name="mandatory_organization">Type organization name *</string>
     <string name="organization">संघटना</string>
     <string name="mandatory_project">Type project name *</string>

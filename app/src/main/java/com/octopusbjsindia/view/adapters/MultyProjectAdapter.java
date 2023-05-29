@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.profile.MultyProjectData;
 import com.octopusbjsindia.presenter.ProfileActivityPresenter;
@@ -30,11 +31,13 @@ public class MultyProjectAdapter extends RecyclerView.Adapter<MultyProjectAdapte
     ArrayList<MultyProjectData> projectList;
     ProfileActivity mContext;
     ProfileActivityPresenter presenter;
+    String currentProject;
 
-    public MultyProjectAdapter(ArrayList<MultyProjectData> projectList, ProfileActivity mContext, ProfileActivityPresenter presenter) {
+    public MultyProjectAdapter(ArrayList<MultyProjectData> projectList, ProfileActivity mContext, ProfileActivityPresenter presenter,String project) {
         this.projectList = projectList;
         this.mContext = mContext;
         this.presenter = presenter;
+        this.currentProject = project;
     }
 
     @NonNull
@@ -51,6 +54,10 @@ public class MultyProjectAdapter extends RecyclerView.Adapter<MultyProjectAdapte
         holder.tvProject.setText(projectList.get(position).getProjectTitle());
         holder.tvRole.setText(projectList.get(position).getRoleTitle());
 
+        if (projectList.get(position).getProjectId().equalsIgnoreCase(currentProject)){
+            holder.projectCard.setStrokeWidth(8);
+            holder.projectCard.setStrokeColor(mContext.getResources().getColor(R.color.colorPrimary));
+        }
     }
 
     @Override
@@ -61,6 +68,7 @@ public class MultyProjectAdapter extends RecyclerView.Adapter<MultyProjectAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvOrganization, tvProject, tvRole;
         LinearLayout lyMain;
+        MaterialCardView projectCard;
 
         public ViewHolder(@NonNull View view) {
             super(view);
@@ -68,6 +76,7 @@ public class MultyProjectAdapter extends RecyclerView.Adapter<MultyProjectAdapte
             tvProject = view.findViewById(R.id.tv_project);
             tvRole = view.findViewById(R.id.tv_role);
             lyMain = view.findViewById(R.id.ly_main);
+            projectCard = view.findViewById(R.id.projectCard);
             lyMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

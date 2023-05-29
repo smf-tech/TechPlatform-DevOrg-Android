@@ -1,86 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/projectCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:layout_margin="4dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@color/blue_low"
+    app:cardCornerRadius="@dimen/dimen_10dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/chip_stroke_color"
+    app:strokeWidth="1dp">
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
+        android:id="@+id/ly_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        app:cardCornerRadius="@dimen/dimen_10dp">
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:padding="12dp">
 
-        <LinearLayout
-            android:id="@+id/ly_main"
+        <TextView
+            android:id="@+id/tv_organization_lbl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp"
-            android:orientation="vertical">
+            android:fontFamily="@font/opensans"
+            android:text="@string/organization"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="12sp" />
 
+        <TextView
+            android:id="@+id/tv_organization"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/opensans_semibold"
+            android:text="BJS"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/tv_organization_lbl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/organization"
-                android:textColor="@color/freq_used_form_color"
-                android:textSize="@dimen/text_size_12" />
+        <TextView
+            android:id="@+id/tv_project_lbl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/opensans"
+            android:text="@string/project"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/tv_organization"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+        <TextView
+            android:id="@+id/tv_project"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/opensans_semibold"
+            android:text="Sujalam Suflam"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp" />
 
-                android:text="BJS"
-                android:textColor="@color/black"
-                android:fontFamily="@font/opensans_semibold"
-                android:textSize="@dimen/text_size_14" />
+        <TextView
+            android:id="@+id/tv_role_lbl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/opensans"
+            android:text="@string/role"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/tv_project_lbl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/project"
-                android:textColor="@color/freq_used_form_color"
-                android:textSize="@dimen/text_size_12" />
-
-            <TextView
-                android:id="@+id/tv_project"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-
-                android:text="Sujlam Suflam"
-                android:fontFamily="@font/opensans_semibold"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_14" />
-
-            <TextView
-                android:id="@+id/tv_role_lbl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/role"
-                android:textColor="@color/freq_used_form_color"
-                android:textSize="@dimen/text_size_12" />
-
-            <TextView
-                android:id="@+id/tv_role"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-
-                android:text="TC"
-                android:fontFamily="@font/opensans_semibold"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_14" />
-
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tv_role"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/opensans_semibold"
+            android:text="TC"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="14sp" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -8,6 +8,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -16,12 +19,17 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.gson.Gson;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
@@ -39,19 +47,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ProfileActivity extends BaseActivity implements View.OnClickListener, APIDataListener {
+public class ProfileActivity extends BaseActivity implements/* View.OnClickListener, */APIDataListener {
 
     private RelativeLayout progressBar;
+    private CircularProgressIndicator progressBarProjects;
+    private MaterialToolbar toolbar;
     ProfileActivityPresenter presenter;
     LinearLayout parent;
+    private UserInfo userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        ((TextView) findViewById(R.id.toolbar_title)).setText(getString(R.string.profile));
+        //((TextView) findViewById(R.id.toolbar_title)).setText(getString(R.string.profile));
+        toolbar = findViewById(R.id.toolbar);
         progressBar = findViewById(R.id.ly_progress_bar);
+        progressBarProjects = findViewById(R.id.progress_project);
 
         presenter = new ProfileActivityPresenter(this);
         if (Util.isConnected(this)) {
@@ -60,12 +73,33 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
             Util.showToast(getResources().getString(R.string.msg_no_network), this);
         }
 
-        ImageView backButton = findViewById(R.id.toolbar_back_action);
-        backButton.setOnClickListener(this);
+        toolbar.setNavigationOnClickListener(v -> super.onBackPressed());
 
-        ImageView editButton = findViewById(R.id.toolbar_edit_action);
-        editButton.setVisibility(View.VISIBLE);
-        editButton.setOnClickListener(this);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.action_edit) {
+                    if (Util.isConnected(ProfileActivity.this)) {
+                        if (Util.isConnected(ProfileActivity.this)) {
+                            presenter.getUserProfile();
+                        } else {
+                            Util.showToast(getResources().getString(R.string.msg_no_network), this);
+                        }
+
+                    } else {
+                        Util.showToast(getString(R.string.msg_no_network), this);
+                    }
+                }
+                return false;
+            }
+        });
+
+        // ImageView backButton = findViewById(R.id.toolbar_back_action);
+        //backButton.setOnClickListener(this);
+
+//        ImageView editButton = findViewById(R.id.toolbar_edit_action);
+//        editButton.setVisibility(View.VISIBLE);
+//        editButton.setOnClickListener(this);
 
         parent = findViewById(R.id.user_profile_details);
         initViews();
@@ -73,7 +107,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initViews() {
-        UserInfo userInfo = Util.getUserObjectFromPref();
+        userInfo = Util.getUserObjectFromPref();
 
         ImageView profilePic = findViewById(R.id.user_profile_pic);
         RequestOptions requestOptions = new RequestOptions().placeholder(0);
@@ -85,11 +119,11 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
                     .load(userInfo.getProfilePic())
                     .into(profilePic);
         }
-        ((TextView) findViewById(R.id.user_profile_name)).setText(userInfo.getUserName());
-        ((TextView) findViewById(R.id.user_profile_mobile)).setText(userInfo.getUserMobileNumber());
+        ((TextView) findViewById(R.id.user_profile_name)).setText(userInfo.getUserName().trim());
+        ((TextView) findViewById(R.id.user_profile_mobile)).setText(userInfo.getUserMobileNumber().trim());
 
         if (!TextUtils.isEmpty(userInfo.getUserEmailId())) {
-            ((TextView) findViewById(R.id.user_profile_email)).setText(userInfo.getUserEmailId());
+            ((TextView) findViewById(R.id.user_profile_email)).setText(userInfo.getUserEmailId().trim());
         } else {
             findViewById(R.id.user_profile_email).setVisibility(View.GONE);
         }
@@ -149,6 +183,33 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         startActivityForResult(intent, Constants.IS_ROLE_CHANGE);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_edit_profile, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_edit) {
+            if (Util.isConnected(this)) {
+                if (Util.isConnected(this)) {
+                    presenter.getUserProfile();
+                } else {
+                    Util.showToast(getResources().getString(R.string.msg_no_network), this);
+                }
+
+            } else {
+                Util.showToast(getString(R.string.msg_no_network), this);
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private String getStringValue(List<JurisdictionType> inputArray) {
         if (inputArray != null && inputArray.size() > 0) {
             StringBuilder strProject = new StringBuilder();
@@ -163,7 +224,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         return "";
     }
 
-    @Override
+  /*  @Override
     public void onClick(View view) {
         if (view.getId() == R.id.toolbar_edit_action) {
             if (Util.isConnected(this)) {
@@ -179,7 +240,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
         } else if (view.getId() == R.id.toolbar_back_action) {
             onBackPressed();
         }
-    }
+    }*/
 
     @Override
     public void onFailureListener(String requestID, String message) {
@@ -192,8 +253,7 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     }
 
     @Override
-    public void onSuccessListener(String requestID, String response)
-    {
+    public void onSuccessListener(String requestID, String response) {
         showEditProfileScreen();
     }
 
@@ -221,11 +281,13 @@ public class ProfileActivity extends BaseActivity implements View.OnClickListene
     }
 
     public void displayProjects(ArrayList<MultyProjectData> data) {
+        progressBarProjects.setVisibility(View.GONE);
+        String projects = userInfo.getProjectIds().get(0).getId();
         RecyclerView rvMembers = findViewById(R.id.rv_projects);
-        MultyProjectAdapter multyProjectAdapter = new MultyProjectAdapter(data, this, presenter);
+        MultyProjectAdapter multyProjectAdapter = new MultyProjectAdapter(data, this, presenter,projects);
 
-//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        rvMembers.setLayoutManager(new GridLayoutManager(this, 2));
+        // rvMembers.setLayoutManager(new GridLayoutManager(this, 2));
+        rvMembers.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         rvMembers.setAdapter(multyProjectAdapter);
     }
 
