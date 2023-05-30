@@ -117,6 +117,7 @@ public class ProfileActivity extends BaseActivity implements/* View.OnClickListe
             Glide.with(this)
                     .applyDefaultRequestOptions(requestOptions)
                     .load(userInfo.getProfilePic())
+                    .placeholder(R.drawable.ic_user_avatar)
                     .into(profilePic);
         }
         ((TextView) findViewById(R.id.user_profile_name)).setText(userInfo.getUserName().trim());

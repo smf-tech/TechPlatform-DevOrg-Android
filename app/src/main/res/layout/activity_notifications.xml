@@ -19,10 +19,14 @@
         android:id="@+id/iv_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_back_white"
+        android:src="@drawable/ic_arrow_back_24"
+        android:padding="8dp"
+        android:layout_marginStart="8dp"
+        app:tint="@color/white"
         android:gravity="center"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="0.5"/>
+        android:clickable="true"
+        android:background="?selectableItemBackgroundBorderless"
+        android:layout_gravity="center_vertical" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -46,6 +50,8 @@
         android:layout_gravity="center_vertical"
         android:text="Clear All"
         android:layout_weight="1"
+        android:clickable="true"
+        android:background="?selectableItemBackgroundBorderless"
         android:fontFamily="@font/opensans_regular"/>
 </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
