@@ -647,7 +647,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         // Setting Dialog Message
         alertDialog.setMessage(getString(R.string.update_data_string));
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.mipmap.app_logo);
+        alertDialog.setIcon(R.mipmap.ic_launcher);
         // Setting CANCEL Button
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
                 (dialog, which) -> alertDialog.dismiss());
@@ -670,7 +670,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         // Setting Dialog Message
         alertDialog.setMessage(getString(R.string.msg_logout));
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.mipmap.app_logo);
+        alertDialog.setIcon(R.mipmap.ic_launcher);
         // Setting CANCEL Button
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel),
                 (dialog, which) -> alertDialog.dismiss());

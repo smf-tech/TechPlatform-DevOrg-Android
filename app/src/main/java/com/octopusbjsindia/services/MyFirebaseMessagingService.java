@@ -99,7 +99,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             NotificationCompat.Builder notificationBuilder;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 notificationBuilder = new NotificationCompat.Builder(this, Constants.App.CHANNEL_ID)
-                        .setSmallIcon(R.mipmap.app_logo)
+                        .setSmallIcon(R.drawable.ic_launcher_notification)
                         .setContentTitle(messageTitle)
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -108,7 +108,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setAutoCancel(true);
             } else {
                 notificationBuilder = new NotificationCompat.Builder(this, "")
-                        .setSmallIcon(R.mipmap.app_logo)
+                        .setSmallIcon(R.drawable.ic_launcher_notification)
                         .setContentTitle(messageTitle)
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
                         .setAutoCancel(true)

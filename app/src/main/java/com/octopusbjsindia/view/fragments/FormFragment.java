@@ -846,7 +846,7 @@ public class FormFragment extends Fragment implements FormDataTaskListener,
         // Setting Dialog Message
         alertDialog.setMessage(getString(R.string.msg_discard));
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.mipmap.app_logo);
+        alertDialog.setIcon(R.mipmap.ic_launcher);
         // Setting CANCEL Button
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.no),
                 (dialogInterface, i) -> alertDialog.dismiss());

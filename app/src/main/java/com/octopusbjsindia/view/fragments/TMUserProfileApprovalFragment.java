@@ -81,7 +81,7 @@ public class TMUserProfileApprovalFragment extends Fragment {
             Util.logger(getActivity().getLocalClassName(), "000000--" + requetsObject.toString());
             Util.logger(getActivity().getLocalClassName(), "!!!!!!!--" + filterTypeRequest);
         }
-        requestOptions = new RequestOptions().placeholder(R.mipmap.app_logo);
+        requestOptions = new RequestOptions().placeholder(R.mipmap.ic_launcher);
         requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
     }
 
