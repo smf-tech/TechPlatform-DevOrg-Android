@@ -14,6 +14,7 @@ android {
     }
 
     compileSdkVersion 33
+    namespace 'com.octopusbjsindia'
 
     def dateFormat = new Date().format('ddMMYYYY')
 
@@ -73,7 +74,9 @@ android {
             buildConfigField 'String', 'BASE_URL', "\"http://13.235.124.3:8090/\""
             buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
             buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
-            applicationId 'com.octopusbjsindia'
+            applicationId 'com.octopusbjsindia.staging'
+            /*applicationIdSuffix ".staging"
+            versionNameSuffix "-staging"*/
             signingConfig signingConfigs.config
         }
         Production {

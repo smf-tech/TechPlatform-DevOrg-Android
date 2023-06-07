@@ -37,65 +37,12 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:841982499623:android:36c62414552ac636",
+        "mobilesdk_app_id": "1:841982499623:android:65aeb68cdfa41f12f26702",
         "android_client_info": {
-          "package_name": "com.platform"
+          "package_name": "com.octopusbjsindia.staging"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "841982499623-2ot0crp0hn3lihnlgbb95ng0445l1quu.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.platform",
-            "certificate_hash": "17d5d77ca671dbdfff4924b057f944bceb0f3234"
-          }
-        },
-        {
-          "client_id": "841982499623-bffqvcla9k0vunu3hnpqd72t67b1hin4.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.platform",
-            "certificate_hash": "757f2ae44256ebdaeb2c54da4564fb5a58574305"
-          }
-        },
-        {
-          "client_id": "841982499623-oshtas4co0shmq7riff085qcsslpnt0m.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyD8PfPZMl_KHTJphMp7IG3XSTic8pCIQnc"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "841982499623-oshtas4co0shmq7riff085qcsslpnt0m.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:841982499623:android:3aff3edc1d242417",
-        "android_client_info": {
-          "package_name": "com.platform.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "841982499623-od49ujnrubsri0470vg154n7k3hrd2u1.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.platform.debug",
-            "certificate_hash": "17d5d77ca671dbdfff4924b057f944bceb0f3234"
-          }
-        },
         {
           "client_id": "841982499623-oshtas4co0shmq7riff085qcsslpnt0m.apps.googleusercontent.com",
           "client_type": 3

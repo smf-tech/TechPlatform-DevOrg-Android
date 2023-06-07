@@ -88,7 +88,7 @@ public class CreateMatrimonyMeetActivity extends AppCompatActivity implements Vi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar_back_action:
-                finish();
+                onBackPressed();
                 break;
         }
     }
