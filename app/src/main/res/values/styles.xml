@@ -81,6 +81,11 @@
         <item name="android:fontFamily">@font/opensans</item>
     </style>
 
+    <style name="textinputstyleDropDown" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:fontFamily">@font/opensans</item>
+    </style>
+
     <style name="TextInputLayoutHint" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">@dimen/text_size_10</item>
         <item name="android:fontFamily">@font/opensans</item>

@@ -57,9 +57,9 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="other">Other</string>
-    <string name="mandatory_organization">Type organization name *</string>
+    <string name="mandatory_organization">Select organization name *</string>
     <string name="organization">Organization</string>
-    <string name="mandatory_project">Type project name *</string>
+    <string name="mandatory_project">Select project name *</string>
     <string name="project">Project</string>
     <string name="mandatory_role">Role *</string>
     <string name="role">Role</string>
