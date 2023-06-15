@@ -76,7 +76,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
     private int imageCount = 0;
     private Button btnSubmit;
     private EditText etDate, etState, etDistrict, etTaluka, etVillage, etBType, etArea, etSurveyNo, etBFirstName, etBLastName, etBMobile,
-            etTractorTripsCount, etTipperTripsCount, etTotalSilt;
+            etTractorTripsCount, etTipperTripsCount,etHyvaTripsCount, etTotalSilt;
     //etFarmersCount, etBeneficiariesCount;
     private String currentPhotoPath = "";
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
@@ -135,6 +135,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
         etTractorTripsCount = findViewById(R.id.et_trolley_trips_count);
         etTractorTripsCount.setLongClickable(false);
         etTipperTripsCount = findViewById(R.id.et_tipper_trips_count);
+        etHyvaTripsCount = findViewById(R.id.et_hyva_trips_count);
         etTipperTripsCount.setLongClickable(false);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         tv_toolbar_title.setText("Silt Beneficiary Record");
@@ -362,6 +363,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
                         siltTransportRecord.setbMobile(etBMobile.getText().toString());
                         siltTransportRecord.setTractorTripsCount(etTractorTripsCount.getText().toString());
                         siltTransportRecord.setTipperTripsCount(etTipperTripsCount.getText().toString());
+                        siltTransportRecord.setHyvaTripsCount(etHyvaTripsCount.getText().toString());
 //                        siltTransportRecord.setFarmersCount(etFarmersCount.getText().toString());
 //                        siltTransportRecord.setBeneficiariesCount(etBeneficiariesCount.getText().toString());
                         uploadData(siltTransportRecord);
@@ -385,7 +387,8 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
                 || TextUtils.isEmpty(etBLastName.getText().toString().trim())
                 || TextUtils.isEmpty(etBMobile.getText().toString().trim())
                 || TextUtils.isEmpty(etTractorTripsCount.getText().toString().trim())
-                || TextUtils.isEmpty(etTipperTripsCount.getText().toString().trim())) {
+                || TextUtils.isEmpty(etTipperTripsCount.getText().toString().trim())
+                || TextUtils.isEmpty(etHyvaTripsCount.getText().toString().trim())) {
 
             Util.snackBarToShowMsg(this.getWindow().getDecorView()
                             .findViewById(android.R.id.content), getString(R.string.enter_correct_details),

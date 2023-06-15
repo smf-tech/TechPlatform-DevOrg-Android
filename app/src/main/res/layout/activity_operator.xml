@@ -76,11 +76,23 @@
                     tools:text="POCO F1" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/alert_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Please select date to fill machine record in sequence. Once date selected you won't be able add record for date previous to selected date."
+                android:padding="8dp"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                android:background="@color/brick_red2"
+                android:layout_below="@+id/ly_device_details" />
+
+
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ly_device_details"
+                android:layout_below="@+id/alert_note"
                 android:background="@color/white"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">

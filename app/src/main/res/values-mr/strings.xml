@@ -56,9 +56,9 @@
     <string name="male">पुरुष</string>
     <string name="female">स्त्री</string>
     <string name="other">इतर</string>
-    <string name="mandatory_organization">Select organization name *</string>
+    <string name="mandatory_organization">Select organization *</string>
     <string name="organization">संघटना</string>
-    <string name="mandatory_project">Select project name *</string>
+    <string name="mandatory_project">Select project *</string>
     <string name="project">प्रकल्प</string>
     <string name="mandatory_role">भूमिका *</string>
     <string name="role">भूमिका</string>
