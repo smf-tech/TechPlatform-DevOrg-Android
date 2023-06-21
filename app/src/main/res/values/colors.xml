@@ -117,5 +117,6 @@
     <color name="mockcompleted">#5047A713</color>
 
     <color name="mockpending">#50ff0000</color>
+    <color name="blue_low">#EFF6FF</color>
 
 </resources>

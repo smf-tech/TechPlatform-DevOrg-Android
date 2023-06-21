@@ -27,7 +27,7 @@
 
 <ImageView
     android:layout_width="@dimen/dimen_100dp"
-    android:src="@mipmap/app_logo"
+    android:src="@mipmap/ic_launcher"
     android:layout_gravity="center"
     android:id="@+id/img_quetion_image"
     android:layout_height="@dimen/dimen_100dp"/>

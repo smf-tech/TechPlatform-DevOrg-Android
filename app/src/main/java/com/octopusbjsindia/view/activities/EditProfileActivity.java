@@ -18,6 +18,9 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -43,7 +46,6 @@ import com.octopusbjsindia.R;
 import com.octopusbjsindia.listeners.APIDataListener;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.listeners.ProfileTaskListener;
-import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.models.login.LoginInfo;
 import com.octopusbjsindia.models.profile.Jurisdiction;
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3;
@@ -61,6 +63,9 @@ import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.DropDownSelectionAdapter;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.CustomBottomSheetDialogFragment;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.interfaces.CustomBottomSheetDialogInterface;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
@@ -74,7 +79,7 @@ import java.util.Objects;
 
 @SuppressWarnings("CanBeFinal")
 public class EditProfileActivity extends BaseActivity implements ProfileTaskListener,
-        View.OnClickListener, APIDataListener, CustomSpinnerListener {
+        View.OnClickListener, APIDataListener, CustomBottomSheetDialogInterface {
 
     private EditText etUserFirstName;
     private EditText etUserMiddleName;
@@ -82,8 +87,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private EditText etUserBirthDate;
     private EditText etUserMobileNumber;
     private EditText etUserEmailId;
-    private EditText etUserOrganization;
-    private EditText etUserProject;
+    private AutoCompleteTextView etUserOrganization;
+    private AutoCompleteTextView etUserProject;
     private EditText etUserRole;
     private TextInputLayout lyUserCountry;
     private EditText etUserCountry;
@@ -98,19 +103,19 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     private ImageView backButton;
     private Button btnProfileSubmit;
     private String userGender = Constants.Login.MALE;
-    private ArrayList<CustomSpinnerObject> selectionOrgList = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> selectionProjectList = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> selectionRolesList = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> customSpinnerCountries = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> customSpinnerStates = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> customSpinnerDistricts = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> customSpinnerCities = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> customSpinnerTalukas = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> customSpinnerVillages = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> customSpinnerClusters = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> customSpinnerPanchayt = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> customSpinnerSchools = new ArrayList<>();
-    private ArrayList<CustomSpinnerObject> customSpinnerCenter = new ArrayList<>();
+    private ArrayList<SelectionListObject> selectionOrgList = new ArrayList<>();
+    private ArrayList<SelectionListObject> selectionProjectList = new ArrayList<>();
+    private ArrayList<SelectionListObject> selectionRolesList = new ArrayList<>();
+    private ArrayList<SelectionListObject> customSpinnerCountries = new ArrayList<>();
+    private ArrayList<SelectionListObject> customSpinnerStates = new ArrayList<>();
+    private ArrayList<SelectionListObject> customSpinnerDistricts = new ArrayList<>();
+    private ArrayList<SelectionListObject> customSpinnerCities = new ArrayList<>();
+    private ArrayList<SelectionListObject> customSpinnerTalukas = new ArrayList<>();
+    private ArrayList<SelectionListObject> customSpinnerVillages = new ArrayList<>();
+    private ArrayList<SelectionListObject> customSpinnerClusters = new ArrayList<>();
+    private ArrayList<SelectionListObject> customSpinnerPanchayt = new ArrayList<>();
+    private ArrayList<SelectionListObject> customSpinnerSchools = new ArrayList<>();
+    private ArrayList<SelectionListObject> customSpinnerCenter = new ArrayList<>();
 
     private List<Organization> organizations = new ArrayList<>();
     private List<OrganizationProject> projects = new ArrayList<>();
@@ -149,12 +154,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
     private RecyclerView rvOrg;
     private DropDownSelectionAdapter orgDropDownAdapter;
-    private final List<CustomSpinnerObject> filterOrgList = new ArrayList<>();
     private String selectedOrgName = "";
 
     private RecyclerView rvProject;
     private DropDownSelectionAdapter projectDropDownAdapter;
-    private final List<CustomSpinnerObject> filterProjectList = new ArrayList<>();
     private String selectedProjectName = "";
     private boolean isOrgSelected = false, isProjectSelected = false;
 
@@ -174,7 +177,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     }
 
     private void initViews() {
-        rvOrg = findViewById(R.id.rv_org_list);
+       /* rvOrg = findViewById(R.id.rv_org_list);
         orgDropDownAdapter = new DropDownSelectionAdapter(filterOrgList, "Organization", this);
         rvOrg.setLayoutManager(new LinearLayoutManager(this));
         rvOrg.setAdapter(orgDropDownAdapter);
@@ -182,7 +185,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         rvProject = findViewById(R.id.rv_project_list);
         projectDropDownAdapter = new DropDownSelectionAdapter(filterProjectList, "Project", this);
         rvProject.setLayoutManager(new LinearLayoutManager(this));
-        rvProject.setAdapter(projectDropDownAdapter);
+        rvProject.setAdapter(projectDropDownAdapter);*/
 
         setActionbar(getString(R.string.registration_title));
         progressBarLayout = findViewById(R.id.profile_act_progress_bar);
@@ -209,7 +212,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             }
         });
         etUserOrganization = findViewById(R.id.etUserOrganization);
-        etUserOrganization.addTextChangedListener(new TextWatcher() {
+       /* etUserOrganization.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -231,9 +234,30 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             public void afterTextChanged(Editable s) {
 
             }
+        });*/
+
+        etUserOrganization.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                onOrgSelection(position);
+            }
         });
+
         etUserProject = findViewById(R.id.etUserProject);
-        etUserProject.addTextChangedListener(new TextWatcher() {
+        etUserProject.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                onProjectSelection(position);
+            }
+        });
+
+        etUserProject.setOnClickListener(v -> {
+            if (selectedOrg==null){
+                Snackbar.make(v,"Please select Organization",Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+       /* etUserProject.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -261,7 +285,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             public void afterTextChanged(Editable s) {
 
             }
-        });
+        });*/
         etUserRole = findViewById(R.id.etUserRole);
 
         lyUserCountry = findViewById(R.id.input_user_country);
@@ -387,10 +411,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         project.setName(userInfo.getProjectIds().get(0).getName());
         selectedProjects.add(project);
 
-//        CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-//        customSpinnerObject.set_id(userInfo.getProjectIds().get(0).getId());
-//        customSpinnerObject.setName(userInfo.getProjectIds().get(0).getName());
-//        selectionProjectList.add(customSpinnerObject);
+//        SelectionListObject SelectionListObject = new SelectionListObject();
+//        SelectionListObject.set_id(userInfo.getProjectIds().get(0).getId());
+//        SelectionListObject.setName(userInfo.getProjectIds().get(0).getName());
+//        selectionProjectList.add(SelectionListObject);
 
         selectedProjectName = userInfo.getProjectIds().get(0).getName();
         etUserProject.setText(selectedProjectName);
@@ -638,11 +662,16 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             case R.id.etUserRole:
                 if (selectedOrg != null && selectedProjects.size() > 0 && etUserProject.getText().toString().length() > 0) {
                     if (selectionRolesList.size() > 0) {
-                        CustomSpinnerDialogClass cddProject = new CustomSpinnerDialogClass(this, this, "Select Role",
+                       /* CustomSpinnerDialogClass cddProject = new CustomSpinnerDialogClass(this, this, "Select Role",
                                 selectionRolesList, false);
                         cddProject.show();
                         cddProject.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select Role",
+                                selectionRolesList, false);
+
                     } else {
                         if (selectedProjects != null && selectedProjects.size() > 0 &&
                                 !TextUtils.isEmpty(selectedProjects.get(0).getId())) {
@@ -667,19 +696,27 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         multiLocationLevel = jurisdiction.getLevelName();
                     }
                     if (multiLocationLevel.equals(Constants.JurisdictionLevelName.COUNTRY_LEVEL)) {
-                        CustomSpinnerDialogClass csdCountry = new CustomSpinnerDialogClass(this, this,
+                       /* CustomSpinnerDialogClass csdCountry = new CustomSpinnerDialogClass(this, this,
                                 "Select Country", customSpinnerCountries,
                                 true);
                         csdCountry.show();
                         csdCountry.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select Country",
+                                customSpinnerCountries, true);
                     } else {
-                        CustomSpinnerDialogClass csdCountry = new CustomSpinnerDialogClass(this, this,
+                        /*CustomSpinnerDialogClass csdCountry = new CustomSpinnerDialogClass(this, this,
                                 "Select Country", customSpinnerCountries,
                                 false);
                         csdCountry.show();
                         csdCountry.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select Country",
+                                customSpinnerCountries, false);
                     }
                 } else {
                     if (selectedProjects != null && selectedProjects.size() > 0 &&
@@ -702,19 +739,27 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         multiLocationLevel = jurisdiction.getLevelName();
                     }
                     if (multiLocationLevel.equals(Constants.JurisdictionLevelName.STATE_LEVEL)) {
-                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                       /* CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
                                 "Select State", customSpinnerStates,
                                 true);
                         csdState.show();
                         csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select State",
+                                customSpinnerStates, true);
                     } else {
-                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                       /* CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
                                 "Select State", customSpinnerStates,
                                 false);
                         csdState.show();
                         csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select State",
+                                customSpinnerStates, false);
                     }
                 } else {
                     if (selectedCountries.size() > 0 && selectedCountries.size() > 0 &&
@@ -762,19 +807,27 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         multiLocationLevel = jurisdiction.getLevelName();
                     }
                     if (multiLocationLevel.equals(Constants.JurisdictionLevelName.CITY_LEVEL)) {
-                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                       /* CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
                                 "Select City", customSpinnerCities,
                                 true);
                         csdState.show();
                         csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select City",
+                                customSpinnerCities, true);
                     } else {
-                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                       /* CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
                                 "Select City", customSpinnerCities,
                                 false);
                         csdState.show();
                         csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select City",
+                                customSpinnerCities, false);
                     }
                 } else {
                     if (selectedStates != null && selectedStates.size() > 0 &&
@@ -811,19 +864,27 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         multiLocationLevel = jurisdiction.getLevelName();
                     }
                     if (multiLocationLevel.equals(Constants.JurisdictionLevelName.DISTRICT_LEVEL)) {
-                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                       /* CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
                                 "Select District", customSpinnerDistricts,
                                 true);
                         csdState.show();
                         csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select District",
+                                customSpinnerDistricts, true);
                     } else {
-                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                       /* CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
                                 "Select District", customSpinnerDistricts,
                                 false);
                         csdState.show();
                         csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select District",
+                                customSpinnerDistricts, false);
                     }
                 } else {
                     if (selectedStates != null && selectedStates.size() > 0 &&
@@ -860,19 +921,27 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         multiLocationLevel = jurisdiction.getLevelName();
                     }
                     if (multiLocationLevel.equals(Constants.JurisdictionLevelName.TALUKA_LEVEL)) {
-                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                       /* CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
                                 "Select Taluka", customSpinnerTalukas,
                                 true);
                         csdState.show();
                         csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select Taluka",
+                                customSpinnerTalukas, true);
                     } else {
-                        CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
+                       /* CustomSpinnerDialogClass csdState = new CustomSpinnerDialogClass(this, this,
                                 "Select Taluka", customSpinnerTalukas,
                                 false);
                         csdState.show();
                         csdState.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select Taluka",
+                                customSpinnerTalukas, false);
                     }
                 } else {
                     if (lyUserCity.getVisibility() == View.VISIBLE) {
@@ -936,19 +1005,27 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         multiLocationLevel = jurisdiction.getLevelName();
                     }
                     if (multiLocationLevel.equals(Constants.JurisdictionLevelName.VILLAGE_LEVEL)) {
-                        CustomSpinnerDialogClass csdVillage = new CustomSpinnerDialogClass(this, this,
+                        /*CustomSpinnerDialogClass csdVillage = new CustomSpinnerDialogClass(this, this,
                                 "Select Village", customSpinnerVillages,
                                 true);
                         csdVillage.show();
                         csdVillage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select Village",
+                                customSpinnerVillages, true);
                     } else {
-                        CustomSpinnerDialogClass csdVillage = new CustomSpinnerDialogClass(this, this,
+                        /*CustomSpinnerDialogClass csdVillage = new CustomSpinnerDialogClass(this, this,
                                 "Select Village", customSpinnerVillages,
                                 false);
                         csdVillage.show();
                         csdVillage.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select Village",
+                                customSpinnerVillages, false);
                     }
                 } else {
                     if (lyUserCluster.getVisibility() == View.VISIBLE) {
@@ -1036,19 +1113,27 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         multiLocationLevel = jurisdiction.getLevelName();
                     }
                     if (multiLocationLevel.equals(Constants.JurisdictionLevelName.CLUSTER_LEVEL)) {
-                        CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
+                       /* CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
                                 "Select Cluster", customSpinnerClusters,
                                 true);
                         csdCluster.show();
                         csdCluster.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select Cluster",
+                                customSpinnerClusters, true);
                     } else {
-                        CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
+                       /* CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
                                 "Select Cluster", customSpinnerClusters,
                                 false);
                         csdCluster.show();
                         csdCluster.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select Cluster",
+                                customSpinnerClusters, false);
                     }
                 } else {
                     if (selectedTalukas != null && selectedTalukas.size() > 0 &&
@@ -1085,19 +1170,27 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         multiLocationLevel = jurisdiction.getLevelName();
                     }
                     if (multiLocationLevel.equals(Constants.JurisdictionLevelName.GRAM_PANCHAYAT)) {
-                        CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
+                       /* CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
                                 "Select Gram-Panchayat", customSpinnerPanchayt,
                                 true);
                         csdCluster.show();
                         csdCluster.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select Gram-Panchayat",
+                                customSpinnerPanchayt, true);
                     } else {
-                        CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
+                       /* CustomSpinnerDialogClass csdCluster = new CustomSpinnerDialogClass(this, this,
                                 "Select Gram-Panchayat", customSpinnerPanchayt,
                                 false);
                         csdCluster.show();
                         csdCluster.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select Gram-Panchayat",
+                                customSpinnerPanchayt, false);
                     }
                 } else {
                     if (selectedTalukas != null && selectedTalukas.size() > 0 &&
@@ -1134,19 +1227,27 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         multiLocationLevel = jurisdiction.getLevelName();
                     }
                     if (multiLocationLevel.equals(Constants.JurisdictionLevelName.SCHOOL_LEVEL)) {
-                        CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
+                        /*CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
                                 "Select School", customSpinnerSchools,
                                 true);
                         csdSchool.show();
                         csdSchool.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select School",
+                                customSpinnerSchools, true);
                     } else {
-                        CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
+                        /*CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
                                 "Select School", customSpinnerSchools,
                                 false);
                         csdSchool.show();
                         csdSchool.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select School",
+                                customSpinnerSchools, false);
                     }
                 } else {
                     if (selectedVillages != null && selectedVillages.size() > 0 &&
@@ -1182,19 +1283,27 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         multiLocationLevel = jurisdiction.getLevelName();
                     }
                     if (multiLocationLevel.equals(Constants.JurisdictionLevelName.SCHOOL_LEVEL)) {
-                        CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
+                      /*  CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
                                 "Select Learning Center", customSpinnerCenter,
                                 true);
                         csdSchool.show();
                         csdSchool.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select Learning Center",
+                                customSpinnerCenter, true);
                     } else {
-                        CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
+                       /* CustomSpinnerDialogClass csdSchool = new CustomSpinnerDialogClass(this, this,
                                 "Select Learning Center", customSpinnerCenter,
                                 false);
                         csdSchool.show();
                         csdSchool.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT);*/
+
+                        CustomBottomSheetDialogFragment customBottomsheet = null;
+                        showSelectiveBottomSheet(customBottomsheet, "Select Learning Center",
+                                customSpinnerCenter, false);
                     }
                 } else {
                     if (selectedSchools != null && selectedSchools.size() > 0 &&
@@ -1553,6 +1662,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
     }
 
+    private void showSelectiveBottomSheet(CustomBottomSheetDialogFragment bottomSheet, String Title, ArrayList<SelectionListObject> List, Boolean isMultiSelect) {
+        bottomSheet = new CustomBottomSheetDialogFragment(this, Title, List, isMultiSelect);
+        bottomSheet.show(this.getSupportFragmentManager(), CustomBottomSheetDialogFragment.TAG);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1726,15 +1840,24 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     }
 
     @Override
-    public void showOrganizations(List<Organization> organizations) {
-        this.organizations = organizations;
+    public void showOrganizations(List<Organization> organizationList) {
+        this.organizations = organizationList;
         selectionOrgList.clear();
+
+        ArrayList<String> orgList = new ArrayList<>();
         for (int i = 0; i < organizations.size(); i++) {
-            CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-            customSpinnerObject.set_id(organizations.get(i).getId());
-            customSpinnerObject.setName(organizations.get(i).getOrgName());
-            selectionOrgList.add(customSpinnerObject);
+            SelectionListObject selectionListObject = new SelectionListObject(
+                    organizations.get(i).getId(),
+                    organizations.get(i).getOrgName(),
+                    false, false
+            );
+            selectionOrgList.add(selectionListObject);
+            orgList.add(organizations.get(i).getOrgName());
         }
+
+        //add organization list to dropdown adapter
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.dropdown_list_item, orgList);
+        etUserOrganization.setAdapter(adapter);
     }
 
     @Override
@@ -1743,13 +1866,21 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
             this.projects.clear();
             this.projects.addAll(organizationProjects);
+            ArrayList<String> orgProjectList = new ArrayList<>();
             selectionProjectList.clear();
-            for (int i = 0; i < organizationProjects.size(); i++) {
-                CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-                customSpinnerObject.set_id(organizationProjects.get(i).getId());
-                customSpinnerObject.setName(organizationProjects.get(i).getOrgProjectName());
-                selectionProjectList.add(customSpinnerObject);
+            for (int i = 0; i < projects.size(); i++) {
+                SelectionListObject selectionListObject = new SelectionListObject(
+                        projects.get(i).getId(),
+                        projects.get(i).getOrgProjectName(),
+                        false, false
+                );
+                selectionProjectList.add(selectionListObject);
+                orgProjectList.add(projects.get(i).getOrgProjectName());
             }
+
+            //add organization project list to dropdown adapter
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.dropdown_list_item, orgProjectList);
+            etUserProject.setAdapter(adapter);
         }
     }
 
@@ -1761,10 +1892,12 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             this.roles.addAll(organizationRoles);
             selectionRolesList.clear();
             for (int i = 0; i < organizationRoles.size(); i++) {
-                CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-                customSpinnerObject.set_id(organizationRoles.get(i).getId());
-                customSpinnerObject.setName(organizationRoles.get(i).getDisplayName());
-                selectionRolesList.add(customSpinnerObject);
+                SelectionListObject SelectionListObject = new SelectionListObject(
+                        organizationRoles.get(i).getId(),
+                        organizationRoles.get(i).getDisplayName(),
+                        false, false
+                );
+                selectionRolesList.add(SelectionListObject);
             }
         }
     }
@@ -1832,10 +1965,13 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         countryNames.add(location.getName());
-                        CustomSpinnerObject country = new CustomSpinnerObject();
-                        country.set_id(location.getId());
-                        country.setName(location.getName());
-                        country.setSelected(false);
+                        SelectionListObject country = new SelectionListObject(
+                                location.getId(),
+                                location.getName(),
+                                false,
+                                false
+                        );
+
                         this.customSpinnerCountries.add(country);
                     }
                 }
@@ -1847,10 +1983,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         stateNames.add(location.getName());
-                        CustomSpinnerObject state = new CustomSpinnerObject();
-                        state.set_id(location.getId());
-                        state.setName(location.getName());
-                        state.setSelected(false);
+                        SelectionListObject state = new SelectionListObject(
+                                location.getId(),
+                                location.getName(),
+                                false,
+                                false);
                         this.customSpinnerStates.add(state);
                     }
                 }
@@ -1862,10 +1999,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         districts.add(location.getName());
-                        CustomSpinnerObject district = new CustomSpinnerObject();
-                        district.set_id(location.getId());
-                        district.setName(location.getName());
-                        district.setSelected(false);
+                        SelectionListObject district = new SelectionListObject(
+                                location.getId(),
+                                location.getName(),
+                                false, false);
                         this.customSpinnerDistricts.add(district);
                     }
                 }
@@ -1877,10 +2014,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         cities.add(location.getName());
-                        CustomSpinnerObject city = new CustomSpinnerObject();
-                        city.set_id(location.getId());
-                        city.setName(location.getName());
-                        city.setSelected(false);
+                        SelectionListObject city = new SelectionListObject(
+                                location.getId(),
+                                location.getName(),
+                                false, false);
                         this.customSpinnerCities.add(city);
                     }
                 }
@@ -1892,10 +2029,8 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         talukas.add(location.getName());
-                        CustomSpinnerObject taluka = new CustomSpinnerObject();
-                        taluka.set_id(location.getId());
-                        taluka.setName(location.getName());
-                        taluka.setSelected(false);
+                        SelectionListObject taluka = new SelectionListObject(
+                                location.getId(), location.getName(), false, false);
                         this.customSpinnerTalukas.add(taluka);
                     }
                 }
@@ -1907,10 +2042,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         villages.add(location.getName());
-                        CustomSpinnerObject village = new CustomSpinnerObject();
-                        village.set_id(location.getId());
-                        village.setName(location.getName());
-                        village.setSelected(false);
+                        SelectionListObject village = new SelectionListObject(
+                                location.getId(),
+                                location.getName(),
+                                false, false);
                         this.customSpinnerVillages.add(village);
                     }
                 }
@@ -1922,10 +2057,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         clusters.add(location.getName());
-                        CustomSpinnerObject cluster = new CustomSpinnerObject();
-                        cluster.set_id(location.getId());
-                        cluster.setName(location.getName());
-                        cluster.setSelected(false);
+                        SelectionListObject cluster =  new SelectionListObject(
+                                location.getId(),
+                                location.getName(),
+                                false, false);
                         this.customSpinnerClusters.add(cluster);
                     }
                 }
@@ -1936,10 +2071,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         panchayats.add(location.getName());
-                        CustomSpinnerObject panchayat = new CustomSpinnerObject();
-                        panchayat.set_id(location.getId());
-                        panchayat.setName(location.getName());
-                        panchayat.setSelected(false);
+                        SelectionListObject panchayat =  new SelectionListObject(
+                                location.getId(),
+                                location.getName(),
+                                false, false);
                         this.customSpinnerPanchayt.add(panchayat);
                     }
                 }
@@ -1950,10 +2085,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         schools.add(location.getName());
-                        CustomSpinnerObject school = new CustomSpinnerObject();
-                        school.set_id(location.getId());
-                        school.setName(location.getName());
-                        school.setSelected(false);
+                        SelectionListObject school =  new SelectionListObject(
+                                location.getId(),
+                                location.getName(),
+                                false, false);
                         this.customSpinnerSchools.add(school);
                     }
                 }
@@ -1964,10 +2099,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                     for (int i = 0; i < jurisdictionLevels.size(); i++) {
                         JurisdictionLocationV3 location = jurisdictionLevels.get(i);
                         centers.add(location.getName());
-                        CustomSpinnerObject center = new CustomSpinnerObject();
-                        center.set_id(location.getId());
-                        center.setName(location.getName());
-                        center.setSelected(false);
+                        SelectionListObject center =  new SelectionListObject(
+                                location.getId(),
+                                location.getName(),
+                                false, false);
                         this.customSpinnerCenter.add(center);
                     }
                 }
@@ -1989,10 +2124,10 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
     }
 
     public void onOrgSelection(int selectedPosition) {
-        rvOrg.setVisibility(View.GONE);
+      /*  rvOrg.setVisibility(View.GONE);
         selectedOrgName = "";
-        selectedOrgName = filterOrgList.get(selectedPosition).getName();
-        etUserOrganization.setText(selectedOrgName);
+        selectedOrgName = filterOrgList.get(selectedPosition).getName();*/
+
         // clear other dependent fields
         hideJurisdictionLevel();
         selectedProjects.clear();
@@ -2036,7 +2171,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         customSpinnerCenter.clear();
         etUserCenter.setText("");
 
-        if (filterOrgList.get(selectedPosition) != null
+       /* if (filterOrgList.get(selectedPosition) != null
                 && !TextUtils.isEmpty(filterOrgList.get(selectedPosition).get_id())) {
             for (int i = 0; i < organizations.size(); i++) {
                 if (organizations.get(i).getId().equals(filterOrgList.get(selectedPosition).get_id())) {
@@ -2044,14 +2179,18 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 }
             }
             profilePresenter.getOrganizationProjects(this.selectedOrg.getId());
-        }
+        }*/
+
+        selectedOrg = organizations.get(selectedPosition);
+        profilePresenter.getOrganizationProjects(selectedOrg.getId());
     }
 
     public void onProjectSelection(int selectedPosition) {
-        rvProject.setVisibility(View.GONE);
+   /*     rvProject.setVisibility(View.GONE);
         selectedProjectName = "";
         selectedProjectName = filterProjectList.get(selectedPosition).getName();
-        etUserProject.setText(selectedProjectName);
+        etUserProject.setText(selectedProjectName);*/
+
         // clear other dependent fields
         hideJurisdictionLevel();
         selectedRoles.clear();
@@ -2090,7 +2229,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         customSpinnerCenter.clear();
         etUserCenter.setText("");
         // clear other dependent fields
-        if (Util.isConnected(this)) {
+       /* if (Util.isConnected(this)) {
             selectedProjects.clear();
             if (filterProjectList.get(selectedPosition) != null
                     && !TextUtils.isEmpty(filterProjectList.get(selectedPosition).get_id())) {
@@ -2102,17 +2241,28 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                         filterProjectList.get(selectedPosition).get_id());
             }
         }
+*/
+        if (Util.isConnected(this)) {
+            selectedProjects.clear();
+            JurisdictionType project = new JurisdictionType();
+            project.setId(projects.get(selectedPosition).getId());
+            project.setName(projects.get(selectedPosition).getOrgProjectName());
+            selectedProjects.add(project);
+            profilePresenter.getOrganizationRoles(this.selectedOrg.getId(),
+                    projects.get(selectedPosition).getId());
+        }
+
     }
 
     @Override
-    public void onCustomSpinnerSelection(String type) {
+    public void onCustomBottomSheetSelection(@NonNull String type) {
         if (type.equals("Select Role")) {
             int selectedPosition = -1;
             String selectedRoleName = "";
-            for (CustomSpinnerObject customSpinnerObject : selectionRolesList) {
-                if (customSpinnerObject.isSelected()) {
-                    selectedRoleName = customSpinnerObject.getName();
-                    selectedPosition = selectionRolesList.indexOf(customSpinnerObject);
+            for (SelectionListObject SelectionListObject : selectionRolesList) {
+                if (SelectionListObject.isSelected()) {
+                    selectedRoleName = SelectionListObject.getValue();
+                    selectedPosition = selectionRolesList.indexOf(SelectionListObject);
                     break;
                 }
             }
@@ -2180,11 +2330,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             }
         } else if (type.equals("Select Country")) {
             selectedCountries.clear();
-            for (CustomSpinnerObject country : customSpinnerCountries) {
+            for (SelectionListObject country : customSpinnerCountries) {
                 if (country.isSelected()) {
                     JurisdictionType selectedCountry = new JurisdictionType();
-                    selectedCountry.setName(country.getName());
-                    selectedCountry.setId(country.get_id());
+                    selectedCountry.setName(country.getValue());
+                    selectedCountry.setId(country.getId());
                     selectedCountries.add(selectedCountry);
                 }
             }
@@ -2248,11 +2398,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             }
         } else if (type.equals("Select State")) {
             selectedStates.clear();
-            for (CustomSpinnerObject state : customSpinnerStates) {
+            for (SelectionListObject state : customSpinnerStates) {
                 if (state.isSelected()) {
                     JurisdictionType selectedState = new JurisdictionType();
-                    selectedState.setName(state.getName());
-                    selectedState.setId(state.get_id());
+                    selectedState.setName(state.getValue());
+                    selectedState.setId(state.getId());
                     selectedStates.add(selectedState);
                 }
             }
@@ -2327,11 +2477,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             }
         } else if (type.equals("Select City")) {
             selectedCities.clear();
-            for (CustomSpinnerObject city : customSpinnerCities) {
+            for (SelectionListObject city : customSpinnerCities) {
                 if (city.isSelected()) {
                     JurisdictionType selectedCity = new JurisdictionType();
-                    selectedCity.setName(city.getName());
-                    selectedCity.setId(city.get_id());
+                    selectedCity.setName(city.getValue());
+                    selectedCity.setId(city.getId());
                     selectedCities.add(selectedCity);
                 }
             }
@@ -2387,11 +2537,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             }
         } else if (type.equals("Select District")) {
             selectedDistricts.clear();
-            for (CustomSpinnerObject district : customSpinnerDistricts) {
+            for (SelectionListObject district : customSpinnerDistricts) {
                 if (district.isSelected()) {
                     JurisdictionType selectedDistrict = new JurisdictionType();
-                    selectedDistrict.setName(district.getName());
-                    selectedDistrict.setId(district.get_id());
+                    selectedDistrict.setName(district.getValue());
+                    selectedDistrict.setId(district.getId());
                     selectedDistricts.add(selectedDistrict);
                 }
             }
@@ -2447,11 +2597,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             }
         } else if (type.equals("Select Taluka")) {
             selectedTalukas.clear();
-            for (CustomSpinnerObject taluka : customSpinnerTalukas) {
+            for (SelectionListObject taluka : customSpinnerTalukas) {
                 if (taluka.isSelected()) {
                     JurisdictionType selectedTaluka = new JurisdictionType();
-                    selectedTaluka.setName(taluka.getName());
-                    selectedTaluka.setId(taluka.get_id());
+                    selectedTaluka.setName(taluka.getValue());
+                    selectedTaluka.setId(taluka.getId());
                     selectedTalukas.add(selectedTaluka);
                 }
             }
@@ -2524,11 +2674,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             }
         } else if (type.equals("Select Cluster")) {
             selectedClusters.clear();
-            for (CustomSpinnerObject cluster : customSpinnerClusters) {
+            for (SelectionListObject cluster : customSpinnerClusters) {
                 if (cluster.isSelected()) {
                     JurisdictionType selectedCluster = new JurisdictionType();
-                    selectedCluster.setName(cluster.getName());
-                    selectedCluster.setId(cluster.get_id());
+                    selectedCluster.setName(cluster.getValue());
+                    selectedCluster.setId(cluster.getId());
                     selectedClusters.add(selectedCluster);
                 }
             }
@@ -2575,11 +2725,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             }
         } else if (type.equals("Select Gram-Panchayat")) {
             selectedPanchayat.clear();
-            for (CustomSpinnerObject panchayt : customSpinnerPanchayt) {
+            for (SelectionListObject panchayt : customSpinnerPanchayt) {
                 if (panchayt.isSelected()) {
                     JurisdictionType selectedCluster = new JurisdictionType();
-                    selectedCluster.setName(panchayt.getName());
-                    selectedCluster.setId(panchayt.get_id());
+                    selectedCluster.setName(panchayt.getValue());
+                    selectedCluster.setId(panchayt.getId());
                     selectedPanchayat.add(selectedCluster);
                 }
             }
@@ -2625,11 +2775,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             }
         } else if (type.equals("Select Village")) {
             selectedVillages.clear();
-            for (CustomSpinnerObject cluster : customSpinnerVillages) {
+            for (SelectionListObject cluster : customSpinnerVillages) {
                 if (cluster.isSelected()) {
                     JurisdictionType selectedVillage = new JurisdictionType();
-                    selectedVillage.setName(cluster.getName());
-                    selectedVillage.setId(cluster.get_id());
+                    selectedVillage.setName(cluster.getValue());
+                    selectedVillage.setId(cluster.getId());
                     selectedVillages.add(selectedVillage);
                 }
             }
@@ -2673,11 +2823,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
             }
         } else if (type.equals("Select School")) {
             selectedSchools.clear();
-            for (CustomSpinnerObject school : customSpinnerSchools) {
+            for (SelectionListObject school : customSpinnerSchools) {
                 if (school.isSelected()) {
                     JurisdictionType selectedSchool = new JurisdictionType();
-                    selectedSchool.setName(school.getName());
-                    selectedSchool.setId(school.get_id());
+                    selectedSchool.setName(school.getValue());
+                    selectedSchool.setId(school.getId());
                     selectedSchools.add(selectedSchool);
                 }
             }
@@ -2715,11 +2865,11 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
         } else if (type.equals("Select Learning Center")) {
             selectedCenter.clear();
-            for (CustomSpinnerObject center : customSpinnerCenter) {
+            for (SelectionListObject center : customSpinnerCenter) {
                 if (center.isSelected()) {
                     JurisdictionType selectedSchool = new JurisdictionType();
-                    selectedSchool.setName(center.getName());
-                    selectedSchool.setId(center.get_id());
+                    selectedSchool.setName(center.getValue());
+                    selectedSchool.setId(center.getId());
                     selectedCenter.add(selectedSchool);
                 }
             }
@@ -2741,52 +2891,5 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         }
     }
 
-    private void filterOrg(String searchText) {
-        searchText = searchText.toLowerCase(Locale.getDefault());
 
-        filterOrgList.clear();
-        for (CustomSpinnerObject org : selectionOrgList) {
-            if (org.getName().toLowerCase(Locale.getDefault()).startsWith(searchText)) {
-                filterOrgList.add(org);
-            }
-        }
-        if (selectionOrgList.size() > 0 && filterOrgList.size() == 0) {
-            Util.snackBarToShowMsg(getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "No organization found with given text.",
-                    Snackbar.LENGTH_LONG);
-            selectedOrg = null;
-            selectedOrgName = "";
-            selectionProjectList.clear();
-        }
-        rvOrg.setVisibility(View.VISIBLE);
-        orgDropDownAdapter.notifyDataSetChanged();
-    }
-
-    private void filterProject(String searchText) {
-        if (selectedOrg != null && !TextUtils.isEmpty(selectedOrg.getId())) {
-            searchText = searchText.toLowerCase(Locale.getDefault());
-
-            if (filterProjectList != null) {
-                filterProjectList.clear();
-                for (CustomSpinnerObject project : selectionProjectList) {
-                    if (project.getName().toLowerCase(Locale.getDefault()).startsWith(searchText)) {
-                        filterProjectList.add(project);
-                    }
-                }
-                if (selectionProjectList.size() > 0 && filterProjectList.size() == 0) {
-                    Util.snackBarToShowMsg(getWindow().getDecorView()
-                                    .findViewById(android.R.id.content), "No project found with given text.",
-                            Snackbar.LENGTH_LONG);
-                    etUserProject.setText("");
-                    selectedRoles.clear();
-                    selectedRole = null;
-                    isRoleSelected = false;
-                }
-                rvProject.setVisibility(View.VISIBLE);
-                projectDropDownAdapter.notifyDataSetChanged();
-            }
-        } else {
-            Toast.makeText(this, getString(R.string.msg_select_org), Toast.LENGTH_LONG).show();
-        }
-    }
 }

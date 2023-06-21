@@ -546,6 +546,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
             if (status == 200) {
                 popup.getMenu().findItem(R.id.action_archive).setVisible(false);
                 meetData.setArchive(true);
+                getActivity().finish();
             }
         }
         if (requestId.equals(MatrimonyMeetFragmentPresenter.MATRIMONY_MEET_DELETE)) {

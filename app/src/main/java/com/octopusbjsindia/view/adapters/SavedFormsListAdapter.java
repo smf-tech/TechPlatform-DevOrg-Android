@@ -189,7 +189,7 @@ public class SavedFormsListAdapter extends BaseExpandableListAdapter {
         // Setting Dialog Message
         alertDialog.setMessage(mContext.getString(R.string.msg_delete_saved_form));
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.mipmap.app_logo);
+        alertDialog.setIcon(R.mipmap.ic_launcher);
         // Setting CANCEL Button
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, mContext.getString(R.string.cancel),
                 (dialog, which) -> alertDialog.dismiss());

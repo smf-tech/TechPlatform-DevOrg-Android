@@ -71,7 +71,7 @@ public class ForegroundService extends Service {
         final Builder builder = new Builder(this, CHANNEL_ID)
                 .setContentTitle("Operator Machine Reading")
                 .setContentText(input)
-                .setSmallIcon(R.mipmap.app_logo)
+                .setSmallIcon(R.drawable.ic_launcher_notification)
                 .setContentIntent(pendingIntent);
 
         startForeground(R.string.app_name, builder.build());

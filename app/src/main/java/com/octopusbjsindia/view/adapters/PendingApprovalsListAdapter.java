@@ -162,7 +162,7 @@ public class PendingApprovalsListAdapter extends BaseExpandableListAdapter {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
         alertDialog.setTitle(mContext.getString(R.string.app_name_ss));
         alertDialog.setMessage(mContext.getString(R.string.msg_rejection_reason));
-        alertDialog.setIcon(R.mipmap.app_logo);
+        alertDialog.setIcon(R.mipmap.ic_launcher);
         alertDialog.setCancelable(false);
 
         EditText comment = new EditText(mContext);

@@ -79,7 +79,7 @@ public class PendingFormsAdapter extends RecyclerView.Adapter<PendingFormsAdapte
         // Setting Dialog Message
         alertDialog.setMessage(context.getString(R.string.msg_delete_saved_form));
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.mipmap.app_logo);
+        alertDialog.setIcon(R.mipmap.ic_launcher);
         // Setting CANCEL Button
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, context.getString(R.string.cancel),
                 (dialog, which) -> alertDialog.dismiss());

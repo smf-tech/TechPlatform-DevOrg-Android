@@ -59,7 +59,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class SiltTransportationRecordActivity extends AppCompatActivity implements APIDataListener, 
+public class SiltTransportationRecordActivity extends AppCompatActivity implements APIDataListener,
         View.OnClickListener, CustomSpinnerListener {
 
     private View siltTransportationRecordFragmentView;
@@ -76,7 +76,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
     private int imageCount = 0;
     private Button btnSubmit;
     private EditText etDate, etState, etDistrict, etTaluka, etVillage, etBType, etArea, etSurveyNo, etBFirstName, etBLastName, etBMobile,
-            etTractorTripsCount, etTipperTripsCount, etTotalSilt;
+            etTractorTripsCount, etTipperTripsCount,etHyvaTripsCount, etTotalSilt;
     //etFarmersCount, etBeneficiariesCount;
     private String currentPhotoPath = "";
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
@@ -86,7 +86,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
     private ArrayList<CustomSpinnerObject> bTypeList = new ArrayList<>();
     private String selectedState, selectedStateId, selectedDistrict, selectedDistrictId, selectedTaluka,
             selectedTalukaId, selectedVillage, selectedVillageId, selectedBType, selectedBTypeId;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,6 +135,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
         etTractorTripsCount = findViewById(R.id.et_trolley_trips_count);
         etTractorTripsCount.setLongClickable(false);
         etTipperTripsCount = findViewById(R.id.et_tipper_trips_count);
+        etHyvaTripsCount = findViewById(R.id.et_hyva_trips_count);
         etTipperTripsCount.setLongClickable(false);
         TextView tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
         tv_toolbar_title.setText("Silt Beneficiary Record");
@@ -203,7 +204,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
 //                }
 //            }
 //        }
-        
+
     }
 
     TextWatcher textWatcher = new TextWatcher() {
@@ -219,7 +220,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
         public void afterTextChanged(Editable s) {
             if (etBMobile.getText().toString().length() == 10) {
                 // check if this mobile number is already registered in beneficiary master
-                if(Util.isConnected(SiltTransportationRecordActivity.this)) {
+                if (Util.isConnected(SiltTransportationRecordActivity.this)) {
                     presenter.getBeneficiaryDetails(etBMobile.getText().toString());
                 } else {
                     Util.showToast(getResources().getString(R.string.msg_no_network), this);
@@ -362,6 +363,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
                         siltTransportRecord.setbMobile(etBMobile.getText().toString());
                         siltTransportRecord.setTractorTripsCount(etTractorTripsCount.getText().toString());
                         siltTransportRecord.setTipperTripsCount(etTipperTripsCount.getText().toString());
+                        siltTransportRecord.setHyvaTripsCount(etHyvaTripsCount.getText().toString());
 //                        siltTransportRecord.setFarmersCount(etFarmersCount.getText().toString());
 //                        siltTransportRecord.setBeneficiariesCount(etBeneficiariesCount.getText().toString());
                         uploadData(siltTransportRecord);
@@ -385,7 +387,8 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
                 || TextUtils.isEmpty(etBLastName.getText().toString().trim())
                 || TextUtils.isEmpty(etBMobile.getText().toString().trim())
                 || TextUtils.isEmpty(etTractorTripsCount.getText().toString().trim())
-                || TextUtils.isEmpty(etTipperTripsCount.getText().toString().trim())) {
+                || TextUtils.isEmpty(etTipperTripsCount.getText().toString().trim())
+                || TextUtils.isEmpty(etHyvaTripsCount.getText().toString().trim())) {
 
             Util.snackBarToShowMsg(this.getWindow().getDecorView()
                             .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
@@ -487,7 +490,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
         etArea.setText(record.getArea());
         etBFirstName.setText(record.getbFirstName());
         etBLastName.setText(record.getbLastName());
-        if(selectedStateId == null ||!selectedStateId.equals(record.getStateId())) {
+        if (selectedStateId == null || !selectedStateId.equals(record.getStateId())) {
             selectedStateId = record.getStateId();
             selectedState = record.getStateName();
             etState.setText(selectedState);
@@ -498,7 +501,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
             selectedTaluka = "";
             selectedTalukaId = "";
         }
-        if(selectedDistrictId == null ||!selectedDistrictId.equals(record.getDistrictId())) {
+        if (selectedDistrictId == null || !selectedDistrictId.equals(record.getDistrictId())) {
             selectedDistrictId = record.getDistrictId();
             selectedDistrict = record.getDistrictName();
             etDistrict.setText(selectedDistrict);
@@ -509,7 +512,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
             selectedVillage = "";
             selectedVillageId = "";
         }
-        if(selectedTalukaId == null || !selectedTalukaId.equals(record.getTalukaId())) {
+        if (selectedTalukaId == null || !selectedTalukaId.equals(record.getTalukaId())) {
             selectedTalukaId = record.getTalukaId();
             selectedTaluka = record.getTalukaName();
             etTaluka.setText(selectedTaluka);
@@ -517,13 +520,13 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
             selectedVillage = "";
             selectedVillageId = "";
         }
-        if (selectedVillageId ==null || !selectedVillageId.equals(record.getTalukaId())) {
+        if (selectedVillageId == null || !selectedVillageId.equals(record.getTalukaId())) {
             selectedVillageId = record.getVillageId();
             selectedVillage = record.getVillageName();
             etVillage.setText(selectedVillage);
         }
-        for (CustomSpinnerObject bType: bTypeList) {
-            if(bType.get_id().equals(record.getbTypeId())) {
+        for (CustomSpinnerObject bType : bTypeList) {
+            if (bType.get_id().equals(record.getbTypeId())) {
                 selectedBType = bType.getName();
                 selectedBTypeId = bType.get_id();
                 break;
@@ -706,6 +709,8 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
                 etVillage.setText("");
                 selectedVillage = "";
                 selectedVillageId = "";
+                talukaList.clear();
+                villageList.clear();
                 break;
             case "Select Taluka":
                 for (CustomSpinnerObject taluka : talukaList) {
@@ -719,6 +724,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
                 etVillage.setText("");
                 selectedVillage = "";
                 selectedVillageId = "";
+                villageList.clear();
                 break;
             case "Select Village":
                 for (CustomSpinnerObject village : villageList) {

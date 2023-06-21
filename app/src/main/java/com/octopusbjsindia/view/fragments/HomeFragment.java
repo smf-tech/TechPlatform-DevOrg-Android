@@ -295,7 +295,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
                 dialogNotApproved.setMessage(message);
 
                 // Setting Icon to Dialog
-                dialogNotApproved.setIcon(R.mipmap.app_logo);
+                dialogNotApproved.setIcon(R.mipmap.ic_launcher);
 
                 // Setting OK Button
                 dialogNotApproved.setButton(Dialog.BUTTON_POSITIVE, getString(android.R.string.ok),

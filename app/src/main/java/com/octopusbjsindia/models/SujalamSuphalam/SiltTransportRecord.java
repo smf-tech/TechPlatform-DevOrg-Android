@@ -74,6 +74,10 @@ public class SiltTransportRecord implements Serializable {
     @Expose
     private String tipperTripsCount;
 
+    @SerializedName("hyva_trips")
+    @Expose
+    private String hyvaTripsCount;
+
 //    @SerializedName("farmer_count")
 //    @Expose
 //    private String farmersCount;
@@ -196,6 +200,14 @@ public class SiltTransportRecord implements Serializable {
 
     public String getArea() {
         return area;
+    }
+
+    public String getHyvaTripsCount() {
+        return hyvaTripsCount;
+    }
+
+    public void setHyvaTripsCount(String hyvaTripsCount) {
+        this.hyvaTripsCount = hyvaTripsCount;
     }
 
     public void setArea(String area) {

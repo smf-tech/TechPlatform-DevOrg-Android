@@ -28,7 +28,7 @@ public class TMPendingApprovalPageRecyclerAdapter extends RecyclerView.Adapter<T
             mContext = context;
             this.dataList = dataList;
             this.clickListener =clickListener;
-             requestOptions = new RequestOptions().placeholder(R.mipmap.app_logo);
+             requestOptions = new RequestOptions().placeholder(R.mipmap.ic_launcher);
             requestOptions = requestOptions.apply(RequestOptions.circleCropTransform());
         }
 

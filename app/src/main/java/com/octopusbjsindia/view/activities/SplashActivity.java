@@ -21,6 +21,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -181,6 +182,7 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Toast.makeText(SplashActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
                 }
             }
     }

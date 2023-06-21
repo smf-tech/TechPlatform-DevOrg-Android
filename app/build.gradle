@@ -14,16 +14,18 @@ android {
     }
 
     compileSdkVersion 33
+    namespace 'com.octopusbjsindia'
 
     def dateFormat = new Date().format('ddMMYYYY')
 
     defaultConfig {
+        applicationId 'com.octopusbjsindia'
         minSdkVersion 22
         targetSdkVersion 33
-        versionCode 39
-        versionName "1.39"
+        versionCode 40
+        versionName "1.40"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        applicationId 'com.octopusbjsindia'
+
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation":
@@ -65,7 +67,7 @@ android {
             buildConfigField 'String', 'BASE_URL', "\"http://10.53.17.35/\""
             buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
             buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
-            applicationId 'com.octopusbjsindia'
+            applicationIdSuffix ".sandbox"
         }
         Staging {
             dimension "server"
@@ -73,7 +75,7 @@ android {
             buildConfigField 'String', 'BASE_URL', "\"http://13.235.124.3:8090/\""
             buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
             buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
-            applicationId 'com.octopusbjsindia'
+            applicationIdSuffix ".staging"
             signingConfig signingConfigs.config
         }
         Production {
@@ -82,7 +84,6 @@ android {
             buildConfigField 'String', 'BASE_URL', "\"http://13.235.105.204/\""
             buildConfigField 'String', 'CLIENT_ID', "\"5c1c78a9d503a33b29274ca4\""
             buildConfigField 'String', 'CLIENT_SECRET', "\"CL8isQUG6Ch3DUoAhgCfLbwTayZZCPUx21uZ2mxN\""
-            applicationId 'com.octopusbjsindia'
             signingConfig signingConfigs.config
         }
     }
