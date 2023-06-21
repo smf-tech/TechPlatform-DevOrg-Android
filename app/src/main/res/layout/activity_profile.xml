@@ -241,6 +241,21 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView6"
                 tools:listitem="@layout/row_project" />
 
+            <TextView
+                android:id="@+id/tvNoProject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:textColor="?android:textColorPrimary"
+                android:fontFamily="@font/opensans_semibold"
+                android:text="No active project for your profile."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView6"
+                android:visibility="gone"/>
+
+
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/progress_project"
                 android:layout_width="wrap_content"

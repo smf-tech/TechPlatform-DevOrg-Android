@@ -1,5 +1,6 @@
 package com.octopusbjsindia.view.activities;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Intent;
@@ -55,6 +56,7 @@ public class ProfileActivity extends BaseActivity implements/* View.OnClickListe
     ProfileActivityPresenter presenter;
     LinearLayout parent;
     private UserInfo userInfo;
+    private TextView tvNoProject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class ProfileActivity extends BaseActivity implements/* View.OnClickListe
         toolbar = findViewById(R.id.toolbar);
         progressBar = findViewById(R.id.ly_progress_bar);
         progressBarProjects = findViewById(R.id.progress_project);
+        tvNoProject = findViewById(R.id.tvNoProject);
 
         presenter = new ProfileActivityPresenter(this);
         if (Util.isConnected(this)) {
@@ -281,6 +284,11 @@ public class ProfileActivity extends BaseActivity implements/* View.OnClickListe
 
     }
 
+    public void showNoActiveProject(String message) {
+        progressBarProjects.setVisibility(View.GONE);
+        tvNoProject.setVisibility(View.VISIBLE);
+        tvNoProject.setText(message);
+    }
     public void displayProjects(ArrayList<MultyProjectData> data) {
         progressBarProjects.setVisibility(View.GONE);
         String projects = userInfo.getProjectIds().get(0).getId();

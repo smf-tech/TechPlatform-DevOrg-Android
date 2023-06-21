@@ -57,7 +57,11 @@ public class ProfileActivityPresenter implements APIPresenterListener {
         activity.hideProgressBar();
         if (requestID.equals("multi_profile")) {
             MultyProjectResponse multyProjectResponse = new Gson().fromJson(response, MultyProjectResponse.class);
-            activity.displayProjects(multyProjectResponse.getData());
+            if(multyProjectResponse.getStatus().equalsIgnoreCase("200")) {
+                activity.displayProjects(multyProjectResponse.getData());
+            } else {
+                activity.showNoActiveProject(multyProjectResponse.getMessage());
+            }
         } else if (requestID.equals("UserProfile")) {
             User user = new Gson().fromJson(response, User.class);
             if (response != null && user.getUserInfo() != null) {
