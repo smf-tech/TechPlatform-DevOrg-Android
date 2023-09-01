@@ -645,7 +645,7 @@ public class Util {
             SimpleDateFormat sdf = new SimpleDateFormat(DAY_MONTH_YEAR, Locale.getDefault());
             Date date = sdf.parse(dateString);
             long epoch = date.getTime();
-            int test = (int) (epoch / 1000);
+            //int test = (int) (epoch / 1000);
             return epoch;
         } catch (ParseException e) {
             Log.e(TAG, e.getMessage());
@@ -773,7 +773,7 @@ public class Util {
 
 
     public static String getDateFromTimestamp(Long timeStamp, String dateTimeFormat) {
-        if (timeStamp > 0) {
+       // if (timeStamp > 0) {
             try {
                 int length = (int) (Math.log10(timeStamp) + 1);
                 if (length == 10) {
@@ -785,7 +785,7 @@ public class Util {
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
-        }
+        //}
         return "";
     }
 
