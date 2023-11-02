@@ -19,7 +19,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -214,12 +216,14 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
         Util.showToast(getActivity(), responseStatus);
         if(requestId.equals(MachineDeployStructureListFragmentPresenter.DEPLOY_MACHINE)){
             if(status == 200){
-                getActivity().finish();
+                /*getActivity().finish();
                 Intent intent = new Intent(getActivity(), SSActionsActivity.class);
                 intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
                 intent.putExtra("viewType", 2);
                 intent.putExtra("title", "Machine List");
-                getActivity().startActivity(intent);
+                getActivity().startActivity(intent);*/
+
+                requireActivity().onBackPressed();
             }
         }
     }
