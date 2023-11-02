@@ -177,12 +177,16 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
 
     @Override
     public void showProgressBar() {
-        ((HomeActivity) getActivity()).lytProgress.setVisibility(View.VISIBLE);
+        if (((HomeActivity) getActivity()).lytProgress!=null){
+            ((HomeActivity) getActivity()).lytProgress.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void hideProgressBar() {
-        ((HomeActivity) getActivity()).lytProgress.setVisibility(View.GONE);
+        if (((HomeActivity) getActivity()).lytProgress!=null) {
+            ((HomeActivity) getActivity()).lytProgress.setVisibility(View.GONE);
+        }
     }
 
     @Override
