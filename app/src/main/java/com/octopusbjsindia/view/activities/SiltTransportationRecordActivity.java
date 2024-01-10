@@ -76,7 +76,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
     private int imageCount = 0;
     private Button btnSubmit;
     private EditText etDate, etState, etDistrict, etTaluka, etVillage, etBType, etArea, etSurveyNo, etBFirstName, etBLastName, etBMobile,
-            etTractorTripsCount, etTipperTripsCount,etHyvaTripsCount, etTotalSilt;
+            etTractorTripsCount, etTipperTripsCount, etHyvaTripsCount, etTotalSilt;
     //etFarmersCount, etBeneficiariesCount;
     private String currentPhotoPath = "";
     private ArrayList<CustomSpinnerObject> stateList = new ArrayList<>();
@@ -391,16 +391,17 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
                 || TextUtils.isEmpty(etHyvaTripsCount.getText().toString().trim())) {
 
             Util.snackBarToShowMsg(this.getWindow().getDecorView()
-                            .findViewById(android.R.id.content), getString(R.string.enter_correct_details),
+                            .findViewById(android.R.id.content), getString(R.string.enter_all_details),
+                    Snackbar.LENGTH_LONG);
+
+            return false;
+        } else if (etBMobile.getText().toString().trim().length() != 10) {
+            Util.snackBarToShowMsg(this.getWindow().getDecorView()
+                            .findViewById(android.R.id.content), getString(R.string.msg_enter_valid_mobile_no),
                     Snackbar.LENGTH_LONG);
 
             return false;
         }
-//            Util.snackBarToShowMsg(this.getWindow().getDecorView()
-//                            .findViewById(android.R.id.content), "Please, click image of register.",
-//                    Snackbar.LENGTH_LONG);
-//            return false;
-//        }
         return true;
     }
 

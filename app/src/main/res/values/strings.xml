@@ -371,6 +371,7 @@
     <string name="end_date">End Date</string>
     <string name="enter_start_date">Please enter start date.</string>
     <string name="enter_correct_details">Please enter correct details.</string>
+    <string name="enter_all_details">Please enter all details.</string>
     <string name="enter_proper_date_range">Please enter proper date range.</string>
     <string name="reason">Reason</string>
     <string name="rejected_reason">Rejected Reason</string>

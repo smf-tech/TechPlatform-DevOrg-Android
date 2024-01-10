@@ -76,7 +76,7 @@
                     android:id="@+id/et_b_fname"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Beneficiary first name"
-                    android:inputType="textCapWords"
+                    android:inputType="textPersonName|textCapWords"
                     android:maxLength="100" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,7 +90,7 @@
                     android:id="@+id/et_b_lname"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="Beneficiary last name"
-                    android:inputType="textCapWords"
+                    android:inputType="textPersonName|textCapWords"
                     android:maxLength="100" />
             </com.google.android.material.textfield.TextInputLayout>
 

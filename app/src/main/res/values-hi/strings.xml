@@ -310,6 +310,7 @@
     <string name="end_date">अंतिम तिथि</string>
     <string name="enter_start_date">कृपया प्रारंभ तिथि दर्ज करें|</string>
     <string name="enter_correct_details">कृपया सही विवरण दर्ज करें।</string>
+    <string name="enter_all_details">कृपया सभी विवरण दर्ज करें</string>
     <string name="enter_proper_date_range">कृपया उचित तिथि सीमा दर्ज करें।</string>
     <string name="reason">कारण</string>
     <string name="rejected_reason">अस्वीकृत कारण</string>
