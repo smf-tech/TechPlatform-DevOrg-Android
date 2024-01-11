@@ -10,6 +10,9 @@ public class MouDetails {
     @SerializedName("rate_details")
     @Expose
     private List<RateDetail> rateDetails = null;
+    @SerializedName("machine_rate_per_hour")
+    @Expose
+    private String machineRatePerHour;
     @SerializedName("MOU_images")
     @Expose
     private List<String> mOUImages = null;
@@ -72,5 +75,13 @@ public class MouDetails {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getMachineRatePerHour() {
+        return machineRatePerHour;
+    }
+
+    public void setMachineRatePerHour(String machineRatePerHour) {
+        this.machineRatePerHour = machineRatePerHour;
     }
 }

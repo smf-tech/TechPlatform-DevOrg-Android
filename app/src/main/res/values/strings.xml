@@ -550,8 +550,8 @@
     <string name="chasis_number">Machine chasis number *</string>
     <string name="excavation_capacity">Excavation capacity of machine per hour *</string>
     <string name="diesel_capacity">Diesel tank capacity in litres *</string>
-    <string name="provider_name">Machine Provider First Name*</string>
-    <string name="provider_contact">Machine Provider Contact Number*</string>
+    <string name="owner_first_name">Machine Owner First Name*</string>
+    <string name="owner_contact">Machine Owner Contact Number*</string>
     <string name="machine_mobile">Machine Attached Mobile Number</string>
     <string name="ownership_type">Type of Ownership</string>
     <string name="trade_name">Provider Trade Name (if firm)</string>
@@ -564,6 +564,8 @@
     <string name="bank_account_no">Bank Account Number</string>
     <string name="confirm_account_no">Confirm Bank Account Number</string>
     <string name="account_image">Upload Image (Cancelled Cheque/Passbook front page)</string>
+    <string name="mou_upload" translatable="false">Upload MOU copy</string>
+    <string name="machine_per_hour_rate" translatable="false">Machine rate per hour(In Rupees)*</string>
     <string name="account_holder_name">Account Holder\'s Name</string>
     <string name="account_type">Account Type</string>
     <string name="operator_name">Machine Operator Name</string>
@@ -580,7 +582,7 @@
     <string name="travel_distance">Approximate travel distance(Km)</string>
     <string name="travel_time">Approximate travel time(Hr)</string>
     <string name="diesel_provided_by">Diesel provided by</string>
-    <string name="provider_last_name">Machine Provider Last name*</string>
+    <string name="owner_last_name">Machine Owner Last name*</string>
     <string name="enter_rate1_start_date">Please select start date for rate 1.</string>
     <string name="enter_rate2_start_date">Please select start date for rate2.</string>
     <string name="enter_rate3_start_date">Please select start date for rate3.</string>
@@ -590,7 +592,7 @@
     <string name="machine_stop_alert_message">Please make sure that, operator has stopped the machine.</string>
     <string name="release_machine_alert_message">Are you sure you want to release this machine?</string>
     <string name="error_confirm_account_no">Please confirm your bank account number.</string>
-    <string name="provider_name_hint">Provider Name</string>
+    <string name="owner_name_hint">Machine Owner Name</string>
     <string name="meter_start">Start</string>
     <string name="meter_stop">Stop</string>
     <string name="meter_pause">Pause</string>
@@ -663,6 +665,7 @@
     <string name="enter_proper_machine_mobile">Enter proper value for machine mobile number.</string>
     <string name="enter_proper_pan_no">Enter proper value for PAN</string>
     <string name="enter_proper_operator_contact">Enter proper value for Operator\'s contact number.</string>
+    <string name="enter_machine_rate_per_hour" translatable="false">Enter machine rate per hour.</string>
     <string name="text_terms_service">By continuing you agree to the Terms of Service and Privacy Policy</string>
     <string name="create_feed">Create Feed</string>
     <string name="msg_select_org">Please select organization.</string>

@@ -60,7 +60,8 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
     private MachineMouFragmentPresenter machineMouFragmentPresenter;
     private EditText editOwnerType, etMachineState, etMachineDistrict, etMachineTaluka,
             etMachineType, etYear, etMachineMakeModel, etMeterWorking, etRtoNumber, etChasisNumber,
-            etExcavationCapacity, etDieselCapacity, etOrderRefNumber,/* etProviderName,*/ etProviderContact;
+    etExcavationCapacity, /*etDieselCapacity*/ /*etOrderRefNumber*//* etProviderName,*/
+    etProviderContact;
     private Button btnFirstPartMou, btnEligilble, btnNotEligible;
     private LinearLayout llEligible;
     private int statusCode, selectedMachineTypeCode = 1 ;
@@ -120,8 +121,8 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         etRtoNumber = machineMouFragmentView.findViewById(R.id.et_rto_number);
         etChasisNumber = machineMouFragmentView.findViewById(R.id.et_chasis_number);
         etExcavationCapacity = machineMouFragmentView.findViewById(R.id.et_excavation_capacity);
-        etDieselCapacity = machineMouFragmentView.findViewById(R.id.et_diesel_capacity);
-        etOrderRefNumber = machineMouFragmentView.findViewById(R.id.et_order_ref_number);
+//        etDieselCapacity = machineMouFragmentView.findViewById(R.id.et_diesel_capacity);
+//        etOrderRefNumber = machineMouFragmentView.findViewById(R.id.et_order_ref_number);
         //etProviderName = machineMouFragmentView.findViewById(R.id.et_provider_name);
         etProviderContact = machineMouFragmentView.findViewById(R.id.et_provider_contact);
         btnFirstPartMou = machineMouFragmentView.findViewById(R.id.btn_first_part_mou);
@@ -255,10 +256,10 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         etChasisNumber.setLongClickable(false);
         etExcavationCapacity.setFocusable(false);
         etExcavationCapacity.setLongClickable(false);
-        etDieselCapacity.setFocusable(false);
-        etDieselCapacity.setLongClickable(false);
-        etOrderRefNumber.setFocusable(false);
-        etOrderRefNumber.setLongClickable(false);
+//        etDieselCapacity.setFocusable(false);
+//        etDieselCapacity.setLongClickable(false);
+//        etOrderRefNumber.setFocusable(false);
+//        etOrderRefNumber.setLongClickable(false);
 //        etProviderName.setFocusable(false);
 //        etProviderName.setLongClickable(false);
         etProviderContact.setFocusable(false);
@@ -276,8 +277,8 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         etRtoNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getRtoNumber());
         etChasisNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getChasisNo());
         etExcavationCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getExcavationCapacity());
-        etDieselCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getDiselTankCapacity());
-        etOrderRefNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getOrder_ref_number());
+//        etDieselCapacity.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getDiselTankCapacity());
+//        etOrderRefNumber.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getOrder_ref_number());
         //etProviderName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getProviderName());
         etProviderContact.setText(((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().getProviderContactNumber());
     }
@@ -493,10 +494,10 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
                 (etChasisNumber.getText().toString().trim()));
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setExcavationCapacity
                 (etExcavationCapacity.getText().toString().trim());
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setDiselTankCapacity
-                (etDieselCapacity.getText().toString().trim());
-        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOrder_ref_number(
-                (etOrderRefNumber.getText().toString().trim()));
+//        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setDiselTankCapacity
+//                (etDieselCapacity.getText().toString().trim());
+//        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOrder_ref_number(
+//                (etOrderRefNumber.getText().toString().trim()));
 //        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderName(
 //                (etProviderName.getText().toString().trim()));
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setProviderContactNumber(
@@ -769,11 +770,13 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_excavation_capacity), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etDieselCapacity.getText().toString().trim())) {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
-                    getString(R.string.enter_diesel_capacity), Snackbar.LENGTH_LONG);
-            return false;
-        }/* else if (TextUtils.isEmpty(etOrderRefNumber.getText().toString().trim())) {
+        }
+//        else if (TextUtils.isEmpty(etDieselCapacity.getText().toString().trim())) {
+//            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+//                    getString(R.string.enter_diesel_capacity), Snackbar.LENGTH_LONG);
+//            return false;
+//        }
+        /* else if (TextUtils.isEmpty(etOrderRefNumber.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_order_ref_number), Snackbar.LENGTH_LONG);
             return false;

@@ -46,6 +46,7 @@ import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.MachineMouActivity;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 import com.octopusbjsindia.view.customs.TextViewSemiBold;
+import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -63,25 +64,25 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
     private RelativeLayout progressBarLayout;
     private Button btnSecondPartMou, btnPreviousMou;
     private EditText etProviderFirstName, etProviderLastName, etProviderContact,
-            etOperatorFName, etOperatorLName, etOperatorMobile;
+            etOperatorFName, etOperatorLName, etOperatorMobile, etMachineRate;
     //etSupervisorFName, etSupervisorLName ,etMachineMobile,
 
 //            etOwnership, etTradeName, etTurnover, etGstRegNo, etPanNo, etBankName, etBranch, etIfsc,
 //            etAccountNo, etConfirmAccountNo, etAccountHolderName, etAccountType;
-    //private ImageView imgAccount;
-    //private TextViewSemiBold eventPicLabel;
+    private ImageView imgMOUCopy;
+    private TextViewSemiBold eventPicLabel;
     //private String selectedOwnership, selectedOwnershipId, isTurnoverBelow, selectedAccountType;
 //    private ArrayList<CustomSpinnerObject> ownershipList = new ArrayList<>();
 //    private ArrayList<CustomSpinnerObject> isTurnOverAboveList = new ArrayList<>();
 //    private ArrayList<CustomSpinnerObject> accountTypesList = new ArrayList<>();
-//    private Uri outputUri;
-//    private Uri finalUri;
+    private Uri outputUri;
+    private Uri finalUri;
     private final String TAG = MachineMouSecondFragment.class.getName();
-    //private File imageFile;
+    private File imageFile;
     private int statusCode;
     //private boolean isBJSMachine;
     //private int imgCount = 0;
-    //private String currentPhotoPath = "";
+    private String currentPhotoPath = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -119,6 +120,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         etOperatorFName = machineMouSecondFragmentView.findViewById(R.id.et_operator_first_name);
         etOperatorLName = machineMouSecondFragmentView.findViewById(R.id.et_operator_last_name);
         etOperatorMobile = machineMouSecondFragmentView.findViewById(R.id.et_operator_mobile);
+        etMachineRate = machineMouSecondFragmentView.findViewById(R.id.et_machine_rate);
 
         //etOwnership = machineMouSecondFragmentView.findViewById(R.id.et_ownership);
 //        etTradeName = machineMouSecondFragmentView.findViewById(R.id.et_trade_name);
@@ -130,8 +132,8 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 //        etIfsc = machineMouSecondFragmentView.findViewById(R.id.et_ifsc);
 //        etAccountNo = machineMouSecondFragmentView.findViewById(R.id.et_account_no);
 //        etConfirmAccountNo = machineMouSecondFragmentView.findViewById(R.id.et_confirm_account_no);
-//        imgAccount = machineMouSecondFragmentView.findViewById(R.id.img_account);
-        //eventPicLabel = machineMouSecondFragmentView.findViewById(R.id.event_pic_label);
+        imgMOUCopy = machineMouSecondFragmentView.findViewById(R.id.img_mou_copy);
+        eventPicLabel = machineMouSecondFragmentView.findViewById(R.id.event_pic_label);
 //        etAccountHolderName = machineMouSecondFragmentView.findViewById(R.id.et_account_holder_name);
 //        etAccountType = machineMouSecondFragmentView.findViewById(R.id.et_account_type);
 //        if(((MachineMouActivity) getActivity()).getMachineDetailData().
@@ -247,6 +249,10 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         etOperatorLName.setLongClickable(false);
         etOperatorMobile.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getMachine().getMachineMobileNumber());
+        etMachineRate.setFocusable(false);
+        etMachineRate.setLongClickable(false);
+        etMachineRate.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                getMouDetails().getMachineRatePerHour());
 
 //        if(((MachineMouActivity) getActivity()).chequeImageUri!= null) {
 //            imgAccount.setImageURI(((MachineMouActivity) getActivity()).chequeImageUri);
@@ -337,6 +343,10 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         } else if (etOperatorMobile.getText().toString().trim().length() != 10){
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_proper_operator_contact), Snackbar.LENGTH_LONG);
+            return false;
+        } else if (TextUtils.isEmpty(etMachineRate.getText().toString().trim())){
+            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                    getString(R.string.enter_machine_rate_per_hour), Snackbar.LENGTH_LONG);
             return false;
         }
         //if(!isBJSMachine) {
@@ -452,8 +462,10 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                         ((MachineMouActivity) getActivity()).getMachineDetailData().setMouDetails(mouDetails);
                         Date d = new Date();
                         ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfSigning(d.getTime());
-                        ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfMouExpiry
-                                (Util.dateTimeToTimeStamp("2099-12-31", "23:59"));
+//                        ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfMouExpiry
+//                                (Util.dateTimeToTimeStamp("2099-12-31", "23:59"));
+                    ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setMachineRatePerHour(
+                            etMachineRate.getText().toString().trim());
 
                         //((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
                         ((MachineMouActivity) getActivity()).uploadData();
@@ -488,9 +500,9 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 //                cdd2.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
 //                        ViewGroup.LayoutParams.MATCH_PARENT);
 //                break;
-//            case R.id.img_account:
-//                onAddImageClick();
-//                break;
+            case R.id.img_mou_copy:
+                onAddImageClick();
+                break;
         }
     }
 
@@ -542,133 +554,133 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 //                (etAccountType.getText().toString().trim());
     }
 
-//    private void onAddImageClick() {
-//        if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
-//            showPictureDialog();
-//        }
-//    }
+    private void onAddImageClick() {
+        if (Permissions.isCameraPermissionGranted(getActivity(), this)) {
+            showPictureDialog();
+        }
+    }
 
-//    private void showPictureDialog() {
-//        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-//        dialog.setTitle(getString(R.string.title_choose_picture));
-//        String[] items = {getString(R.string.label_gallery), getString(R.string.label_camera)};
-//
-//        dialog.setItems(items, (dialog1, which) -> {
-//            switch (which) {
-//                case 0:
-//                    choosePhotoFromGallery();
-//                    break;
-//
-//                case 1:
-//                    takePhotoFromCamera();
-//                    break;
-//            }
-//        });
-//
-//        dialog.show();
-//    }
+    private void showPictureDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+        dialog.setTitle(getString(R.string.title_choose_picture));
+        String[] items = {getString(R.string.label_gallery), getString(R.string.label_camera)};
 
-//    private void choosePhotoFromGallery() {
-//        try {
-//            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
-//        } catch (ActivityNotFoundException e) {
-//            Toast.makeText(getActivity(), getResources().getString(R.string.msg_error_in_photo_gallery),
-//                    Toast.LENGTH_SHORT).show();
-//        }
-//    }
+        dialog.setItems(items, (dialog1, which) -> {
+            switch (which) {
+                case 0:
+                    choosePhotoFromGallery();
+                    break;
 
-//    private void takePhotoFromCamera() {
-//        try {
-//            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//            File file = getImageFile(); // 1
-//            Uri uri;
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
-//                uri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
-//            else
-//                uri = Uri.fromFile(file); // 3
-//            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
-//            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
-//        } catch (ActivityNotFoundException e) {
-//            //display an error message
-//            Toast.makeText(getActivity(), getResources().getString(R.string.msg_image_capture_not_support),
-//                    Toast.LENGTH_SHORT).show();
-//        } catch (SecurityException e) {
-//            Toast.makeText(getActivity(), getResources().getString(R.string.msg_take_photo_error),
-//                    Toast.LENGTH_SHORT).show();
-//        }
-//    }
+                case 1:
+                    takePhotoFromCamera();
+                    break;
+            }
+        });
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
-//            try {
-////                String imageFilePath = Util.getImageName();
-////                if (imageFilePath == null) return;
-////                finalUri = Util.getUri(imageFilePath);
-////                Crop.of(outputUri, finalUri).start(getContext(), this);
-//                finalUri=Uri.fromFile(new File(currentPhotoPath));
-//                Crop.of(finalUri, finalUri).start(getContext(),this);
-//            } catch (Exception e) {
-//                Log.e(TAG, e.getMessage());
-//            }
-//        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
-//            if (data != null) {
-//                try {
-////                    String imageFilePath = Util.getImageName();
-////                    if (imageFilePath == null) return;
-////                    outputUri = data.getData();
-////                    finalUri = Util.getUri(imageFilePath);
-////                    Crop.of(outputUri, finalUri).start(getContext(), this);
-//                    getImageFile();
+        dialog.show();
+    }
+
+    private void choosePhotoFromGallery() {
+        try {
+            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getActivity(), getResources().getString(R.string.msg_error_in_photo_gallery),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void takePhotoFromCamera() {
+        try {
+            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File file = getImageFile(); // 1
+            Uri uri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
+                uri = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID.concat(".file_provider"), file);
+            else
+                uri = Uri.fromFile(file); // 3
+            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
+            startActivityForResult(pictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+        } catch (ActivityNotFoundException e) {
+            //display an error message
+            Toast.makeText(getActivity(), getResources().getString(R.string.msg_image_capture_not_support),
+                    Toast.LENGTH_SHORT).show();
+        } catch (SecurityException e) {
+            Toast.makeText(getActivity(), getResources().getString(R.string.msg_take_photo_error),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
+            try {
+//                String imageFilePath = Util.getImageName();
+//                if (imageFilePath == null) return;
+//                finalUri = Util.getUri(imageFilePath);
+//                Crop.of(outputUri, finalUri).start(getContext(), this);
+                finalUri=Uri.fromFile(new File(currentPhotoPath));
+                Crop.of(finalUri, finalUri).start(getContext(),this);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == RESULT_OK) {
+            if (data != null) {
+                try {
+//                    String imageFilePath = Util.getImageName();
+//                    if (imageFilePath == null) return;
 //                    outputUri = data.getData();
-//                    finalUri=Uri.fromFile(new File(currentPhotoPath));
-//                    Crop.of(outputUri, finalUri).start(getContext(),this);
-//                } catch (Exception e) {
-//                    Log.e(TAG, e.getMessage());
-//                }
-//            }
-//        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
-//            try {
-//                imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
-//                imgAccount.setImageURI(finalUri);
-//                ((MachineMouActivity) getActivity()).chequeImageUri = finalUri;
-//                Bitmap bitmap = Util.compressImageToBitmap(imageFile);
-//                if (Util.isValidImageSize(imageFile)) {
-//                    imgCount++;
-//                    ((MachineMouActivity) getActivity()).getImageHashmap().put("accountImage", bitmap);
-//                } else {
-//                    Util.showToast(getString(R.string.msg_big_image), this);
-//                }
-//            } catch (Exception e) {
-//                Log.e(TAG, e.getMessage());
-//            }
-//        }
-//    }
+//                    finalUri = Util.getUri(imageFilePath);
+//                    Crop.of(outputUri, finalUri).start(getContext(), this);
+                    getImageFile();
+                    outputUri = data.getData();
+                    finalUri=Uri.fromFile(new File(currentPhotoPath));
+                    Crop.of(outputUri, finalUri).start(getContext(),this);
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
+            }
+        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+            try {
+                imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
+                imgMOUCopy.setImageURI(finalUri);
+                ((MachineMouActivity) getActivity()).chequeImageUri = finalUri;
+                Bitmap bitmap = Util.compressImageToBitmap(imageFile);
+                if (Util.isValidImageSize(imageFile)) {
+                    //imgCount++;
+                    ((MachineMouActivity) getActivity()).getImageHashmap().put("accountImage", bitmap);
+                } else {
+                    Util.showToast(getString(R.string.msg_big_image), this);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
+    }
 
-//    private File getImageFile() {
-//        // External sdcard location
-//        File mediaStorageDir = new File(
-//                Environment
-//                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-//                Constants.Image.IMAGE_STORAGE_DIRECTORY);
-//        // Create the storage directory if it does not exist
-//        if (!mediaStorageDir.exists()) {
-//            if (!mediaStorageDir.mkdirs()) {
-//                return null;
-//            }
-//        }
-//        // Create a media file name
-//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
-//                Locale.getDefault()).format(new Date());
-//        File file;
-//        file = new File(mediaStorageDir.getPath() + File.separator
-//                + "IMG_" + timeStamp + ".jpg");
-//        currentPhotoPath = file.getPath();
-//        return file;
-//    }
+    private File getImageFile() {
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                Constants.Image.IMAGE_STORAGE_DIRECTORY);
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File file;
+        file = new File(mediaStorageDir.getPath() + File.separator
+                + "IMG_" + timeStamp + ".jpg");
+        currentPhotoPath = file.getPath();
+        return file;
+    }
 
     @Override
     public void onCustomSpinnerSelection(String type) {

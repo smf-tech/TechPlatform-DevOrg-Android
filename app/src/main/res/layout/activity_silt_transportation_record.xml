@@ -116,7 +116,7 @@
                 <EditText
                     android:id="@+id/et_area"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="Field Area(Hectors)"
+                    android:hint="Total Land Holding(In Acres)"
                     android:inputType="numberDecimal" />
             </com.google.android.material.textfield.TextInputLayout>
 

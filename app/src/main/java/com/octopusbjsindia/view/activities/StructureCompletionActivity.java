@@ -98,7 +98,7 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
         if (structureStatus == Constants.SSModule.STRUCTURE_COMPLETED) {
             setTitle("Close Structure");
             TextView tvLabel = findViewById(R.id.tv_photo_lbl);
-            tvLabel.setText("Certificate Images");
+            tvLabel.setText("Work Done Record Images");
         } else {
             setTitle("Structure Completion");
         }
@@ -132,9 +132,9 @@ public class StructureCompletionActivity extends AppCompatActivity implements Vi
             findViewById(R.id.iv_structure3).setVisibility(View.GONE);
             findViewById(R.id.iv_structure4).setVisibility(View.GONE);
             TextView tv = findViewById(R.id.tv_img1);
-            tv.setText("Completion Certificate 1");
+            tv.setText("Work Done Certificate 1");
             TextView tv1 = findViewById(R.id.tv_img2);
-            tv1.setText("Completion Certificate 2");
+            tv1.setText("Work Done Certificate 2");
 
             findViewById(R.id.tv_img3).setVisibility(View.GONE);
             findViewById(R.id.tv_img4).setVisibility(View.GONE);
