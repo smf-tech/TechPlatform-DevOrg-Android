@@ -19,17 +19,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_05dp"
-            android:orientation="vertical">
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <!--state-->
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp"
-                app:endIconMode="custom"
                 app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
+                app:endIconMode="custom"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -49,9 +49,9 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp"
-                app:endIconMode="custom"
+                android:layout_marginTop="8dp"
                 app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
+                app:endIconMode="custom"
                 app:hintTextAppearance="@style/TextInputLayoutHint">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -69,9 +69,9 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:endIconMode="custom"
+                android:layout_marginTop="8dp"
                 app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                android:layout_margin="@dimen/dimen_03dp">
+                app:endIconMode="custom">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_taluka"
@@ -87,9 +87,9 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:endIconMode="custom"
+                android:layout_marginTop="8dp"
                 app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                android:layout_margin="@dimen/dimen_03dp">
+                app:endIconMode="custom">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_host_village"
@@ -105,7 +105,7 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -123,7 +123,7 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -140,7 +140,7 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -158,7 +158,7 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp">
+                android:layout_marginTop="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_gat_no"
@@ -174,7 +174,7 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp">
+                android:layout_marginTop="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_water_shed_no"
@@ -191,7 +191,7 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_marginTop="8dp"
                 app:suffixText="hectare">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -208,7 +208,7 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp">
+                android:layout_marginTop="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_structure_name"
@@ -225,9 +225,9 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:endIconMode="custom"
+                android:layout_marginTop="8dp"
                 app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                android:layout_margin="@dimen/dimen_03dp">
+                app:endIconMode="custom">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_structure_owner_department"
@@ -244,7 +244,7 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -262,7 +262,7 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -279,9 +279,9 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:endIconMode="custom"
+                android:layout_marginTop="8dp"
                 app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                android:layout_margin="@dimen/dimen_03dp">
+                app:endIconMode="custom">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_intervention"
@@ -298,9 +298,9 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:endIconMode="custom"
+                android:layout_marginTop="8dp"
                 app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                android:layout_margin="@dimen/dimen_03dp">
+                app:endIconMode="custom">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_structure_type"
@@ -317,10 +317,10 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone"
-                app:endIconMode="custom"
                 app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                android:layout_margin="@dimen/dimen_03dp">
+                app:endIconMode="custom">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_structure_work_type"
@@ -338,7 +338,7 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp">
+                android:layout_marginTop="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_technical_sanction_no"
@@ -355,9 +355,9 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:endIconMode="custom"
+                android:layout_marginTop="8dp"
                 app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                android:layout_margin="@dimen/dimen_03dp">
+                app:endIconMode="custom">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_technical_sanction_date"
@@ -375,7 +375,7 @@
                     style="@style/textinputstyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dimen_03dp">
+                    android:layout_marginTop="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_administrative_approval_no"
@@ -392,9 +392,9 @@
                     style="@style/textinputstyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:endIconMode="custom"
+                    android:layout_marginTop="8dp"
                     app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                    android:layout_margin="@dimen/dimen_03dp">
+                    app:endIconMode="custom">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_administrative_approval_date"
@@ -414,7 +414,7 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp">
+                android:layout_marginTop="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_administrative_estimate_amount"
@@ -430,7 +430,7 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -448,7 +448,7 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -466,7 +466,7 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -484,7 +484,7 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp">
+                android:layout_marginTop="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_approximate_estimate_quantity"
@@ -502,7 +502,7 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp">
+                android:layout_marginTop="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_potential_silt_quantity"
@@ -520,7 +520,7 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimen_03dp">
+                android:layout_marginTop="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_remark"
@@ -538,7 +538,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="16dp"
                 android:baselineAligned="false"
                 android:orientation="horizontal"
                 android:weightSum="2">
@@ -558,9 +558,9 @@
                     <ProgressBar
                         android:id="@+id/progress_1"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:visibility="gone"
-                        android:layout_height="wrap_content" />
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -582,12 +582,13 @@
                         android:layout_height="@dimen/dimen_160dp"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/ic_add_img" />
+
                     <ProgressBar
                         android:id="@+id/progress_2"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:visibility="gone"
-                        android:layout_height="wrap_content" />
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -600,13 +601,12 @@
             </LinearLayout>
 
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/bt_submit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginHorizontal="@dimen/dimen_05dp"
+                app:cornerRadius="24dp"
                 android:text="@string/submit" />
         </LinearLayout>
     </ScrollView>

@@ -1,5 +1,7 @@
 package com.octopusbjsindia.view.fragments;
 
+import static androidx.core.app.ActivityCompat.finishAffinity;
+
 import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Context;
@@ -223,7 +225,7 @@ public class MachineDeployStructureListFragment extends Fragment  implements API
                 intent.putExtra("title", "Machine List");
                 getActivity().startActivity(intent);*/
 
-                requireActivity().onBackPressed();
+                requireActivity().finish();
             }
         }
     }

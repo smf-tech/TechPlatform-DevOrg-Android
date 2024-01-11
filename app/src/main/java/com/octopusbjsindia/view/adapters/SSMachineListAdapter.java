@@ -401,67 +401,64 @@ public class SSMachineListAdapter extends RecyclerView.Adapter<SSMachineListAdap
                     });
                 }
             });
-            btAction.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.
-                            MACHINE_ELIGIBLE_STATUS_CODE ||
-                            ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.
-                                    MACHINE_NEW_STATUS_CODE || ssDataList.get(getAdapterPosition()).
-                            getStatusCode() == Constants.SSModule.
-                            MACHINE_MOU_EXPIRED_STATUS_CODE) {
+            btAction.setOnClickListener(view -> {
+                if (ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.
+                        MACHINE_ELIGIBLE_STATUS_CODE ||
+                        ssDataList.get(getAdapterPosition()).getStatusCode() == Constants.SSModule.
+                                MACHINE_NEW_STATUS_CODE || ssDataList.get(getAdapterPosition()).
+                        getStatusCode() == Constants.SSModule.
+                        MACHINE_MOU_EXPIRED_STATUS_CODE) {
+                    if (Util.isConnected(activity)) {
+                        Intent mouIntent = new Intent(activity, MachineMouActivity.class);
+                        mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
+                        mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).
+                                getMachineId());
+                        if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
+                            mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE);
+                        } else if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
+                            mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_NEW_STATUS_CODE);
+                        } else {
+                            mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE);
+                        }
+                        activity.startActivity(mouIntent);
+                    } else {
+                        Util.showToast(activity.getString(R.string.msg_no_network), activity);
+                    }
+                } else if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                        Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE) {
+                    if (Util.isConnected(activity)) {
+                        Intent mouIntent = new Intent(activity, MachineMouActivity.class);
+                        mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
+                        mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).
+                                getMachineId());
+                        mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE);
+                        activity.startActivity(mouIntent);
+                    } else {
+                        Util.showToast(activity.getString(R.string.msg_no_network), activity);
+                    }
+                } else if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                        Constants.SSModule.MACHINE_MOU_DONE_STATUS_CODE ||
+                        ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                                Constants.SSModule.MACHINE_REALEASED_STATUS_CODE) {
+                    if (Util.isConnected(activity)) {
+                        fragment.takeMouDoneAction(getAdapterPosition());
+                    } else {
+                        Util.showToast(activity.getString(R.string.msg_no_network), activity);
+                    }
+                } else if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
+                        Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE) {
+                    if (fragment.isMachineDepoly) {
                         if (Util.isConnected(activity)) {
-                            Intent mouIntent = new Intent(activity, MachineMouActivity.class);
-                            mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
-                            mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).
-                                    getMachineId());
-                            if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE) {
-                                mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_ELIGIBLE_STATUS_CODE);
-                            } else if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
-                                mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_NEW_STATUS_CODE);
-                            } else {
-                                mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE);
-                            }
-                            activity.startActivity(mouIntent);
+                            fragment.deployMachine(getAdapterPosition());
                         } else {
                             Util.showToast(activity.getString(R.string.msg_no_network), activity);
                         }
-                    } else if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                            Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE) {
-                        if (Util.isConnected(activity)) {
-                            Intent mouIntent = new Intent(activity, MachineMouActivity.class);
-                            mouIntent.putExtra("SwitchToFragment", "MachineMouFirstFragment");
-                            mouIntent.putExtra("machineId", ssDataList.get(getAdapterPosition()).
-                                    getMachineId());
-                            mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_NON_ELIGIBLE_STATUS_CODE);
-                            activity.startActivity(mouIntent);
-                        } else {
-                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
-                        }
-                    } else if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                            Constants.SSModule.MACHINE_MOU_DONE_STATUS_CODE ||
-                            ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                                    Constants.SSModule.MACHINE_REALEASED_STATUS_CODE) {
-                        if (Util.isConnected(activity)) {
-                            fragment.takeMouDoneAction(getAdapterPosition());
-                        } else {
-                            Util.showToast(activity.getString(R.string.msg_no_network), activity);
-                        }
-                    } else if (ssDataList.get(getAdapterPosition()).getStatusCode() ==
-                            Constants.SSModule.MACHINE_AVAILABLE_STATUS_CODE) {
-                        if (fragment.isMachineDepoly) {
-                            if (Util.isConnected(activity)) {
-                                fragment.deployMachine(getAdapterPosition());
-                            } else {
-                                Util.showToast(activity.getString(R.string.msg_no_network), activity);
-                            }
-                        } else {
-                            Util.snackBarToShowMsg(fragment.getActivity().getWindow().getDecorView()
-                                            .findViewById(android.R.id.content), "You can not take any action on this machine.",
-                                    Snackbar.LENGTH_LONG);
-                        }
+                    } else {
+                        Util.snackBarToShowMsg(fragment.getActivity().getWindow().getDecorView()
+                                        .findViewById(android.R.id.content), "You can not take any action on this machine.",
+                                Snackbar.LENGTH_LONG);
                     }
                 }
             });

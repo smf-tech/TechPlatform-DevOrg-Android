@@ -344,12 +344,13 @@
                     android:layout_marginStart="0dp"
                     android:gravity="center_vertical"
                     android:layout_weight="1"
-                    tools:visibility="gone"
+                    tools:visibility="visible"
                     android:visibility="gone">
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/bt_action"
                         style="@style/AppStyleBorderButton"
+                        app:cornerRadius="24dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -359,6 +360,7 @@
                         tools:visibility="visible" />
 
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:id="@+id/ly_reason"
                     android:layout_width="match_parent"
@@ -366,7 +368,7 @@
                     android:layout_marginStart="8dp"
                     android:gravity="center_vertical"
                     android:layout_weight="1"
-                    tools:visibility="visible"
+                    tools:visibility="gone"
                     android:visibility="gone">
 
                     <TextView

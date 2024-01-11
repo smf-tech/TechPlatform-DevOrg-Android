@@ -1,101 +1,94 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.octopusbjsindia.view.fragments.MachineMouFirstFragment"
-    android:background="@color/base_background_color">
+    android:background="@color/white"
+    tools:context="com.octopusbjsindia.view.fragments.MachineMouFirstFragment">
 
-    <androidx.cardview.widget.CardView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:background="@color/white"
-        app:cardCornerRadius="@dimen/dimen_10dp">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
             android:orientation="vertical"
-            android:layout_marginStart="@dimen/dimen_10dp"
-            android:layout_marginEnd="@dimen/dimen_10dp">
+            android:padding="16dp">
 
-<!--            <com.google.android.material.textfield.TextInputLayout-->
-<!--                style="@style/textinputstyle"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content">-->
+            <!--            <com.google.android.material.textfield.TextInputLayout-->
+            <!--                style="@style/textinputstyle"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content">-->
 
-<!--                <EditText-->
-<!--                    android:id="@+id/et_owner_type"-->
-<!--                    style="@style/RegistrationEditTextLayout"-->
-<!--                    android:hint="@string/machine_owned_by"/>-->
-<!--            </com.google.android.material.textfield.TextInputLayout>-->
+            <!--                <EditText-->
+            <!--                    android:id="@+id/et_owner_type"-->
+            <!--                    style="@style/RegistrationEditTextLayout"-->
+            <!--                    android:hint="@string/machine_owned_by"/>-->
+            <!--            </com.google.android.material.textfield.TextInputLayout>-->
 
             <!--<com.google.android.material.textfield.TextInputLayout-->
-                <!--style="@style/textinputstyle"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
+            <!--style="@style/textinputstyle"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
 
-                <!--<EditText-->
-                    <!--android:id="@+id/et_uniqueId_number"-->
-                    <!--style="@style/RegistrationEditTextLayout"-->
-                    <!--android:hint="@string/mou_id"/>-->
+            <!--<EditText-->
+            <!--android:id="@+id/et_uniqueId_number"-->
+            <!--style="@style/RegistrationEditTextLayout"-->
+            <!--android:hint="@string/mou_id"/>-->
             <!--</com.google.android.material.textfield.TextInputLayout>-->
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimen_05dp"
                 android:layout_weight="1"
-                app:endIconMode="custom"
                 app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                android:layout_marginEnd="@dimen/dimen_05dp">
+                app:endIconMode="custom">
 
                 <EditText
                     android:id="@+id/et_machine_state"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/mandatory_state"/>
+                    android:hint="@string/mandatory_state" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal"
-                android:weightSum="2"
-                android:layout_marginTop="@dimen/dimen_10dp">
+                android:weightSum="2">
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/textinputstyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dimen_05dp"
                     android:layout_weight="1"
-                    app:endIconMode="custom"
                     app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                    android:layout_marginEnd="@dimen/dimen_05dp">
+                    app:endIconMode="custom">
 
                     <EditText
                         android:id="@+id/et_machine_district"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/mandatory_district"/>
+                        android:hint="@string/mandatory_district" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/textinputstyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_05dp"
                     android:layout_weight="1"
-                    app:endIconMode="custom"
                     app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                    android:layout_marginStart="@dimen/dimen_05dp">
+                    app:endIconMode="custom">
 
                     <EditText
                         android:id="@+id/et_machine_taluka"
                         style="@style/RegistrationEditTextLayout"
-                        android:hint="@string/mandatory_taluka"/>
+                        android:hint="@string/mandatory_taluka" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
@@ -103,20 +96,22 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                app:endIconMode="custom"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                android:layout_height="wrap_content">
+                app:endIconMode="custom">
 
                 <EditText
                     android:id="@+id/et_machine_type"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/machine_type"/>
+                    android:hint="@string/machine_type" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
@@ -128,106 +123,112 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                app:endIconMode="custom"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                android:layout_height="wrap_content">
+                app:endIconMode="custom">
 
                 <EditText
                     android:id="@+id/et_machine_make_model"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/make_model_machine"/>
+                    android:hint="@string/make_model_machine" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_meter_working"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/meter_working"/>
+                    android:hint="@string/meter_working" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
+                android:layout_marginTop="8dp"
                 android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/et_rto_number"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/machine_rto_number"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"/>
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+                    android:hint="@string/machine_rto_number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
+                android:layout_marginTop="8dp"
                 android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/et_chasis_number"
                     style="@style/RegistrationEditTextLayout"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
                     android:hint="@string/chasis_number"
-                    android:maxLength="17"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "/>
+                    android:maxLength="17" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
+                android:layout_marginTop="8dp"
                 android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/et_excavation_capacity"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/excavation_capacity"
-                    android:inputType="numberDecimal"/>
+                    android:inputType="numberDecimal" />
             </com.google.android.material.textfield.TextInputLayout>
 
-<!--            <com.google.android.material.textfield.TextInputLayout-->
-<!--                style="@style/textinputstyle"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content">-->
+            <!--            <com.google.android.material.textfield.TextInputLayout-->
+            <!--                style="@style/textinputstyle"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content">-->
 
-<!--                <EditText-->
-<!--                    android:id="@+id/et_diesel_capacity"-->
-<!--                    style="@style/RegistrationEditTextLayout"-->
-<!--                    android:hint="@string/diesel_capacity"-->
-<!--                    android:inputType="numberDecimal"/>-->
-<!--            </com.google.android.material.textfield.TextInputLayout>-->
+            <!--                <EditText-->
+            <!--                    android:id="@+id/et_diesel_capacity"-->
+            <!--                    style="@style/RegistrationEditTextLayout"-->
+            <!--                    android:hint="@string/diesel_capacity"-->
+            <!--                    android:inputType="numberDecimal"/>-->
+            <!--            </com.google.android.material.textfield.TextInputLayout>-->
 
-<!--            <com.google.android.material.textfield.TextInputLayout-->
-<!--                style="@style/textinputstyle"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content">-->
+            <!--            <com.google.android.material.textfield.TextInputLayout-->
+            <!--                style="@style/textinputstyle"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content">-->
 
-<!--                <EditText-->
-<!--                    android:id="@+id/et_order_ref_number"-->
-<!--                    style="@style/RegistrationEditTextLayout"-->
-<!--                    android:hint="@string/order_ref_number"-->
-<!--                    android:inputType="text"/>-->
-<!--            </com.google.android.material.textfield.TextInputLayout>-->
+            <!--                <EditText-->
+            <!--                    android:id="@+id/et_order_ref_number"-->
+            <!--                    style="@style/RegistrationEditTextLayout"-->
+            <!--                    android:hint="@string/order_ref_number"-->
+            <!--                    android:inputType="text"/>-->
+            <!--            </com.google.android.material.textfield.TextInputLayout>-->
 
-<!--            <com.google.android.material.textfield.TextInputLayout-->
-<!--                style="@style/textinputstyle"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content">-->
+            <!--            <com.google.android.material.textfield.TextInputLayout-->
+            <!--                style="@style/textinputstyle"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content">-->
 
-<!--                <EditText-->
-<!--                    android:id="@+id/et_provider_name"-->
-<!--                    style="@style/RegistrationEditTextLayout"-->
-<!--                    android:hint="@string/owner_name_hint"-->
-<!--                    android:maxLength="50"-->
-<!--                    android:inputType="textPersonName"-->
-<!--                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>-->
-<!--            </com.google.android.material.textfield.TextInputLayout>-->
+            <!--                <EditText-->
+            <!--                    android:id="@+id/et_provider_name"-->
+            <!--                    style="@style/RegistrationEditTextLayout"-->
+            <!--                    android:hint="@string/owner_name_hint"-->
+            <!--                    android:maxLength="50"-->
+            <!--                    android:inputType="textPersonName"-->
+            <!--                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>-->
+            <!--            </com.google.android.material.textfield.TextInputLayout>-->
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
+                android:layout_marginTop="8dp"
                 android:layout_height="wrap_content">
 
                 <EditText
@@ -235,56 +236,58 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/owner_contact"
                     android:inputType="number"
-                    android:maxLength="10"/>
+                    android:maxLength="10" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:id="@+id/ll_eligible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="@dimen/dimen_10dp"
-                android:weightSum="2"
-                android:visibility="gone">
+                android:orientation="horizontal"
+                android:visibility="gone"
+
+                android:weightSum="2">
 
                 <Button
                     android:id="@+id/btn_eligible"
+                    style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/RegistrationEditTextLayout"
-                    android:layout_weight="1"
                     android:layout_margin="@dimen/dimen_10dp"
-                    android:textColor="@android:color/white"
-                    android:text="Eligible" />
+                    android:layout_weight="1"
+                    android:text="Eligible"
+                    android:textColor="@android:color/white" />
 
                 <Button
                     android:id="@+id/btn_not_eligible"
+                    style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/RegistrationEditTextLayout"
-                    android:layout_weight="1"
                     android:layout_margin="@dimen/dimen_10dp"
-                    android:textColor="@android:color/white"
-                    android:text="Not Eligible" />
+                    android:layout_weight="1"
+                    android:text="Not Eligible"
+                    android:textColor="@android:color/white" />
 
             </LinearLayout>
 
             <Button
                 android:id="@+id/btn_first_part_mou"
+                style="@style/AppStyleButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/AppStyleButton"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/dimen_10dp"
-                android:text="@string/meet_next_label"
                 android:layout_below="@+id/card_create_meet"
+                android:layout_gravity="center"
+               android:layout_marginVertical="12dp"
+                android:text="@string/meet_next_label"
                 android:textColor="@android:color/white"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                tools:visibility="visible"/>
 
         </LinearLayout>
-        </ScrollView>
-    </androidx.cardview.widget.CardView>
+    </ScrollView>
+
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"
         android:layout_width="match_parent"

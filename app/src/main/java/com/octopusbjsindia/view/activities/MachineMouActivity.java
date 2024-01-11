@@ -268,11 +268,11 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
 
     private void backToMachineList() {
         finish();
-        Intent intent = new Intent(this, SSActionsActivity.class);
+        /*Intent intent = new Intent(this, SSActionsActivity.class);
         intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
         intent.putExtra("viewType", 2);
         intent.putExtra("title", "Machine List");
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
     @Override

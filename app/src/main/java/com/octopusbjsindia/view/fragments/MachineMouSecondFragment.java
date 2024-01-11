@@ -67,7 +67,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
             etOperatorFName, etOperatorLName, etOperatorMobile, etMachineRate;
     //etSupervisorFName, etSupervisorLName ,etMachineMobile,
 
-//            etOwnership, etTradeName, etTurnover, etGstRegNo, etPanNo, etBankName, etBranch, etIfsc,
+    //            etOwnership, etTradeName, etTurnover, etGstRegNo, etPanNo, etBankName, etBranch, etIfsc,
 //            etAccountNo, etConfirmAccountNo, etAccountHolderName, etAccountType;
     private ImageView imgMOUCopy;
     private TextViewSemiBold eventPicLabel;
@@ -104,7 +104,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
     }
 
     private void init() {
-        statusCode = getActivity().getIntent().getIntExtra("statusCode",0);
+        statusCode = getActivity().getIntent().getIntExtra("statusCode", 0);
         progressBarLayout = machineMouSecondFragmentView.findViewById(R.id.profile_act_progress_bar);
         progressBar = machineMouSecondFragmentView.findViewById(R.id.pb_profile_act);
         btnSecondPartMou = machineMouSecondFragmentView.findViewById(R.id.btn_second_part_mou);
@@ -133,6 +133,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 //        etAccountNo = machineMouSecondFragmentView.findViewById(R.id.et_account_no);
 //        etConfirmAccountNo = machineMouSecondFragmentView.findViewById(R.id.et_confirm_account_no);
         imgMOUCopy = machineMouSecondFragmentView.findViewById(R.id.img_mou_copy);
+        imgMOUCopy.setOnClickListener(this);
         eventPicLabel = machineMouSecondFragmentView.findViewById(R.id.event_pic_label);
 //        etAccountHolderName = machineMouSecondFragmentView.findViewById(R.id.et_account_holder_name);
 //        etAccountType = machineMouSecondFragmentView.findViewById(R.id.et_account_type);
@@ -140,7 +141,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 //                getMachine().getOwnedBy().equalsIgnoreCase("BJS")) {
 //            isBJSMachine = true;
 //        }
-       // if(isBJSMachine) {
+        // if(isBJSMachine) {
 
 //            etOwnership.setVisibility(View.GONE);
 //            etTradeName.setVisibility(View.GONE);
@@ -209,11 +210,11 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 
         etProviderContact.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getMachine().getProviderContactNumber());
-        if(statusCode == Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
+        if (statusCode == Constants.SSModule.MACHINE_MOU_EXPIRED_STATUS_CODE) {
             setUIForMouUpdate();
         }
-        if(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getProviderInformation()!=null) {
+        if (((MachineMouActivity) getActivity()).getMachineDetailData().
+                getProviderInformation() != null) {
             setUIForMouUpdate();
         }
     }
@@ -249,10 +250,14 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
         etOperatorLName.setLongClickable(false);
         etOperatorMobile.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getMachine().getMachineMobileNumber());
-        etMachineRate.setFocusable(false);
-        etMachineRate.setLongClickable(false);
-        etMachineRate.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getMouDetails().getMachineRatePerHour());
+
+        if (((MachineMouActivity) getActivity()).getMachineDetailData().
+                getMouDetails() != null) {
+            etMachineRate.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
+                    getMouDetails().getMachineRatePerHour());
+            etMachineRate.setFocusable(false);
+            etMachineRate.setLongClickable(false);
+        }
 
 //        if(((MachineMouActivity) getActivity()).chequeImageUri!= null) {
 //            imgAccount.setImageURI(((MachineMouActivity) getActivity()).chequeImageUri);
@@ -304,12 +309,13 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 //                    getProviderInformation().getAccountType());
 //        }
     }
+
     public boolean isAllDataValid() {
-        if (TextUtils.isEmpty(etProviderFirstName.getText().toString().trim())){
+        if (TextUtils.isEmpty(etProviderFirstName.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_provider_first_name), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etProviderLastName.getText().toString().trim())){
+        } else if (TextUtils.isEmpty(etProviderLastName.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_provider_last_name), Snackbar.LENGTH_LONG);
             return false;
@@ -332,19 +338,19 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 //                    getString(R.string.enter_proper_machine_mobile), Snackbar.LENGTH_LONG);
 //            return false;
 //        }
-        else if (TextUtils.isEmpty(etOperatorFName.getText().toString().trim())){
+        else if (TextUtils.isEmpty(etOperatorFName.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_operator_first_name), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etOperatorLName.getText().toString().trim())){
+        } else if (TextUtils.isEmpty(etOperatorLName.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_operator_last_name), Snackbar.LENGTH_LONG);
             return false;
-        } else if (etOperatorMobile.getText().toString().trim().length() != 10){
+        } else if (etOperatorMobile.getText().toString().trim().length() != 10) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_proper_operator_contact), Snackbar.LENGTH_LONG);
             return false;
-        } else if (TextUtils.isEmpty(etMachineRate.getText().toString().trim())){
+        } else if (TextUtils.isEmpty(etMachineRate.getText().toString().trim())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
                     getString(R.string.enter_machine_rate_per_hour), Snackbar.LENGTH_LONG);
             return false;
@@ -452,23 +458,23 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_second_part_mou:
-                if(isAllDataValid()){
+                if (isAllDataValid()) {
                     setMachineSecondData();
 //                    if(((MachineMouActivity) getActivity()).getMachineDetailData().
 //                            getMachine().getOwnedBy().equalsIgnoreCase("BJS")) {
-                        MouDetails mouDetails = new MouDetails();
-                        ((MachineMouActivity) getActivity()).getMachineDetailData().setMouDetails(mouDetails);
-                        Date d = new Date();
-                        ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfSigning(d.getTime());
+                    MouDetails mouDetails = new MouDetails();
+                    ((MachineMouActivity) getActivity()).getMachineDetailData().setMouDetails(mouDetails);
+                    Date d = new Date();
+                    ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfSigning(d.getTime());
 //                        ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setDateOfMouExpiry
 //                                (Util.dateTimeToTimeStamp("2099-12-31", "23:59"));
                     ((MachineMouActivity) getActivity()).getMachineDetailData().getMouDetails().setMachineRatePerHour(
                             etMachineRate.getText().toString().trim());
 
-                        //((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
-                        ((MachineMouActivity) getActivity()).uploadData();
+                    //((MachineMouActivity) getActivity()).openFragment("MachineMouFourthFragment");
+                    ((MachineMouActivity) getActivity()).uploadData();
 //                    } else {
 //                        ((MachineMouActivity) getActivity()).openFragment("MachineMouThirdFragment");
 //                    }
@@ -621,8 +627,8 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 //                if (imageFilePath == null) return;
 //                finalUri = Util.getUri(imageFilePath);
 //                Crop.of(outputUri, finalUri).start(getContext(), this);
-                finalUri=Uri.fromFile(new File(currentPhotoPath));
-                Crop.of(finalUri, finalUri).start(getContext(),this);
+                finalUri = Uri.fromFile(new File(currentPhotoPath));
+                Crop.of(finalUri, finalUri).start(getContext(), this);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -636,8 +642,8 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 //                    Crop.of(outputUri, finalUri).start(getContext(), this);
                     getImageFile();
                     outputUri = data.getData();
-                    finalUri=Uri.fromFile(new File(currentPhotoPath));
-                    Crop.of(outputUri, finalUri).start(getContext(),this);
+                    finalUri = Uri.fromFile(new File(currentPhotoPath));
+                    Crop.of(outputUri, finalUri).start(getContext(), this);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
