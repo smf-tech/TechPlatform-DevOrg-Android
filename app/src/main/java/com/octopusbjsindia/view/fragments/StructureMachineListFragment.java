@@ -12,9 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -29,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
@@ -92,13 +96,18 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             isMachineVisitValidationForm, isSiltTransportForm, isDieselRecordForm, isMachineShiftForm,
             isMachineRelease, isMouImagesUpload, isMachineSignoff, isStateFilter, isDistrictFilter, isTalukaFilter,
             isVillageFilter, isStructureAdd, isReleaseOperator, isAssignOperator, isDailyMachineRecord;
-    private FloatingActionButton fbSelect, fbCreate, fbCreateOperator;
+    private FloatingActionButton fbSelect;
+    private ExtendedFloatingActionButton fabCreate,fabCreateOperator;
     private boolean isTalukaApiFirstCall;
     private ImageView btnFilterClear;
     private String userStates = "", userStateIds = "", userDistricts = "", userDistrictIds = "",
             userTalukas = "", userTalukaIds = "";
     private String selectedStateId = "", selectedDistrictId = "", selectedTalukaId = "";
     private boolean isFABOpen = false;
+    private Animation rotateClockWiseFabAnim;
+    private Animation rotateAntiClockWiseFabAnim;
+    private Animation fromBottomBgAnim;
+    private Animation toBottomBgAnim;
     private int selectedMachinePosition;
 
     @Override
@@ -130,10 +139,11 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         progressBar = structureMachineListFragmentView.findViewById(R.id.pb_profile_act);
         fbSelect = structureMachineListFragmentView.findViewById(R.id.fb_select);
         fbSelect.setOnClickListener(this);
-        fbCreate = structureMachineListFragmentView.findViewById(R.id.fb_create);
-        fbCreate.setOnClickListener(this);
-        fbCreateOperator = structureMachineListFragmentView.findViewById(R.id.fb_create_operator);
-        fbCreateOperator.setOnClickListener(this);
+        fabCreate = structureMachineListFragmentView.findViewById(R.id.fab_create);
+        fabCreate.setOnClickListener(this);
+        fabCreateOperator = structureMachineListFragmentView.findViewById(R.id.fab_create_operator);
+        fabCreateOperator.setOnClickListener(this);
+
         tvStateFilter = structureMachineListFragmentView.findViewById(R.id.tv_state_filter);
         tvDistrictFilter = structureMachineListFragmentView.findViewById(R.id.tv_district_filter);
         tvTalukaFilter = structureMachineListFragmentView.findViewById(R.id.tv_taluka_filter);
@@ -285,6 +295,11 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                         Constants.JurisdictionLevelName.TALUKA_LEVEL);
             }
         }*/
+
+        rotateClockWiseFabAnim = AnimationUtils.loadAnimation(context, R.anim.rotate_clock_wise);
+        rotateAntiClockWiseFabAnim = AnimationUtils.loadAnimation(context, R.anim.rotate_anti_clock_wise);
+        fromBottomBgAnim = AnimationUtils.loadAnimation(context, R.anim.from_bottom_anim);
+        toBottomBgAnim = AnimationUtils.loadAnimation(context, R.anim.to_bottom_anim);
 
     }
 
@@ -937,6 +952,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 (userTalukaIds != "") ? userTalukaIds : "");
     }
 
+
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.fb_select) {
@@ -945,7 +961,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             } else {
                 closeFABMenu();
             }
-        } else if (view.getId() == R.id.fb_create) {
+        } else if (view.getId() == R.id.fab_create) {
             if (viewType == 1) {
                 if (Util.isConnected(getActivity())) {
                     Intent intent = new Intent(getActivity(), CreateStructureActivity.class);
@@ -959,7 +975,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 mouIntent.putExtra("statusCode", Constants.SSModule.MACHINE_CREATE_STATUS_CODE);
                 getActivity().startActivity(mouIntent);
             }
-        } else if (view.getId() == R.id.fb_create_operator) {
+        } else if (view.getId() == R.id.fab_create_operator) {
             Intent machineVisitIntent = new Intent(getActivity(), SSActionsActivity.class);
             machineVisitIntent.putExtra("SwitchToFragment", "CreateOperatorFragment");
             machineVisitIntent.putExtra("title", "Create Field Associate");
@@ -1023,59 +1039,76 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         isFABOpen = true;
         if (viewType == 1) {
             if (isStructureAdd) {
-                fbCreate.setImageResource(R.drawable.ic_create_structure);
-                fbCreate.animate().translationY(-getResources().getDimension(R.dimen.standard_65));
+                fabCreate.setVisibility(View.VISIBLE);
+                fabCreate.setIconResource(R.drawable.ic_create_structure);
+                fabCreate.setText("Create Structure");
+                fabCreate.animate().translationY(-getResources().getDimension(R.dimen.standard_65));
                 if (isOperatorAdd) {
-                    fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_130));
-                }
-            } else {
-                if (isOperatorAdd) {
-                    fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_65));
-                } else {
-                    fbCreateOperator.setVisibility(View.GONE);
-                    fbCreate.setVisibility(View.GONE);
-                    fbSelect.setVisibility(View.GONE);
+                    fabCreateOperator.setVisibility(View.VISIBLE);
+                    fabCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_130));
                 }
             }
-        } else {
-            if (isMachineAdd) {
-                fbCreate.setImageResource(R.drawable.ic_create_machine);
-                fbCreate.animate().translationY(-getResources().getDimension(R.dimen.standard_65));
+            else {
                 if (isOperatorAdd) {
-                    fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_130));
+                    fabCreateOperator.setVisibility(View.VISIBLE);
+                    fabCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_65));
                 }
-            } else {
-                if (isOperatorAdd) {
-                    fbCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_65));
-                } else {
-                    fbCreateOperator.setVisibility(View.GONE);
-                    fbCreate.setVisibility(View.GONE);
+                else {
+                    fabCreateOperator.setVisibility(View.GONE);
+                    fabCreate.setVisibility(View.GONE);
                     fbSelect.setVisibility(View.GONE);
                 }
             }
         }
-        fbSelect.setRotation(45);
+        else {
+            if (isMachineAdd) {
+                fabCreate.setVisibility(View.VISIBLE);
+                fabCreate.setIconResource(R.drawable.ic_create_machine);
+                fabCreate.setText("Create Machine");
+                fabCreate.animate().translationY(-getResources().getDimension(R.dimen.standard_65));
+                if (isOperatorAdd) {
+                    fabCreateOperator.setVisibility(View.VISIBLE);
+                    fabCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_130));
+                }
+            }
+            else {
+                if (isOperatorAdd) {
+                    fabCreateOperator.setVisibility(View.VISIBLE);
+                    fabCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_65));
+                } else {
+                    fabCreateOperator.setVisibility(View.GONE);
+                    fabCreate.setVisibility(View.GONE);
+                    fbSelect.setVisibility(View.GONE);
+                }
+            }
+        }
+       // fbSelect.setRotation(45);
+        fbSelect.startAnimation(rotateClockWiseFabAnim);
     }
 
     private void closeFABMenu() {
         isFABOpen = false;
-        fbCreate.animate().translationY(0);
-        fbCreateOperator.animate().translationY(0);
-        fbSelect.setRotation(0);
+
+        fabCreate.animate().translationY(0);
+        fabCreateOperator.animate().translationY(0);
+        fabCreate.setVisibility(View.GONE);
+        fabCreateOperator.setVisibility(View.GONE);
+
+        fbSelect.startAnimation(rotateAntiClockWiseFabAnim);
+        //fbSelect.setRotation(0);
         if (viewType == 1) {
             if (!isStructureAdd && !isOperatorAdd) {
-                fbCreateOperator.setVisibility(View.GONE);
-                fbCreate.setVisibility(View.GONE);
+                fabCreateOperator.setVisibility(View.GONE);
+                fabCreate.setVisibility(View.GONE);
                 fbSelect.setVisibility(View.GONE);
             }
         } else {
             if (!isMachineAdd && !isOperatorAdd) {
-                fbCreateOperator.setVisibility(View.GONE);
-                fbCreate.setVisibility(View.GONE);
+                fabCreateOperator.setVisibility(View.GONE);
+                fabCreate.setVisibility(View.GONE);
                 fbSelect.setVisibility(View.GONE);
             }
         }
-
     }
 
     @Override
