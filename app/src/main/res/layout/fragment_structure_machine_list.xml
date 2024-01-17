@@ -104,7 +104,24 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_donors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Donors"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/white"
+        app:fabSize="normal"
+        app:icon="@drawable/ic_donation_24px"
+        android:textAllCaps="false"
+        app:iconTint="@color/white"
+        android:visibility="invisible" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fab_create_operator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

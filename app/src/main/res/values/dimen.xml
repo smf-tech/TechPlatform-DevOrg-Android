@@ -68,6 +68,8 @@
     <dimen name="standard_65">65dp</dimen>
     <dimen name="standard_120">120dp</dimen>
     <dimen name="standard_130">130dp</dimen>
+    <dimen name="standard_195">195dp</dimen>
+    <dimen name="standard_260">260dp</dimen>
     <dimen name="standard_180">180dp</dimen>
     <dimen name="standard_240">240dp</dimen>
     <dimen name="standard_300">300dp</dimen>

@@ -48,8 +48,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_marginTop="8dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <EditText
                     android:id="@+id/et_provider_last_name"
@@ -63,8 +63,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_marginTop="8dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <EditText
                     android:id="@+id/et_provider_contact"
@@ -112,8 +112,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_marginTop="8dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
@@ -127,8 +127,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_marginTop="8dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <EditText
                     android:id="@+id/et_operator_first_name"
@@ -142,8 +142,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_marginTop="8dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <EditText
                     android:id="@+id/et_operator_last_name"
@@ -157,8 +157,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_marginTop="8dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <EditText
                     android:id="@+id/et_operator_mobile"
@@ -186,8 +186,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_marginTop="8dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
@@ -202,8 +202,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_marginTop="8dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
@@ -361,30 +361,50 @@
                     android:longClickable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/mou_upload"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="16sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_images"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginVertical="8dp"
+                android:visibility="gone"
+                android:scrollbars="horizontal"
+                tools:listitem="@layout/images_list_item"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
             <ImageView
                 android:id="@+id/img_mou_copy"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:layout_gravity="center"
+                android:visibility="visible"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
                 android:contentDescription="@string/content_description"
-                android:src="@drawable/ic_img" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/image_placeholder" />
 
-            <com.octopusbjsindia.view.customs.TextViewSemiBold
-                android:id="@+id/event_pic_label"
-                style="@style/FormLabel"
-                android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/opensans"
-                android:text="@string/mou_upload"
-                android:textColor="@color/medium_grey"
-                android:textSize="@dimen/text_size_14" />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/bt_upload_image"
+                android:text="Add Image" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_marginTop="12dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
 
                 <EditText
                     android:id="@+id/et_machine_rate"

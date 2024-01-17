@@ -98,7 +98,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_BOUNDARY)) {
                     isStructureBoundary = true;
                     continue;
-                } else if(roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DAILY_MACHINE_RECORD)) {
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DAILY_MACHINE_RECORD)) {
                     isDailyMachineRecord = true;
                 }
             }
@@ -128,15 +128,15 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             if (ssDataList.get(position).getDeployedMachineDetails().size() == 0) {
                 holder.tvMachinCount.setText("None");
                 holder.tvMachinCount.setTextColor(ResourcesCompat.getColor(activity.getResources(),
-                        R.color.textPrimary,null));
+                        R.color.textPrimary, null));
             } else if (ssDataList.get(position).getDeployedMachineDetails().size() > 1) {
                 holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machines");
                 holder.tvMachinCount.setTextColor(ResourcesCompat.getColor(activity.getResources(),
-                        R.color.colorPrimary,null));
+                        R.color.colorPrimary, null));
             } else {
                 holder.tvMachinCount.setText(ssDataList.get(position).getDeployedMachineDetails().size() + " Machine");
                 holder.tvMachinCount.setTextColor(ResourcesCompat.getColor(activity.getResources(),
-                        R.color.colorPrimary,null));
+                        R.color.colorPrimary, null));
             }
         }
         // commented for RWB
@@ -267,7 +267,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                             popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
                         } else {
                             //if (isSave) {
-                                popup.getMenu().findItem(R.id.action_structure_completion).setVisible(true);
+                            popup.getMenu().findItem(R.id.action_structure_completion).setVisible(true);
 //                            } else {
 //                                popup.getMenu().findItem(R.id.action_structure_completion).setVisible(false);
 //                            }
@@ -288,7 +288,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                     }
 
                     if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_HALTED
-                            || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_IN_PROGRESS){
+                            || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_IN_PROGRESS) {
                         popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
                     }
 
@@ -300,9 +300,9 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                             switch (item.getItemId()) {
                                 case R.id.action_silt_transportation_record:
                                     Intent siltTransportationIntent = new Intent(activity, SiltTransportationRecordActivity.class);
-                                   // siltTransportationIntent.putExtra("SwitchToFragment", "SiltTransportationRecordFragment");
-                                  //  siltTransportationIntent.putExtra("title", "Silt Transportation Record");
-                                  //  siltTransportationIntent.putExtra("type", "siltTransportRecord");
+                                    // siltTransportationIntent.putExtra("SwitchToFragment", "SiltTransportationRecordFragment");
+                                    //  siltTransportationIntent.putExtra("title", "Silt Transportation Record");
+                                    //  siltTransportationIntent.putExtra("type", "siltTransportRecord");
                                    /* siltTransportationIntent.putExtra("machineId",
                                             ssDataList.get(getAdapterPosition()).getDeployedMachineDetails().get(0).getMachineId());*/
                                     siltTransportationIntent.putExtra("structureId", ssDataList.get
@@ -344,7 +344,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                 case R.id.action_edit_structure:
                                     if (Util.isConnected(activity)) {
                                         Intent i = new Intent(activity, CreateStructureActivity.class);
-                                        i.putExtra("structure_id",ssDataList.get(getAdapterPosition()).getStructureId());
+                                        i.putExtra("structure_id", ssDataList.get(getAdapterPosition()).getStructureId());
                                         activity.startActivity(i);
                                     } else {
                                         Util.showToast(activity.getResources().getString(R.string.msg_no_network), activity);
@@ -395,6 +395,9 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                             }
                                         }
                                     }
+                                    break;
+                                case R.id.action_donation_record:
+                                    //todo
                                     break;
                             }
                             return false;
@@ -523,8 +526,8 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         RecyclerView rvDeployedMachine = dialog.findViewById(R.id.rv_deployed_machin);
         rvDeployedMachine.setLayoutManager(new LinearLayoutManager(activity));
         DeployedMachineListAdapter adapter = new DeployedMachineListAdapter(
-                ssDataList.get(adapterPosition).getDeployedMachineDetails(),ssDataList.get(adapterPosition).getStructureId(),
-                ssDataList.get(adapterPosition).getStructureCode(),activity, isDailyMachineRecord);
+                ssDataList.get(adapterPosition).getDeployedMachineDetails(), ssDataList.get(adapterPosition).getStructureId(),
+                ssDataList.get(adapterPosition).getStructureCode(), activity, isDailyMachineRecord);
         rvDeployedMachine.setAdapter(adapter);
 
         ImageView ivClose = dialog.findViewById(R.id.iv_close);

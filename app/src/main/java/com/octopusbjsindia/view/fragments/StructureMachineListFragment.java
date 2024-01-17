@@ -55,6 +55,7 @@ import com.octopusbjsindia.presenter.StructureMachineListFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CreateStructureActivity;
+import com.octopusbjsindia.view.activities.DonorsActivity;
 import com.octopusbjsindia.view.activities.MachineMouActivity;
 import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.adapters.MutiselectDialogAdapter;
@@ -92,12 +93,12 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private ArrayList<CustomSpinnerObject> statusList = new ArrayList<>();
     private int mouAction = 0, selectedStatus = 0, shiftAction = 0;
     public boolean isMachineTerminate, isMachineAvailable;
-    public boolean isMachineAdd, isOperatorAdd, isMachineDepoly, isMachineEligible, isMachineMou,
+    public boolean isMachineAdd, isOperatorAdd, isDonorAdd = true, isMachineDepoly, isMachineEligible, isMachineMou,
             isMachineVisitValidationForm, isSiltTransportForm, isDieselRecordForm, isMachineShiftForm,
             isMachineRelease, isMouImagesUpload, isMachineSignoff, isStateFilter, isDistrictFilter, isTalukaFilter,
             isVillageFilter, isStructureAdd, isReleaseOperator, isAssignOperator, isDailyMachineRecord;
     private FloatingActionButton fbSelect;
-    private ExtendedFloatingActionButton fabCreate,fabCreateOperator;
+    private ExtendedFloatingActionButton fabCreate, fabCreateOperator, fabDonor;
     private boolean isTalukaApiFirstCall;
     private ImageView btnFilterClear;
     private String userStates = "", userStateIds = "", userDistricts = "", userDistrictIds = "",
@@ -143,6 +144,8 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         fabCreate.setOnClickListener(this);
         fabCreateOperator = structureMachineListFragmentView.findViewById(R.id.fab_create_operator);
         fabCreateOperator.setOnClickListener(this);
+        fabDonor = structureMachineListFragmentView.findViewById(R.id.fab_donors);
+        fabDonor.setOnClickListener(this);
 
         tvStateFilter = structureMachineListFragmentView.findViewById(R.id.tv_state_filter);
         tvDistrictFilter = structureMachineListFragmentView.findViewById(R.id.tv_district_filter);
@@ -160,6 +163,9 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_STRUCTURE)) {
                     isStructureAdd = true;
+                    continue;
+                }  else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_DONOR)) {
+                    isDonorAdd = true;
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_OPERATOR)) {
                     isOperatorAdd = true;
@@ -910,7 +916,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     cddTaluka.show();
                     cddTaluka.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
-                }else {
+                } else {
                     showMouActionPopup(selectedMachinePosition);
                 }
 
@@ -981,6 +987,10 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
             machineVisitIntent.putExtra("title", "Create Field Associate");
             getActivity().startActivity(machineVisitIntent);
 
+        } else if (view.getId() == R.id.fab_donors) {
+            Intent machineVisitIntent = new Intent(getActivity(), DonorsActivity.class);
+            getActivity().startActivity(machineVisitIntent);
+
         } else if (view.getId() == R.id.tv_state_filter) {
             CustomSpinnerDialogClass cdd = new CustomSpinnerDialogClass(getActivity(), this,
                     "Select State",
@@ -1047,20 +1057,26 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     fabCreateOperator.setVisibility(View.VISIBLE);
                     fabCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_130));
                 }
-            }
-            else {
+                if (isDonorAdd) {
+                    fabDonor.setVisibility(View.VISIBLE);
+                    fabDonor.animate().translationY(-getResources().getDimension(R.dimen.standard_195));
+                }
+            } else {
                 if (isOperatorAdd) {
                     fabCreateOperator.setVisibility(View.VISIBLE);
                     fabCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_65));
                 }
-                else {
+                if (isDonorAdd) {
+                    fabDonor.setVisibility(View.VISIBLE);
+                    fabDonor.animate().translationY(-getResources().getDimension(R.dimen.standard_130));
+                } else {
                     fabCreateOperator.setVisibility(View.GONE);
+                    fabDonor.setVisibility(View.GONE);
                     fabCreate.setVisibility(View.GONE);
                     fbSelect.setVisibility(View.GONE);
                 }
             }
-        }
-        else {
+        } else {
             if (isMachineAdd) {
                 fabCreate.setVisibility(View.VISIBLE);
                 fabCreate.setIconResource(R.drawable.ic_create_machine);
@@ -1070,8 +1086,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     fabCreateOperator.setVisibility(View.VISIBLE);
                     fabCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_130));
                 }
-            }
-            else {
+            } else {
                 if (isOperatorAdd) {
                     fabCreateOperator.setVisibility(View.VISIBLE);
                     fabCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_65));
@@ -1082,7 +1097,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 }
             }
         }
-       // fbSelect.setRotation(45);
+        // fbSelect.setRotation(45);
         fbSelect.startAnimation(rotateClockWiseFabAnim);
     }
 
@@ -1093,7 +1108,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
         fabCreateOperator.animate().translationY(0);
         fabCreate.setVisibility(View.GONE);
         fabCreateOperator.setVisibility(View.GONE);
-
+        fabDonor.setVisibility(View.GONE);
         fbSelect.startAnimation(rotateAntiClockWiseFabAnim);
         //fbSelect.setRotation(0);
         if (viewType == 1) {

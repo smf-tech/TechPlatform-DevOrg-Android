@@ -50,8 +50,10 @@ import com.octopusbjsindia.view.fragments.MachineMouThirdFragment;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import static com.octopusbjsindia.utility.Util.getLoginObjectFromPref;
@@ -69,9 +71,12 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
     private int statusCode;
     private MachineMouActivityPresenter machineMouActivityPresenter;
     private HashMap<String, Bitmap> imageHashmap = new HashMap<>();
+    private List<Bitmap> imageBitmapList = new ArrayList<>();
+
     public Uri chequeImageUri, operatorLicenseImageUri;
     private RequestQueue rQueue;
-//    private Location location;
+
+    //    private Location location;
 //    private GPSTracker gpsTracker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,33 +85,33 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
         init();
     }
 
-    private void init(){
+    private void init() {
         ivBackIcon = findViewById(R.id.toolbar_back_action);
         ivBackIcon.setOnClickListener(this);
         TextView toolbar_title = findViewById(R.id.toolbar_title);
 
         machineMouActivityPresenter = new MachineMouActivityPresenter(this);
         machineDetailData = new MachineDetailData();
-        if(getIntent().getStringExtra("SwitchToFragment")!=null){
-            if(getIntent().getStringExtra("SwitchToFragment").equals("MachineMouFirstFragment")){
-                if(getIntent().getIntExtra("statusCode", 0) ==
+        if (getIntent().getStringExtra("SwitchToFragment") != null) {
+            if (getIntent().getStringExtra("SwitchToFragment").equals("MachineMouFirstFragment")) {
+                if (getIntent().getIntExtra("statusCode", 0) ==
                         Constants.SSModule.MACHINE_CREATE_STATUS_CODE) {
-                    statusCode = getIntent().getIntExtra("statusCode",0);
+                    statusCode = getIntent().getIntExtra("statusCode", 0);
                     toolbar_title.setText(R.string.create_machine);
                     fManager = getSupportFragmentManager();
                     fragment = new MachineMouFirstFragment();
                     FragmentTransaction fTransaction = fManager.beginTransaction();
                     fTransaction.replace(R.id.machine_mou_frame_layout, fragment).addToBackStack(null).commit();
                 } else {
-                    if(getIntent().getIntExtra("statusCode", 0) ==
+                    if (getIntent().getIntExtra("statusCode", 0) ==
                             Constants.SSModule.MACHINE_NEW_STATUS_CODE) {
                         toolbar_title.setText(R.string.machine_eligible_form_title);
                     } else {
                         toolbar_title.setText("Machine Details");
                     }
                     machineId = getIntent().getStringExtra("machineId");
-                    statusCode = getIntent().getIntExtra("statusCode",0);
-                    if(Util.isConnected(this)) {
+                    statusCode = getIntent().getIntExtra("statusCode", 0);
+                    if (Util.isConnected(this)) {
                         machineMouActivityPresenter.getMachineDetails(machineId, statusCode);
                     } else {
                         Util.showToast(getResources().getString(R.string.msg_no_network), this);
@@ -146,6 +151,10 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
         return imageHashmap;
     }
 
+    public List<Bitmap> getImageBitmapList() {
+        return imageBitmapList;
+    }
+
     public void setMachineDetailData(MachineDetailData machineDetail) {
         this.machineDetailData = machineDetail;
         fManager = getSupportFragmentManager();
@@ -179,9 +188,9 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                                 //Toast.makeText(MachineMouActivity.this,responseOBJ.getMessage(),Toast.LENGTH_SHORT).show();
                                 backToMachineList();
                             } else if (responseOBJ.getStatus() == 300) {
-                                Util.showToast(MachineMouActivity.this,responseOBJ.getMessage());
+                                Util.showToast(MachineMouActivity.this, responseOBJ.getMessage());
                             } else {
-                                Util.showToast(MachineMouActivity.this,getResources().getString(R.string.msg_something_went_wrong));
+                                Util.showToast(MachineMouActivity.this, getResources().getString(R.string.msg_something_went_wrong));
                             }
                             Log.d("response -", jsonString);
                         } catch (UnsupportedEncodingException e) {
@@ -197,6 +206,7 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                         hideProgressBar();
                         Toast.makeText(getApplication(), getResources().getString(R.string.msg_failure),
                                 Toast.LENGTH_SHORT).show();
+                        Log.d("Error", error.getMessage());
                     }
                 }) {
 
@@ -208,7 +218,8 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
 //                    params.put("lat", String.valueOf(location.getLatitude()));
 //                    params.put("long ", String.valueOf(location.getLongitude()));
 //                }
-                params.put("imageArraySize", String.valueOf(getImageHashmap().size()));//add string parameters
+                params.put("imageArraySize", String.valueOf(getImageBitmapList().size()));//add string parameters
+                Log.d("body", params.toString());
                 return params;
             }
 
@@ -240,13 +251,22 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 Drawable drawable = null;
-                Iterator myVeryOwnIterator = getImageHashmap().keySet().iterator();
+
+              /*  Iterator myVeryOwnIterator = getImageHashmap().keySet().iterator();
                 for (int i = 0; i < getImageHashmap().size(); i++) {
                     String key = (String) myVeryOwnIterator.next();
                     drawable = new BitmapDrawable(getResources(), getImageHashmap().get(key));
                     params.put(key, new DataPart(key, getFileDataFromDrawable(drawable),
                             "image/jpeg"));
+                }*/
+
+                for (int i = 0; i < getImageBitmapList().size(); i++) {
+                    drawable = new BitmapDrawable(getResources(), getImageBitmapList().get(i));
+                    params.put("accountImage" + i, new DataPart("accountImage" + i, getFileDataFromDrawable(drawable),
+                            "image/jpeg"));
                 }
+
+                Log.d("byte data body", params.toString());
                 return params;
             }
         };
@@ -282,14 +302,14 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onBackPressed() {
-            try {
-                fManager.popBackStackImmediate();
-            } catch (IllegalStateException e) {
-                Log.e("TAG", e.getMessage());
-            }
-            if (fManager.getBackStackEntryCount() == 0) {
-                finish();
-            }
+        try {
+            fManager.popBackStackImmediate();
+        } catch (IllegalStateException e) {
+            Log.e("TAG", e.getMessage());
+        }
+        if (fManager.getBackStackEntryCount() == 0) {
+            finish();
+        }
     }
 
     public void openFragmentAtPosition(int position) {

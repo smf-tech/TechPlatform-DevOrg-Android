@@ -127,7 +127,7 @@ dependencies {
 
     // 3rd party library
     implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
-    implementation 'com.github.yalantis:ucrop:2.2.6' //updated from 2.2.4
+    implementation 'com.github.yalantis:ucrop:2.2.8' //updated from 2.2.4
     implementation 'me.relex:circleindicator:2.1.6@aar' //updated from 1.2.2@aar
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
     implementation 'com.github.prolificinteractive:material-calendarview:1.6.0'
