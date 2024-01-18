@@ -24,6 +24,11 @@ class DonorsActivity : AppCompatActivity() {
         "Potential",
     )
 
+    companion object{
+        const val DONOR_TYPE_PROSPECT = "prospect"
+        const val DONOR_TYPE_POTENTIAL = "potential"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDonorsBinding.inflate(layoutInflater)
