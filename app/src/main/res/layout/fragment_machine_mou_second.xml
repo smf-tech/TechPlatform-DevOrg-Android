@@ -360,7 +360,7 @@
                 android:src="@drawable/ic_img"/>
 
             <com.octopusbjsindia.view.customs.TextViewSemiBold
-                android:id="@+id/event_pic_label"
+                android:id="@+id/mou_copy_label"
                 style="@style/FormLabel"
                 android:layout_marginTop="@dimen/dimen_05dp"
                 android:layout_gravity="center"
