@@ -838,5 +838,7 @@
     <string name="next">Next</string>
     <string name="your_forms">Your Forms</string>
     <string name="new_form">New Form</string>
+    <string name="commitment">Commitment value (In Rupees)*</string>
+    <string name="donation_amount">Donation Amount</string>
 
 </resources>

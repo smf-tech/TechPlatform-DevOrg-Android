@@ -397,7 +397,13 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                     }
                                     break;
                                 case R.id.action_donation_record:
-                                    //todo
+                                    if (Util.isConnected(activity)) {
+                                        Intent i = new Intent(activity, CreateStructureActivity.class);
+                                        i.putExtra("structure_id", ssDataList.get(getAdapterPosition()).getStructureId());
+                                        activity.startActivity(i);
+                                    } else {
+                                        Util.showToast(activity.getResources().getString(R.string.msg_no_network), activity);
+                                    }
                                     break;
                             }
                             return false;

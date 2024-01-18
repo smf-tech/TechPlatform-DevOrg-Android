@@ -613,6 +613,8 @@
     <string name="enter_order_ref_number">Please enter order reference number</string>
     <string name="your_forms">तुमचे फॉर्म</string>
     <string name="new_form">नवीन फॉर्म</string>
+    <string name="commitment">Commitment value (In Rupees)*</string>
+    <string name="donation_amount">Donation Amount</string>
 
 
 </resources>
