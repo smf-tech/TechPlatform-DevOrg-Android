@@ -400,7 +400,10 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                 case R.id.action_donation_record:
                                     if (Util.isConnected(activity)) {
                                         Intent i = new Intent(activity, DonationRecordActivity.class);
-                                        i.putExtra("structure_id", ssDataList.get(getAdapterPosition()).getStructureId());
+                                        i.putExtra("structureId", ssDataList.get(getAdapterPosition()).getStructureId());
+                                        i.putExtra("structureCode", ssDataList.get(getAdapterPosition()).getStructureCode());
+                                        i.putExtra("district", ssDataList.get(getAdapterPosition()).getDistrict());
+                                        i.putExtra("districtId", ssDataList.get(getAdapterPosition()).getDistrictId());
                                         activity.startActivity(i);
                                     } else {
                                         Util.showToast(activity.getResources().getString(R.string.msg_no_network), activity);

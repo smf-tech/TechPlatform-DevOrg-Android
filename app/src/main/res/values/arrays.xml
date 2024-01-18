@@ -5,4 +5,15 @@
         <item>60</item>
     </array>
 
+    <string-array name="payment_mode">
+        <item>NEFT</item>
+        <item>RTGS</item>
+        <item>Cheque</item>
+        <item>DD</item>
+    </string-array>
+
+    <string-array name="payment_type">
+        <item>Part Installment</item>
+        <item>Final Payment</item>
+    </string-array>
 </resources>

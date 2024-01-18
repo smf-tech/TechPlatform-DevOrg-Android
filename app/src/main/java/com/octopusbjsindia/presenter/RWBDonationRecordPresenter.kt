@@ -36,19 +36,23 @@ class RWBDonationRecordPresenter(activity: DonationRecordActivity): APIPresenter
         Log.d(TAG, "donor list url: $getDonorListUrl")
         val requestCall = APIRequestCall()
         requestCall.setApiPresenterListener(this)
-        requestCall.postDataApiCall(
-            RWBDonationRecordPresenter.GET_DISTRICT_DONOR,
-            paramJson,
-            getDonorListUrl
-        )
+        requestCall.postDataApiCall(GET_DISTRICT_DONOR, paramJson, getDonorListUrl)
     }
 
     override fun onFailureListener(requestID: String?, message: String?) {
-        TODO("Not yet implemented")
+        if (activityWeakReference != null && activityWeakReference?.get() != null) {
+            activityWeakReference?.get()?.hideProgressBar()
+            activityWeakReference?.get()?.onFailureListener(requestID, message)
+        }
     }
 
     override fun onErrorListener(requestID: String?, error: VolleyError?) {
-        TODO("Not yet implemented")
+        if (activityWeakReference != null && activityWeakReference?.get() != null) {
+            activityWeakReference?.get()?.hideProgressBar()
+            if (error != null) {
+                activityWeakReference?.get()?.onErrorListener(requestID, error)
+            }
+        }
     }
 
     override fun onSuccessListener(requestID: String?, response: String?) {
@@ -77,9 +81,5 @@ class RWBDonationRecordPresenter(activity: DonationRecordActivity): APIPresenter
             activityWeakReference?.get()?.onFailureListener(requestID, e.message)
         }
 
-    }
-
-    fun clearData() {
-        activityWeakReference = null
     }
 }

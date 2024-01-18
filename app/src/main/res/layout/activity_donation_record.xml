@@ -58,28 +58,32 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="16sp" />
             </LinearLayout>
 
-            <!--district-->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/textinputstyle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                app:endIconMode="custom"
-                app:hintTextAppearance="@style/TextInputLayoutHint">
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_district"
-                    style="@style/RegistrationEditTextLayout"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:hint="@string/mandatory_district"
-                    android:longClickable="false" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:text="District" />
+
+                <TextView
+                    android:id="@+id/tv_district"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
@@ -104,6 +108,7 @@
                 android:layout_marginTop="@dimen/dimen_16dp" />
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardDonorCommitment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -122,6 +127,7 @@
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/titleCommitment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableEnd="@drawable/ic_arrow_expand_more_24"
@@ -135,7 +141,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="visible">
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/textinputstyle"
@@ -236,14 +243,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_16dp"
-                android:background="?selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true" />
+              />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:id="@+id/cardDonationDetail"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 app:cardElevation="0dp"
                 app:strokeColor="@color/chip_stroke_color"
                 app:strokeWidth="1dp">
@@ -256,6 +265,7 @@
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/titleDonation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableEnd="@drawable/ic_arrow_expand_more_24"
@@ -306,20 +316,19 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/textinputstyle"
+                            style="@style/textinputstyleDropDown"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            android:hint="Payment Mode*"
                             app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                             app:endIconMode="custom">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <AutoCompleteTextView
                                 android:id="@+id/et_payment_mode"
-                                style="@style/RegistrationEditTextLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Payment Mode*"
-                                android:inputType="number" />
+                                android:inputType="none" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -373,20 +382,19 @@
                             android:visibility="visible" />
 
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/textinputstyle"
+                            style="@style/textinputstyleDropDown"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            android:hint="Payment Type*"
                             app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                             app:endIconMode="custom">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <AutoCompleteTextView
                                 android:id="@+id/et_payment_type"
-                                style="@style/RegistrationEditTextLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Payment Type*"
-                                android:inputType="number" />
+                                android:inputType="none" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.button.MaterialButton
