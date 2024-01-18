@@ -1,20 +1,12 @@
-package com.octopusbjsindia.view.fragments
+package com.octopusbjsindia.view.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.util.Patterns
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.PopupMenu
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.AuthFailureError
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.NetworkResponse
@@ -26,41 +18,29 @@ import com.android.volley.toolbox.Volley
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import com.octopusbjsindia.BuildConfig
 import com.octopusbjsindia.R
-import com.octopusbjsindia.databinding.FragmentProspectDonorBinding
+import com.octopusbjsindia.databinding.ActivityCreatePotentialDonorBinding
 import com.octopusbjsindia.listeners.APIDataListener
 import com.octopusbjsindia.listeners.CustomSpinnerListener
 import com.octopusbjsindia.models.SujalamSuphalam.RWBDonor
-import com.octopusbjsindia.models.SujalamSuphalam.RWBDonorApiResponse
 import com.octopusbjsindia.models.common.CustomSpinnerObject
 import com.octopusbjsindia.models.events.CommonResponse
 import com.octopusbjsindia.models.profile.JurisdictionLocationV3
-import com.octopusbjsindia.presenter.RWBProspectDonorsPresenter
+import com.octopusbjsindia.presenter.CreatePotentialDonorActivityPresenter
 import com.octopusbjsindia.utility.Constants
 import com.octopusbjsindia.utility.Urls
 import com.octopusbjsindia.utility.Util
 import com.octopusbjsindia.utility.VolleyMultipartRequest
-import com.octopusbjsindia.view.activities.CreatePotentialDonor
-import com.octopusbjsindia.view.activities.DonorsActivity.Companion.DONOR_TYPE_PROSPECT
-import com.octopusbjsindia.view.adapters.DonorsListAdapter
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass
 import java.io.UnsupportedEncodingException
 
-class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener, APIDataListener,
-    CustomSpinnerListener {
+class CreatePotentialDonor : AppCompatActivity(), APIDataListener, CustomSpinnerListener {
 
-    private var _binding: FragmentProspectDonorBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: ActivityCreatePotentialDonorBinding
 
-    private val donorAdapter: DonorsListAdapter by lazy {
-        DonorsListAdapter(this)
-    }
-
-    private var presenter: RWBProspectDonorsPresenter? = null
+    private var presenter: CreatePotentialDonorActivityPresenter? = null
 
     private val stateList = ArrayList<CustomSpinnerObject>()
     private val districtList = ArrayList<CustomSpinnerObject>()
@@ -82,34 +62,22 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
     private var isDistrictFilter = false
     private var isTalukaFilter = false
 
-    private var etTaluka: TextInputEditText? = null
-
     private var rQueue: RequestQueue? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentProspectDonorBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityCreatePotentialDonorBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-
-        presenter = RWBProspectDonorsPresenter(this)
-
-        binding.apply {
-            recyclerView.layoutManager = LinearLayoutManager(requireContext())
-            recyclerView.adapter = donorAdapter
-
-            binding.fabAdd.setOnClickListener {
-                showDonorFormBottomSheet()
-            }
+        binding.toolbar.setNavigationOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
         }
 
+        initView()
+        clickListener()
+    }
+
+    private fun initView() {
         val roleAccessAPIResponse = Util.getRoleAccessObjectFromPref()
         val roleAccessList = roleAccessAPIResponse.data
         if (roleAccessList != null) {
@@ -165,20 +133,21 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
             Util.getUserObjectFromPref().userLocation.stateId.size > 0
         ) {
             selectedState = Util.getUserObjectFromPref().userLocation.stateId[0].name
-            //etState.setText(selectedState)
+            binding.etState.setText(selectedState)
             selectedStateId = Util.getUserObjectFromPref().userLocation.stateId[0].id
         }
         if (Util.getUserObjectFromPref().userLocation.districtIds != null &&
             Util.getUserObjectFromPref().userLocation.districtIds.size > 0
         ) {
             selectedDistrict = Util.getUserObjectFromPref().userLocation.districtIds[0].name
-            //etDistrict.setText(selectedDistrict)
+            binding.etDistrict.setText(selectedDistrict)
             selectedDistrictId = Util.getUserObjectFromPref().userLocation.districtIds[0].id
         }
         if (Util.getUserObjectFromPref().userLocation.talukaIds != null &&
             Util.getUserObjectFromPref().userLocation.talukaIds.size > 0
         ) {
             selectedTaluka = Util.getUserObjectFromPref().userLocation.talukaIds[0].name
+            binding.etTaluka.setText(selectedTaluka)
             selectedTalukaId = Util.getUserObjectFromPref().userLocation.talukaIds[0].id
         }
 
@@ -219,9 +188,49 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        presenter?.getDonorsList(DONOR_TYPE_PROSPECT)
+    private fun clickListener() {
+        binding.apply {
+
+            etTaluka.setOnClickListener {
+                if (talukaList.size > 0) {
+                    val csdTaluka = CustomSpinnerDialogClass(
+                        this@CreatePotentialDonor, this@CreatePotentialDonor,
+                        "Select Taluka", talukaList, false
+                    )
+                    csdTaluka.show()
+                    csdTaluka.window?.setLayout(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                } else {
+                    if (Util.isConnected(this@CreatePotentialDonor)) {
+                        presenter?.getLocationData(
+                            if (selectedDistrictId?.isNotEmpty() == true) selectedDistrictId!! else userDistrictIds,
+                            Util.getUserObjectFromPref().jurisdictionTypeId,
+                            Constants.JurisdictionLevelName.TALUKA_LEVEL
+                        )
+                    } else {
+                        Util.showToast(
+                            resources.getString(R.string.msg_no_network),
+                            this@CreatePotentialDonor
+                        )
+                    }
+                }
+            }
+
+            etVillage.setOnClickListener {
+                val csdHostVillage = CustomSpinnerDialogClass(
+                    this@CreatePotentialDonor, this@CreatePotentialDonor,
+                    "Select Village", villageList, false
+                )
+                csdHostVillage.show()
+                csdHostVillage.window!!.setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+            }
+
+        }
     }
 
     fun showJurisdictionLevel(data: List<JurisdictionLocationV3>?, levelName: String?) {
@@ -239,7 +248,7 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
                     i++
                 }
                 val csdDisttrict = CustomSpinnerDialogClass(
-                    activity, this,
+                    this, this,
                     "Select District", districtList, false
                 )
                 csdDisttrict.show()
@@ -262,7 +271,7 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
                     i++
                 }
                 val csdTaluka = CustomSpinnerDialogClass(
-                    activity, this,
+                    this, this,
                     "Select Taluka", talukaList, false
                 )
                 csdTaluka.show()
@@ -286,106 +295,6 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
                 }
             }
         }
-    }
-
-
-    private fun showDonorFormBottomSheet() {
-        val bottomSheetDialog = BottomSheetDialog(requireContext())
-        val bottomSheet =
-            LayoutInflater.from(context).inflate(R.layout.bs_prospect_donor_form, null)
-
-        val close = bottomSheet.findViewById<ImageView>(R.id.ic_close)
-        val submit = bottomSheet.findViewById<MaterialButton>(R.id.bt_submit)
-        val progress = bottomSheet.findViewById<LinearProgressIndicator>(R.id.linear_progress)
-        val txtState = bottomSheet.findViewById<TextView>(R.id.txtState)
-        val txtDistrict = bottomSheet.findViewById<TextView>(R.id.txtDistrict)
-        etTaluka = bottomSheet.findViewById<TextInputEditText>(R.id.et_taluka)
-        val etFullName = bottomSheet.findViewById<TextInputEditText>(R.id.et_full_name)
-        val etEmail = bottomSheet.findViewById<TextInputEditText>(R.id.et_email)
-        val etFirmName = bottomSheet.findViewById<TextInputEditText>(R.id.et_firm_name)
-        val etMobileNumber = bottomSheet.findViewById<TextInputEditText>(R.id.et_mobile_number)
-
-        txtState.text = selectedState
-        txtDistrict.text = selectedDistrict
-        etTaluka?.setText(selectedTaluka)
-
-        etTaluka?.setOnClickListener {
-            if (talukaList.size > 0) {
-                val csdTaluka = CustomSpinnerDialogClass(
-                    requireActivity(), this,
-                    "Select Taluka", talukaList, false
-                )
-                csdTaluka.show()
-                csdTaluka.window?.setLayout(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-                )
-            } else {
-                if (Util.isConnected(context)) {
-                    presenter?.getLocationData(
-                        if (selectedDistrictId?.isNotEmpty() == true) selectedDistrictId!! else userDistrictIds,
-                        Util.getUserObjectFromPref().jurisdictionTypeId,
-                        Constants.JurisdictionLevelName.TALUKA_LEVEL
-                    )
-                } else {
-                    Util.showToast(resources.getString(R.string.msg_no_network), context)
-                }
-            }
-        }
-
-        submit.setOnClickListener {
-            if (selectedTaluka.isNullOrBlank() || selectedTalukaId.isNullOrBlank()) {
-                Snackbar.make(
-                    bottomSheetDialog.window?.decorView!!,
-                    "Please select Taluka",
-                    Snackbar.LENGTH_SHORT
-                ).setAnchorView(it).show()
-            } else if (etFullName.text.isNullOrBlank()) {
-                Snackbar.make(
-                    bottomSheetDialog.window?.decorView!!,
-                    "Please enter full name of donor",
-                    Snackbar.LENGTH_SHORT
-                ).setAnchorView(it).show()
-            } else if (etMobileNumber.text.isNullOrBlank() || etMobileNumber.text.toString().length < 10) {
-                Snackbar.make(
-                    bottomSheetDialog.window?.decorView!!,
-                    "Please enter valid mobile number",
-                    Snackbar.LENGTH_SHORT
-                ).setAnchorView(it).show()
-            } else if (etEmail.text.toString().isNotBlank() &&
-                !Patterns.EMAIL_ADDRESS.matcher(etEmail.text.toString()).matches()) {
-                Snackbar.make(
-                    bottomSheetDialog.window?.decorView!!,
-                    "Please enter valid email",
-                    Snackbar.LENGTH_SHORT
-                ).setAnchorView(it).show()
-            } else {
-                //todo submit data
-                // multipart post api
-                val prospectDonor = RWBDonor()
-                prospectDonor.donorType = DONOR_TYPE_PROSPECT
-                prospectDonor.stateName = selectedState
-                prospectDonor.stateId =
-                    Util.getUserObjectFromPref().userLocation.stateId[0].id //todo check this
-                prospectDonor.districtName = selectedDistrict
-                prospectDonor.districtId = selectedDistrictId
-                prospectDonor.talukaName = selectedTaluka
-                prospectDonor.talukaId = selectedTalukaId
-                prospectDonor.fullName = etFullName.text.toString()
-                prospectDonor.emailId = etEmail.text.toString()
-                prospectDonor.mobileNumber = etMobileNumber.text.toString()
-                prospectDonor.companyFirmName = etFirmName.text.toString()
-
-                uploadData(prospectDonor, submit, progress, bottomSheetDialog)
-
-            }
-        }
-
-        close.setOnClickListener { bottomSheetDialog.dismiss() }
-
-        bottomSheetDialog.setCancelable(false)
-        bottomSheetDialog.setContentView(bottomSheet)
-        bottomSheetDialog.show()
     }
 
     private fun uploadData(
@@ -415,20 +324,20 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
                     )
                     Log.d("response -", jsonString)
                     if (commonResponse.status == 200) {
-                        Toast.makeText(context, commonResponse.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, commonResponse.message, Toast.LENGTH_SHORT).show()
                         bottomSheetDialog.dismiss()
                     } else {
-                        Toast.makeText(context, commonResponse.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, commonResponse.message, Toast.LENGTH_SHORT).show()
                     }
                 } catch (e: UnsupportedEncodingException) {
                     e.printStackTrace()
-                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
                 }
             },
             Response.ErrorListener { error: VolleyError ->
                 btSave.isEnabled = true
                 progress.visibility = View.INVISIBLE
-                Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
             }) {
             @Throws(AuthFailureError::class)
             override fun getParams(): Map<String, String> {
@@ -479,36 +388,13 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
         }
         volleyMultipartRequest.setRetryPolicy(
             DefaultRetryPolicy(
-                3000,
+                10000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
             )
         )
-        rQueue = Volley.newRequestQueue(context)
+        rQueue = Volley.newRequestQueue(this)
         rQueue?.add(volleyMultipartRequest)
-    }
-
-
-    fun populateProspectDonorList(requestID: String?, data: RWBDonorApiResponse?) {
-        if (data != null) {
-            binding.lyNoData.isVisible = false
-            donorAdapter.submitList(data.data)
-        } else {
-            showNoDataMessage()
-        }
-    }
-
-    fun showNoDataMessage() {
-        binding.lyNoData.isVisible = true
-    }
-
-
-    override fun onDetach() {
-        super.onDetach()
-        if (presenter != null) {
-            presenter?.clearData()
-            presenter = null
-        }
     }
 
     override fun onFailureListener(requestID: String?, message: String?) {
@@ -524,7 +410,7 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
     }
 
     override fun showProgressBar() {
-        activity?.runOnUiThread {
+        runOnUiThread {
             binding?.apply {
                 lytProgressBar?.apply {
                     isVisible = true
@@ -534,7 +420,7 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
     }
 
     override fun hideProgressBar() {
-        activity?.runOnUiThread {
+        runOnUiThread {
             binding?.apply {
                 lytProgressBar?.apply {
                     isVisible = false
@@ -544,24 +430,7 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
     }
 
     override fun closeCurrentActivity() {
-        activity?.finish()
-    }
-
-    override fun onOptionBtnClick(item: RWBDonor, view: View) {
-        //todo
-        //show popup menu with move to master donor list
-        val popupMenu = PopupMenu(requireContext(), view)
-        popupMenu.menuInflater.inflate(R.menu.popup_menu_rwb_donors, popupMenu.menu)
-        popupMenu.setOnMenuItemClickListener { menuItem ->
-            if (menuItem.itemId == R.id.action_mark_potential_donor) {
-                val intent = Intent(activity, CreatePotentialDonor::class.java)
-                //todo send params
-                //intent.putExtra("donor_data", item)
-                activity?.startActivity(intent)
-            }
-            true
-        }
-        popupMenu.show()
+        finish()
     }
 
     override fun onCustomSpinnerSelection(type: String?) {
@@ -608,14 +477,12 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
                         break
                     }
                 }
-                etTaluka?.setText(selectedTaluka)
+                binding.etTaluka.setText(selectedTaluka)
+                binding.etVillage.setText("")
             }
         }
 
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
 }

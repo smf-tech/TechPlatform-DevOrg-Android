@@ -93,7 +93,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private ArrayList<CustomSpinnerObject> statusList = new ArrayList<>();
     private int mouAction = 0, selectedStatus = 0, shiftAction = 0;
     public boolean isMachineTerminate, isMachineAvailable;
-    public boolean isMachineAdd, isOperatorAdd, isDonorAdd = true, isMachineDepoly, isMachineEligible, isMachineMou,
+    public boolean isMachineAdd, isOperatorAdd, isDonorAdd, isMachineDepoly, isMachineEligible, isMachineMou,
             isMachineVisitValidationForm, isSiltTransportForm, isDieselRecordForm, isMachineShiftForm,
             isMachineRelease, isMouImagesUpload, isMachineSignoff, isStateFilter, isDistrictFilter, isTalukaFilter,
             isVillageFilter, isStructureAdd, isReleaseOperator, isAssignOperator, isDailyMachineRecord;
@@ -1053,15 +1053,15 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                 fabCreate.setIconResource(R.drawable.ic_create_structure);
                 fabCreate.setText("Create Structure");
                 fabCreate.animate().translationY(-getResources().getDimension(R.dimen.standard_65));
-                if (isOperatorAdd) {
+               /* if (isOperatorAdd) {
                     fabCreateOperator.setVisibility(View.VISIBLE);
                     fabCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_130));
-                }
+                }*/
                 if (isDonorAdd) {
                     fabDonor.setVisibility(View.VISIBLE);
-                    fabDonor.animate().translationY(-getResources().getDimension(R.dimen.standard_195));
+                    fabDonor.animate().translationY(-getResources().getDimension(R.dimen.standard_130));
                 }
-            } else {
+            } /*else {
                 if (isOperatorAdd) {
                     fabCreateOperator.setVisibility(View.VISIBLE);
                     fabCreateOperator.animate().translationY(-getResources().getDimension(R.dimen.standard_65));
@@ -1075,7 +1075,7 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     fabCreate.setVisibility(View.GONE);
                     fbSelect.setVisibility(View.GONE);
                 }
-            }
+            }*/
         } else {
             if (isMachineAdd) {
                 fabCreate.setVisibility(View.VISIBLE);

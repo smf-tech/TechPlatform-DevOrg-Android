@@ -78,7 +78,8 @@ public class CreateStructureActivityPresenter implements APIPresenterListener {
                         mContext.get().onFailureListener(CREATE_STRUCTURE,commonResponse.getMessage());
                     }
 
-                } else if (requestID.equalsIgnoreCase(GET_DISTRICT) ||
+                }
+                else if (requestID.equalsIgnoreCase(GET_DISTRICT) ||
                         requestID.equalsIgnoreCase(GET_TALUKA) ||
                         requestID.equalsIgnoreCase(GET_VILLAGE)) {
                     JurisdictionLevelResponse jurisdictionLevelResponse
