@@ -15,7 +15,9 @@
         app:layout_constraintEnd_toStartOf="@+id/options"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="full name" />
+        tools:text="full name"
+        android:textSize="15sp"
+        android:textColor="?android:attr/textColorPrimary" />
 
     <TextView
         android:id="@+id/txtMobile"

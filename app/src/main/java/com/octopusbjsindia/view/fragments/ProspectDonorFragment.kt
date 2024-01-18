@@ -219,8 +219,8 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
 
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         presenter?.getDonorsList(DONOR_TYPE_PROSPECT)
     }
 
@@ -360,7 +360,7 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
                     Snackbar.LENGTH_SHORT
                 ).setAnchorView(it).show()
             } else {
-                //todo submit data
+                // submit data
                 // multipart post api
                 val prospectDonor = RWBDonor()
                 prospectDonor.donorType = DONOR_TYPE_PROSPECT
@@ -377,7 +377,6 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
                 prospectDonor.companyFirmName = etFirmName.text.toString()
 
                 uploadData(prospectDonor, submit, progress, bottomSheetDialog)
-
             }
         }
 
@@ -417,6 +416,7 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
                     if (commonResponse.status == 200) {
                         Toast.makeText(context, commonResponse.message, Toast.LENGTH_SHORT).show()
                         bottomSheetDialog.dismiss()
+                        presenter?.getDonorsList(DONOR_TYPE_PROSPECT)
                     } else {
                         Toast.makeText(context, commonResponse.message, Toast.LENGTH_SHORT).show()
                     }
@@ -548,15 +548,18 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
     }
 
     override fun onOptionBtnClick(item: RWBDonor, view: View) {
-        //todo
-        //show popup menu with move to master donor list
         val popupMenu = PopupMenu(requireContext(), view)
         popupMenu.menuInflater.inflate(R.menu.popup_menu_rwb_donors, popupMenu.menu)
         popupMenu.setOnMenuItemClickListener { menuItem ->
             if (menuItem.itemId == R.id.action_mark_potential_donor) {
                 val intent = Intent(activity, CreatePotentialDonor::class.java)
-                //todo send params
-                //intent.putExtra("donor_data", item)
+                intent.putExtra("id", item.id)
+                intent.putExtra("taluka", item.talukaName)
+                intent.putExtra("talukaId", item.talukaId)
+                intent.putExtra("name", item.fullName)
+                intent.putExtra("email", item.emailId)
+                intent.putExtra("mobile", item.mobileNumber)
+                intent.putExtra("firm_name", item.companyFirmName)
                 activity?.startActivity(intent)
             }
             true

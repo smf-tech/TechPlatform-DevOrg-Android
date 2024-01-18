@@ -53,13 +53,6 @@
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute"
         tools:replace="android:label">
         <activity
-            android:name=".view.activities.CreatePotentialDonor"
-            android:exported="false" />
-        <activity
-            android:name=".view.activities.DonorsActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
             android:name=".view.activities.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
@@ -318,7 +311,16 @@
             android:name=".view.activities.MissionRahat.PatientInfoActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".view.activities.MissionRahat.ConcentratorTakeOverActivity" />
-
+        <activity
+            android:name=".view.activities.CreatePotentialDonor"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".view.activities.DonorsActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <receiver
             android:name=".receivers.SmsReceiver"
             android:exported="true"

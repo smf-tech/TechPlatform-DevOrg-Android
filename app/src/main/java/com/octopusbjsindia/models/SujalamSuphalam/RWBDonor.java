@@ -11,6 +11,10 @@ public class RWBDonor {
     @Expose
     private String id;
 
+    @SerializedName("donor_id")
+    @Expose
+    private String donorId;  //only used when making prospect donor to potential donor
+
     @SerializedName("donor_type")
     @Expose
     private String donorType;
@@ -145,6 +149,14 @@ public class RWBDonor {
 
     public void setTalukaId(String talukaId) {
         this.talukaId = talukaId;
+    }
+
+    public String getDonorId() {
+        return donorId;
+    }
+
+    public void setDonorId(String donorId) {
+        this.donorId = donorId;
     }
 
     public String getTalukaName() {
