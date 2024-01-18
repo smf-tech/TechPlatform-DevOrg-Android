@@ -72,27 +72,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:textColor="?android:attr/textColorPrimary"
                     tools:text="Maharashtra" />
             </LinearLayout>
 
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:orientation="horizontal">
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
+                app:endIconMode="custom"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_district"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="District" />
-
-                <TextView
-                    android:id="@+id/txtDistrict"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    tools:text="Pune" />
-            </LinearLayout>
+                    android:focusable="false"
+                    android:hint="@string/mandatory_district"
+                    android:imeOptions="actionNext"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"

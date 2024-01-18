@@ -1,6 +1,7 @@
 package com.octopusbjsindia.view.activities
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.android.volley.VolleyError
@@ -10,6 +11,9 @@ import com.octopusbjsindia.listeners.CustomSpinnerListener
 import com.octopusbjsindia.models.SujalamSuphalam.RWBDonorApiResponse
 import com.octopusbjsindia.presenter.RWBDonationRecordPresenter
 import com.octopusbjsindia.utility.Util
+
+class DonationRecordActivity: AppCompatActivity() {
+    private lateinit var binding: ActivityDonationRecordBinding
 
 class DonationRecordActivity: AppCompatActivity(), APIDataListener, CustomSpinnerListener {
 
@@ -22,7 +26,7 @@ class DonationRecordActivity: AppCompatActivity(), APIDataListener, CustomSpinne
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityDonationRecordBinding.inflate(layoutInflater)
+        binding = ActivityDonationRecordBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.toolbar.setNavigationOnClickListener {

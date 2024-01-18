@@ -2,6 +2,7 @@ package com.octopusbjsindia.view.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -23,6 +24,7 @@ import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.Volley
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -83,6 +85,7 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
     private var isTalukaFilter = false
 
     private var etTaluka: TextInputEditText? = null
+    private var etDistrict: TextInputEditText? = null
 
     private var rQueue: RequestQueue? = null
 
@@ -97,7 +100,7 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        //activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
         presenter = RWBProspectDonorsPresenter(this)
 
@@ -172,7 +175,7 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
             Util.getUserObjectFromPref().userLocation.districtIds.size > 0
         ) {
             selectedDistrict = Util.getUserObjectFromPref().userLocation.districtIds[0].name
-            //etDistrict.setText(selectedDistrict)
+            etDistrict?.setText(selectedDistrict)
             selectedDistrictId = Util.getUserObjectFromPref().userLocation.districtIds[0].id
         }
         if (Util.getUserObjectFromPref().userLocation.talukaIds != null &&
@@ -219,8 +222,8 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
 
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         presenter?.getDonorsList(DONOR_TYPE_PROSPECT)
     }
 
@@ -298,7 +301,7 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
         val submit = bottomSheet.findViewById<MaterialButton>(R.id.bt_submit)
         val progress = bottomSheet.findViewById<LinearProgressIndicator>(R.id.linear_progress)
         val txtState = bottomSheet.findViewById<TextView>(R.id.txtState)
-        val txtDistrict = bottomSheet.findViewById<TextView>(R.id.txtDistrict)
+        etDistrict = bottomSheet.findViewById<TextInputEditText>(R.id.et_district)
         etTaluka = bottomSheet.findViewById<TextInputEditText>(R.id.et_taluka)
         val etFullName = bottomSheet.findViewById<TextInputEditText>(R.id.et_full_name)
         val etEmail = bottomSheet.findViewById<TextInputEditText>(R.id.et_email)
@@ -306,8 +309,35 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
         val etMobileNumber = bottomSheet.findViewById<TextInputEditText>(R.id.et_mobile_number)
 
         txtState.text = selectedState
-        txtDistrict.text = selectedDistrict
+        etDistrict?.setText(selectedDistrict)
         etTaluka?.setText(selectedTaluka)
+
+        //only clcik if has mutiple dist
+        if (Util.getUserObjectFromPref().userLocation.districtIds.size > 1) {
+            etDistrict?.setOnClickListener {
+                if (districtList.size > 0) {
+                    val csdDistrict = CustomSpinnerDialogClass(
+                        activity, this,
+                        "Select District", districtList, false
+                    )
+                    csdDistrict.show()
+                    csdDistrict.window!!.setLayout(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                } else {
+                    if (Util.isConnected(activity)) {
+                        presenter!!.getLocationData(
+                            (if (!TextUtils.isEmpty(selectedStateId)) selectedStateId else userStateIds)!!,
+                            Util.getUserObjectFromPref().jurisdictionTypeId,
+                            Constants.JurisdictionLevelName.DISTRICT_LEVEL
+                        )
+                    } else {
+                        Util.showToast(resources.getString(R.string.msg_no_network), this)
+                    }
+                }
+            }
+        }
 
         etTaluka?.setOnClickListener {
             if (talukaList.size > 0) {
@@ -384,6 +414,7 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
 
         bottomSheetDialog.setCancelable(false)
         bottomSheetDialog.setContentView(bottomSheet)
+        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetDialog.show()
     }
 
@@ -587,7 +618,7 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
                 districtList.clear()
             }*/
 
-            /* "Select District" -> {
+             "Select District" -> {
                  for (obj in districtList) {
                      if (obj.isSelected) {
                          selectedDistrict = obj.name
@@ -595,13 +626,12 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
                          break
                      }
                  }
-                 etDistrict.setText(selectedDistrict)
-                 etTaluka.setText("")
+                 etDistrict?.setText(selectedDistrict)
+                 etTaluka?.setText("")
                  selectedTaluka = ""
                  selectedTalukaId = ""
                  talukaList.clear()
-                 villageList.clear()
-             }*/
+             }
 
             "Select Taluka" -> {
                 for (obj in talukaList) {

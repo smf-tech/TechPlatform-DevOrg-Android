@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/anchor"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -18,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back_24"
-            app:title="Donation Record"
+            app:title="Donation Record Entry"
             app:titleCentered="true" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -27,8 +26,8 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="76dp"
         android:clipToPadding="false"
+        android:paddingBottom="16dp"
         android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -36,250 +35,376 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        android:padding="16dp">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Structure Code" />
-
-            <TextView
-                android:id="@+id/tv_structure_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp" />
-        </LinearLayout>
-
-        <!--district-->
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/textinputstyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-            app:endIconMode="custom"
-            app:hintTextAppearance="@style/TextInputLayoutHint">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_district"
-                style="@style/RegistrationEditTextLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:hint="@string/mandatory_district"
-                android:imeOptions="actionNext"
-                android:longClickable="false" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/textinputstyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-            android:layout_marginTop="8dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_full_name"
-                style="@style/RegistrationEditTextLayout"
-                android:hint="Select Donor Name*"
-                android:inputType="textCapWords" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!--commitment-->
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/textinputstyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:endIconMode="custom"
-            app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-            app:hintTextAppearance="@style/TextInputLayoutHint">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_commitment_card"
-                style="@style/RegistrationEditTextLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:hint="Commitment Details"
-                android:imeOptions="actionNext"
-                android:longClickable="false" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_commitment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/textinputstyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:endIconMode="custom"
-                    app:hintTextAppearance="@style/TextInputLayoutHint">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_commitment"
-                        style="@style/RegistrationEditTextLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:hint="@string/commitment"
-                        android:imeOptions="actionNext"
-                        android:longClickable="false" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Scope of Work(Cu.M):"/>
+                    android:text="Structure Code" />
 
                 <TextView
-                    android:id="@+id/tv_work_scope"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="22500"
-                    android:paddingStart="16dp"/>
-
-            </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Per Backhoe Hours:"/>
-
-                    <TextView
-                        android:id="@+id/tv_bh_hours"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="450"
-                        android:paddingStart="16dp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Per Excavator Hours:"/>
-
-                    <TextView
-                        android:id="@+id/tv_ex_hours"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="450"
-                        android:paddingStart="16dp"/>
-
-                </LinearLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/bt_commitment"
+                    android:id="@+id/tv_structure_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginVertical="8dp"
-                    android:text="Add Commitment"
-                    app:cornerRadius="24dp"
-                    android:layout_gravity="center"/>
-
+                    android:layout_marginStart="16dp"
+                    android:textColor="?android:attr/textColorPrimary" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
-        <!--donation-->
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/textinputstyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:endIconMode="custom"
-            app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-            app:hintTextAppearance="@style/TextInputLayoutHint">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_donation_card"
-                style="@style/RegistrationEditTextLayout"
+            <!--district-->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusable="false"
-                android:hint="Donation Details"
-                android:imeOptions="actionNext"
-                android:longClickable="false" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="8dp"
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
+                app:endIconMode="custom"
+                app:hintTextAppearance="@style/TextInputLayoutHint">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_donation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_district"
+                    style="@style/RegistrationEditTextLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="@string/mandatory_district"
+                    android:longClickable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:endIconMode="custom"
-                app:hintTextAppearance="@style/TextInputLayoutHint">
+                app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
+                app:endIconMode="custom">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_donation"
+                    android:id="@+id/et_full_name"
                     style="@style/RegistrationEditTextLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:focusable="false"
-                    android:hint="@string/donation_amount"
-                    android:imeOptions="actionNext"
+                    android:hint="Select Donor Name*"
+                    android:inputType="text"
                     android:longClickable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_16dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/chip_stroke_color"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@drawable/ic_arrow_expand_more_24"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Commitment Details"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:id="@+id/lytDonationCommitment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/textinputstyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            app:hintTextAppearance="@style/TextInputLayoutHint">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_commitment"
+                                style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/commitment"
+                                android:inputType="number" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Scope of Work(Cu.M):" />
+
+                            <TextView
+                                android:id="@+id/tv_work_scope"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="16dp"
+                                android:textColor="?android:attr/textColorPrimary"
+                                tools:text="22500" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Per Backhoe Hours:" />
+
+                            <TextView
+                                android:id="@+id/tv_bh_hours"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="16dp"
+                                android:textColor="?android:attr/textColorPrimary"
+
+                                tools:text="450" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Per Excavator Hours:" />
+
+                            <TextView
+                                android:id="@+id/tv_ex_hours"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="16dp"
+                                android:textColor="?android:attr/textColorPrimary"
+
+                                tools:text="450" />
+
+                        </LinearLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/bt_commitment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="16dp"
+                            android:text="Add Commitment"
+                            android:textAllCaps="false"
+                            app:cornerRadius="24dp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/chip_stroke_color"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@drawable/ic_arrow_expand_more_24"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Donation Details"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:id="@+id/lytDonationDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/textinputstyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
+                            app:endIconMode="custom">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_date"
+                                style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:hint="Date of Transation*"
+                                android:longClickable="false" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/textinputstyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_amount_received"
+                                style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Amount Received (in Rs)*"
+                                android:inputType="number" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/textinputstyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
+                            app:endIconMode="custom">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_payment_mode"
+                                style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Payment Mode*"
+                                android:inputType="number" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/textinputstyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_cheque_no"
+                                style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Cheque No. / DD No.*"
+                                android:inputType="textCapCharacters" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/textinputstyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_transaction_id"
+                                style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Transaction Id*"
+                                android:inputType="textCapCharacters" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="Add transaction detail photo*"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/img_transaction_detail_copy"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="8dp"
+                            android:contentDescription="@string/content_description"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/image_placeholder"
+                            android:visibility="visible" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/textinputstyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
+                            app:endIconMode="custom">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_payment_type"
+                                style="@style/RegistrationEditTextLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Payment Type*"
+                                android:inputType="number" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/bt_submit_donation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="16dp"
+                            android:text="Submit Donation"
+                            android:textAllCaps="false"
+                            app:cornerRadius="24dp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
 
         </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-    </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <RelativeLayout
@@ -304,20 +429,4 @@
             android:focusable="true"
             android:indeterminateOnly="true" />
     </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/white">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/bt_submit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="8dp"
-            android:text="@string/submit"
-            app:cornerRadius="24dp" />
-    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

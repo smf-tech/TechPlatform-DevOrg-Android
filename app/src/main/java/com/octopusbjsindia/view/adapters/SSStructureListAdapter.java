@@ -45,6 +45,7 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CommunityMobilizationActivity;
 import com.octopusbjsindia.view.activities.CreateStructureActivity;
+import com.octopusbjsindia.view.activities.DonationRecordActivity;
 import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.activities.SiltTransportationRecordActivity;
 import com.octopusbjsindia.view.activities.StructureBoundaryActivity;
@@ -398,7 +399,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                                     break;
                                 case R.id.action_donation_record:
                                     if (Util.isConnected(activity)) {
-                                        Intent i = new Intent(activity, CreateStructureActivity.class);
+                                        Intent i = new Intent(activity, DonationRecordActivity.class);
                                         i.putExtra("structure_id", ssDataList.get(getAdapterPosition()).getStructureId());
                                         activity.startActivity(i);
                                     } else {

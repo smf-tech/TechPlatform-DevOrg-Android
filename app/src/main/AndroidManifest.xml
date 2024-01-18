@@ -317,10 +317,15 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".view.activities.DonorsActivity"
+            android:name=".view.activities.DonationRecordActivity"
             android:screenOrientation="portrait"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".view.activities.DonorsActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
         <receiver
             android:name=".receivers.SmsReceiver"
             android:exported="true"
