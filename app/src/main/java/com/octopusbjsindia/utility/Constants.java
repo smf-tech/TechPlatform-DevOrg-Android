@@ -442,6 +442,7 @@ public class Constants {
         public static final Integer ACCESS_CODE_DALLY_PROGRESS_VALIDATION = 160;
         public static final Integer ACCESS_CODE_STRUCTURE_MASTER_GP = 161;
         public static final Integer ACCESS_CODE_DAILY_MACHINE_RECORD = 134;
+        public static final Integer ACCESS_CODE_ADD_DONOR = 182;
     }
 
     public static class OperatorModule {

@@ -1384,7 +1384,7 @@ public class OperatorActivity extends AppCompatActivity implements APIDataListen
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(OperatorActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OperatorActivity.this, error.getMessage().toString(), Toast.LENGTH_SHORT).show();
                     }
                 }) {
 

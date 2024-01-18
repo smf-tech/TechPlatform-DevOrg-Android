@@ -78,7 +78,7 @@
         android:paddingTop="4dp"
         android:clipToPadding="false"
         tools:listitem="@layout/structure_data_item_layout"
-        android:paddingBottom="48dp">
+        android:paddingBottom="56dp">
     </androidx.recyclerview.widget.RecyclerView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -93,8 +93,10 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/bg_button"
         android:text="@string/deploy"
+        android:minWidth="124dp"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
+        tools:visibility="visible"
         android:visibility="gone"/>
 
     <RelativeLayout

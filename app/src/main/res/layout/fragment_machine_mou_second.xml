@@ -1,28 +1,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.octopusbjsindia.view.fragments.MachineMouFirstFragment"
-    android:background="@color/base_background_color">
+    android:background="@color/white">
 
-    <androidx.cardview.widget.CardView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_05dp"
-        android:background="@color/white"
-        app:cardCornerRadius="@dimen/dimen_10dp">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
             android:orientation="vertical"
-            android:layout_marginStart="@dimen/dimen_10dp"
-            android:layout_marginEnd="@dimen/dimen_10dp">
+            android:padding="16dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
@@ -33,10 +25,10 @@
                 <EditText
                     android:id="@+id/et_ownership"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/ownership_type"
                     android:editable="false"
-                    android:longClickable="false"
-                    android:focusable="false"/>
+                    android:focusable="false"
+                    android:hint="@string/ownership_type"
+                    android:longClickable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -47,39 +39,41 @@
                 <EditText
                     android:id="@+id/et_provider_first_name"
                     style="@style/RegistrationEditTextLayout"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                     android:hint="@string/owner_first_name"
-                    android:maxLength="50"
                     android:inputType="textPersonName"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"/>
+                    android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <EditText
                     android:id="@+id/et_provider_last_name"
                     style="@style/RegistrationEditTextLayout"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                     android:hint="@string/owner_last_name"
-                    android:maxLength="50"
                     android:inputType="textPersonName"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"/>
+                    android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <EditText
                     android:id="@+id/et_provider_contact"
                     style="@style/RegistrationEditTextLayout"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:hint="@string/owner_contact"
                     android:inputType="number"
-                    android:maxLength="10"
-                    android:clickable="false"
-                    android:focusable="false"/>
+                    android:maxLength="10" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -87,36 +81,39 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_supervisor_first_name"
                     style="@style/RegistrationEditTextLayout"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                     android:hint="@string/fa_first_name"
-                    android:maxLength="50"
                     android:inputType="textPersonName"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"/>
+                    android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_supervisor_last_name"
                     style="@style/RegistrationEditTextLayout"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                     android:hint="@string/fa_last_name"
-                    android:maxLength="50"
                     android:inputType="textPersonName"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"/>
+                    android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
@@ -124,90 +121,96 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/machine_mobile"
                     android:inputType="number"
-                    android:maxLength="10"/>
+                    android:maxLength="10" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <EditText
                     android:id="@+id/et_operator_first_name"
                     style="@style/RegistrationEditTextLayout"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                     android:hint="@string/operator_first_name"
-                    android:maxLength="50"
                     android:inputType="textPersonName"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"/>
+                    android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <EditText
                     android:id="@+id/et_operator_last_name"
                     style="@style/RegistrationEditTextLayout"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                     android:hint="@string/operator_last_name"
-                    android:maxLength="50"
                     android:inputType="textPersonName"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"/>
+                    android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
                 <EditText
                     android:id="@+id/et_operator_mobile"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/operator_contact"
                     android:inputType="number"
-                    android:maxLength="10"/>
+                    android:maxLength="10" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_trade_name"
                     style="@style/RegistrationEditTextLayout"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
                     android:hint="@string/trade_name"
-                    android:inputType="textMultiLine"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 " />
+                    android:inputType="textMultiLine" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_turnover"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/turnover_below"
                     android:clickable="false"
-                    android:longClickable="false"
-                    android:focusable="false"/>
+                    android:focusable="false"
+                    android:hint="@string/turnover_below"
+                    android:longClickable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_gst_reg_no"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/gst_reg_no"
                     android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+                    android:hint="@string/gst_reg_no"
                     android:maxLength="15" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -215,64 +218,69 @@
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_pan_no"
                     style="@style/RegistrationEditTextLayout"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
                     android:hint="@string/pan_number"
-                    android:maxLength="10"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"/>
+                    android:maxLength="10" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_bank_name"
                     style="@style/RegistrationEditTextLayout"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
                     android:hint="@string/bank_name"
-                    android:maxLength="50"
                     android:inputType="textPersonName"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "/>
+                    android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_branch"
                     style="@style/RegistrationEditTextLayout"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
                     android:hint="@string/branch_name"
-                    android:maxLength="50"
                     android:inputType="textPersonName"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "/>
+                    android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_ifsc"
                     style="@style/RegistrationEditTextLayout"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
                     android:hint="@string/ifsc_code"
-                    android:maxLength="11"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "/>
+                    android:maxLength="11" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
@@ -280,13 +288,14 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/bank_account_no"
                     android:inputType="number"
-                    android:maxLength="16"/>
+                    android:maxLength="16" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
@@ -294,128 +303,151 @@
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/confirm_account_no"
                     android:inputType="number"
-                    android:maxLength="16"/>
+                    android:maxLength="16" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <ImageView
-                android:id="@+id/img_account"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:contentDescription="@string/content_description"
-                android:src="@drawable/ic_img"
-                android:visibility="gone"/>
+            <!--  <ImageView
+                  android:id="@+id/img_account"
+                  android:layout_width="150dp"
+                  android:layout_height="150dp"
+                  android:layout_gravity="center"
+                  android:layout_marginTop="@dimen/dimen_10dp"
+                  android:contentDescription="@string/content_description"
+                  android:src="@drawable/ic_img"
+                  android:visibility="gone"/>
 
-            <com.octopusbjsindia.view.customs.TextViewSemiBold
-                android:id="@+id/event_pic_label"
-                style="@style/FormLabel"
-                android:layout_below="@+id/event_pic"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/dimen_05dp"
-                android:layout_gravity="center"
-                android:text="@string/account_image"
-                android:textColor="@color/medium_grey"
-                android:fontFamily="@font/opensans"
-                android:textSize="@dimen/text_size_14"
-                android:visibility="gone"/>
+              <com.octopusbjsindia.view.customs.TextViewSemiBold
+                  android:id="@+id/event_pic_label"
+                  style="@style/FormLabel"
+                  android:layout_below="@+id/event_pic"
+                  android:layout_centerHorizontal="true"
+                  android:layout_marginTop="@dimen/dimen_05dp"
+                  android:layout_gravity="center"
+                  android:text="@string/account_image"
+                  android:textColor="@color/medium_grey"
+                  android:fontFamily="@font/opensans"
+                  android:textSize="@dimen/text_size_14"
+                  android:visibility="gone"/>-->
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_account_holder_name"
                     style="@style/RegistrationEditTextLayout"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "
                     android:hint="@string/account_holder_name"
-                    android:maxLength="50"
                     android:inputType="textPersonName"
-                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "/>
+                    android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:visibility="gone">
 
                 <EditText
                     android:id="@+id/et_account_type"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="@string/account_type"
                     android:clickable="false"
-                    android:longClickable="false"
-                    android:focusable="false"/>
+                    android:focusable="false"
+                    android:hint="@string/account_type"
+                    android:longClickable="false" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/mou_upload"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="16sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_images"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginVertical="8dp"
+                android:visibility="gone"
+                android:scrollbars="horizontal"
+                tools:listitem="@layout/images_list_item"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <ImageView
                 android:id="@+id/img_mou_copy"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dimen_10dp"
+                android:visibility="visible"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
                 android:contentDescription="@string/content_description"
-                android:src="@drawable/ic_img"/>
+                android:scaleType="centerCrop"
+                android:src="@drawable/image_placeholder" />
 
-            <com.octopusbjsindia.view.customs.TextViewSemiBold
-                android:id="@+id/mou_copy_label"
-                style="@style/FormLabel"
-                android:layout_marginTop="@dimen/dimen_05dp"
-                android:layout_gravity="center"
-                android:text="@string/mou_upload"
-                android:textColor="@color/medium_grey"
-                android:fontFamily="@font/opensans"
-                android:textSize="@dimen/text_size_14"/>
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/bt_upload_image"
+                android:text="Add Image" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/textinputstyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
 
                 <EditText
                     android:id="@+id/et_machine_rate"
                     style="@style/RegistrationEditTextLayout"
                     android:hint="@string/machine_per_hour_rate"
-                    android:maxLength="6"
-                    android:inputType="number"/>
+                    android:inputType="number"
+                    android:maxLength="6" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:id="@+id/ll_second_part"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_alignParentBottom="true"
-                android:layout_margin="@dimen/dimen_10dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
                 android:weightSum="2">
 
                 <Button
                     android:id="@+id/btn_previous_mou"
+                    style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/RegistrationEditTextLayout"
-                    android:layout_weight="1"
                     android:layout_margin="@dimen/dimen_10dp"
-                    android:textColor="@android:color/white"
-                    android:text="Previous" />
+                    android:layout_weight="1"
+                    android:text="Previous"
+                    android:textColor="@android:color/white" />
 
                 <Button
                     android:id="@+id/btn_second_part_mou"
+                    style="@style/RegistrationEditTextLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/RegistrationEditTextLayout"
-                    android:layout_weight="1"
                     android:layout_margin="@dimen/dimen_10dp"
-                    android:textColor="@android:color/white"
-                    android:text="Next" />
+                    android:layout_weight="1"
+                    android:text="Next"
+                    android:textColor="@android:color/white" />
 
             </LinearLayout>
 
         </LinearLayout>
-        </ScrollView>
-    </androidx.cardview.widget.CardView>
+    </ScrollView>
+
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"
         android:layout_width="match_parent"

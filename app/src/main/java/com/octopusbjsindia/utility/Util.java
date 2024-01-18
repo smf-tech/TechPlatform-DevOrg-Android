@@ -1560,7 +1560,7 @@ public class Util {
         }
         try {
             FileOutputStream out = new FileOutputStream(f);
-            b.compress(Bitmap.CompressFormat.PNG, 70, out);
+            b.compress(Bitmap.CompressFormat.PNG, 100, out);
             out.flush();
             out.close();
         } catch (Exception e) {

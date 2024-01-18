@@ -492,12 +492,12 @@ public class MachineMouFourthFragment extends Fragment implements View.OnClickLi
     }
 
     private void backToMachineList() {
-        getActivity().finish();
-        Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+        requireActivity().finish();
+       /* Intent intent = new Intent(getActivity(), SSActionsActivity.class);
         intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
         intent.putExtra("viewType", 2);
         intent.putExtra("title", "Machine List");
-        getActivity().startActivity(intent);
+        getActivity().startActivity(intent);*/
     }
 
     private void uploadData() {

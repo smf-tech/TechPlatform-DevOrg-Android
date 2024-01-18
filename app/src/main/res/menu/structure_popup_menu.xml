@@ -5,6 +5,10 @@
         android:title="Edit Structure"
         android:visible="true"/>
     <item
+        android:id="@+id/action_donation_record"
+        android:title="Donation Record"
+        android:visible="true"/>
+    <item
         android:id="@+id/action_preparation"
         android:title="Structure Preparation"
         android:visible="false"/>

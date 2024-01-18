@@ -910,12 +910,12 @@ public class MachineMouFirstFragment extends Fragment implements APIDataListener
         Util.showToast(getActivity(),responseStatus);
         if (requestId.equals(MachineMouFragmentPresenter.UPDATE_MACHINE_STATUS)) {
             if (status == 200) {
-                getActivity().finish();
-                Intent intent = new Intent(getActivity(), SSActionsActivity.class);
+                requireActivity().finish();
+               /* Intent intent = new Intent(getActivity(), SSActionsActivity.class);
                 intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
                 intent.putExtra("viewType", 2);
                 intent.putExtra("title", "Machine List");
-                getActivity().startActivity(intent);
+                getActivity().startActivity(intent);*/
             }
         }
     }

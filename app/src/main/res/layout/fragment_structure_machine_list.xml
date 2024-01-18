@@ -12,9 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dimen_10dp"
-        android:orientation="horizontal"
-        android:gravity="center"
         android:animateLayoutChanges="true"
+        android:gravity="center"
+        android:orientation="horizontal"
         android:weightSum="10">
 
         <TextView
@@ -85,6 +85,7 @@
         android:layout_below="@+id/ly_filter"
         android:background="?dividerHorizontal" />
 
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/pull_to_refresh"
         android:layout_width="match_parent"
@@ -95,77 +96,102 @@
             android:id="@+id/rv_data_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="4dp"
+            android:layout_below="@+id/ly_filter"
             android:clipToPadding="false"
+            android:paddingTop="4dp"
             android:paddingBottom="48dp"
-            tools:listitem="@layout/ss_structure_item_layout"
-            android:layout_below="@+id/ly_filter"/>
+            tools:listitem="@layout/ss_structure_item_layout" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fb_create_operator"
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_donors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/fb_select"
-        android:layout_alignTop="@+id/fb_select"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_add_operator"
-        app:fabSize="normal"
-        app:tint="@color/white" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fb_create"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/fb_create_operator"
-        android:layout_alignTop="@+id/fb_create_operator"
+        android:text="Donors"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/white"
         app:fabSize="normal"
-        app:tint="@color/white" />
+        app:icon="@drawable/ic_donation_24px"
+        android:textAllCaps="false"
+        app:iconTint="@color/white"
+        android:visibility="invisible" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fb_select"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:src="@drawable/ic_add_24"
-        app:backgroundTint="@color/colorPrimary"
-        app:fabSize="normal"
-        app:tint="@color/white"
-        tools:ignore="RelativeOverlap" />
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_create_operator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            app:icon="@drawable/ic_add_operator"
+            android:text="Create FA"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/white"
+
+            app:fabSize="normal"
+            android:textAllCaps="false"
+            app:iconTint="@color/white"
+            android:visibility="invisible" />
+
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_create"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:visibility="invisible"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+
+            android:textAllCaps="false"
+            app:fabSize="normal"
+            app:iconTint="@color/white"/>
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fb_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_24"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:backgroundTint="@color/colorPrimary"
+            app:fabSize="normal"
+            app:tint="@color/white"
+            tools:ignore="RelativeOverlap" />
 
     <RelativeLayout
         android:id="@+id/ly_no_data"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
+
         <ImageView
             android:id="@+id/iv_no_data"
             android:layout_width="@dimen/standard_240"
             android:layout_height="@dimen/standard_240"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_no_data"/>
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_no_data" />
+
         <TextView
-            android:layout_below="@+id/iv_no_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_no_data"
             android:layout_centerHorizontal="true"
-            android:text="No Data"/>
+            android:text="No Data" />
     </RelativeLayout>
-
 
     <RelativeLayout
         android:id="@+id/profile_act_progress_bar"
