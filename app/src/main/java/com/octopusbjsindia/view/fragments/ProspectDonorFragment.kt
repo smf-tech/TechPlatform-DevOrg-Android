@@ -219,8 +219,8 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
 
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         presenter?.getDonorsList(DONOR_TYPE_PROSPECT)
     }
 
@@ -416,6 +416,7 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
                     if (commonResponse.status == 200) {
                         Toast.makeText(context, commonResponse.message, Toast.LENGTH_SHORT).show()
                         bottomSheetDialog.dismiss()
+                        presenter?.getDonorsList(DONOR_TYPE_PROSPECT)
                     } else {
                         Toast.makeText(context, commonResponse.message, Toast.LENGTH_SHORT).show()
                     }
