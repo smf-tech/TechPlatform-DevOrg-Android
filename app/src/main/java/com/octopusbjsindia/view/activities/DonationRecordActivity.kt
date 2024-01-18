@@ -12,13 +12,8 @@ import com.octopusbjsindia.models.SujalamSuphalam.RWBDonorApiResponse
 import com.octopusbjsindia.presenter.RWBDonationRecordPresenter
 import com.octopusbjsindia.utility.Util
 
-class DonationRecordActivity: AppCompatActivity() {
+class DonationRecordActivity : AppCompatActivity(), APIDataListener, CustomSpinnerListener {
     private lateinit var binding: ActivityDonationRecordBinding
-
-class DonationRecordActivity: AppCompatActivity(), APIDataListener, CustomSpinnerListener {
-
-    private var _binding: ActivityDonationRecordBinding? = null
-    private val binding get() = _binding!!
     private var presenter: RWBDonationRecordPresenter? = null
     private var structureDistrictId: String? = null
     private var structureDistrict: String? = null

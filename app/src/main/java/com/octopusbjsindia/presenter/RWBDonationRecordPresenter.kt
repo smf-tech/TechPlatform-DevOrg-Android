@@ -66,7 +66,7 @@ class RWBDonationRecordPresenter(activity: DonationRecordActivity): APIPresenter
                     )
                     if (districtDonorListData.code == 200) {
                         activityWeakReference?.get()
-                            ?.populateProspectDonorList(requestID, districtDonorListData)
+                            ?.populateDistrictDonorList(requestID, districtDonorListData)
                     } else if (districtDonorListData.code == 400) {
                         activityWeakReference?.get()?.showNoDataMessage()
                     }
