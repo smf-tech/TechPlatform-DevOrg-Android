@@ -33,7 +33,9 @@ class DonorsListAdapter(
             binding.apply {
 
                 txtName.text = "${item.fullName} | ${item.talukaName}"
-                txtMobile.text = "${item.mobileNumber} | ${item.emailId}"
+                if (item.emailId.isNullOrBlank()) {
+                    txtMobile.text = item.mobileNumber
+                } else txtMobile.text = "${item.mobileNumber} | ${item.emailId}"
                 textFirm.text = item.companyFirmName
 
                 options.setOnClickListener {
