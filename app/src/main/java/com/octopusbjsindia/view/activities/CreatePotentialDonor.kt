@@ -89,8 +89,8 @@ class CreatePotentialDonor : AppCompatActivity(), APIDataListener, CustomSpinner
     private var finalUri: Uri? = null
     private var outputUri: Uri? = null
     private var imageType: String = IMAGE_TYPE_PAN
-
     private var rQueue: RequestQueue? = null
+
 
     companion object {
         const val IMAGE_TYPE_PAN = "pan_image"
@@ -390,12 +390,12 @@ class CreatePotentialDonor : AppCompatActivity(), APIDataListener, CustomSpinner
                     districtList.add(meetCountry)
                     i++
                 }
-                val csdDisttrict = CustomSpinnerDialogClass(
+                val csdDistrict = CustomSpinnerDialogClass(
                     this, this,
                     "Select District", districtList, false
                 )
-                csdDisttrict.show()
-                csdDisttrict.window!!.setLayout(
+                csdDistrict.show()
+                csdDistrict.window!!.setLayout(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT
                 )

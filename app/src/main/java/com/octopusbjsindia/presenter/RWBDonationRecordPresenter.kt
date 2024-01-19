@@ -5,6 +5,7 @@ import com.android.volley.VolleyError
 import com.google.gson.GsonBuilder
 import com.octopusbjsindia.BuildConfig
 import com.octopusbjsindia.listeners.APIPresenterListener
+import com.octopusbjsindia.models.SujalamSuphalam.RWBDistrictDonorsAPIResponse
 import com.octopusbjsindia.models.SujalamSuphalam.RWBDonorApiResponse
 import com.octopusbjsindia.request.APIRequestCall
 import com.octopusbjsindia.utility.PlatformGson
@@ -32,7 +33,7 @@ class RWBDonationRecordPresenter(activity: DonationRecordActivity): APIPresenter
         map["district_id"] = districtId
         map["structure_id"] = structureId
         val paramJson = gson.toJson(map)
-        val getDonorListUrl = (BuildConfig.BASE_URL + String.format(Urls.SSModule.GET_RWB_DONORS))
+        val getDonorListUrl = (BuildConfig.BASE_URL + String.format(Urls.SSModule.GET_DONORS_BY_DISTRICT))
         Log.d(TAG, "donor list url: $getDonorListUrl")
         val requestCall = APIRequestCall()
         requestCall.setApiPresenterListener(this)
@@ -64,14 +65,14 @@ class RWBDonationRecordPresenter(activity: DonationRecordActivity): APIPresenter
         try {
             if (response != null) {
                 if (requestID.equals(GET_DISTRICT_DONOR, ignoreCase = true)) {
-                    val districtDonorListData = PlatformGson.getPlatformGsonInstance().fromJson(
+                    val districtDonorsListData = PlatformGson.getPlatformGsonInstance().fromJson(
                         response,
-                        RWBDonorApiResponse::class.java
+                        RWBDistrictDonorsAPIResponse::class.java
                     )
-                    if (districtDonorListData.code == 200) {
+                    if (districtDonorsListData.code == 200) {
                         activityWeakReference?.get()
-                            ?.populateDistrictDonorList(requestID, districtDonorListData)
-                    } else if (districtDonorListData.code == 400) {
+                            ?.populateDistrictDonorList(requestID, districtDonorsListData)
+                    } else if (districtDonorsListData.code == 400) {
                         activityWeakReference?.get()?.showNoDataMessage()
                     }
 

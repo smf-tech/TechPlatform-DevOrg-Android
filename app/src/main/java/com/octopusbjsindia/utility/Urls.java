@@ -188,7 +188,9 @@ public class Urls {
         public static final String GET_GP_MACHINE_ANALYTICS = "api/GPMachineAnalytics";
         public static final String GET_RWB_DONORS = "api/getDonorList";
         public static final String INSERT_RWB_DONORS = "api/insertDonorDetails";
-
+        public static final String GET_DONORS_BY_DISTRICT = "api/getDonorListByDistrict";
+        public static final String ADD_DONOR_COMMITMENT = "api/addDonorCommitment";
+        public static final String ADD_DONOR_DONATION_DETAIL = "api/addDonorDonationDetails";
 
     }
 

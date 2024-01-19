@@ -7,6 +7,22 @@ import java.util.List;
 
 public class RWBDistrictDonorsAPIResponse {
 
+    @SerializedName("status")
+    @Expose
+    private Integer status;
+
+    @SerializedName("code")
+    @Expose
+    private Integer code;
+
+    @SerializedName("data")
+    @Expose
+    private List<RWBDistrictDonor> data;
+
+    @SerializedName("message")
+    @Expose
+    private String message;
+
     public Integer getStatus() {
         return status;
     }
@@ -39,20 +55,6 @@ public class RWBDistrictDonorsAPIResponse {
         this.message = message;
     }
 
-    @SerializedName("status")
-    @Expose
-    private Integer status;
 
-    @SerializedName("code")
-    @Expose
-    private Integer code;
-
-    @SerializedName("data")
-    @Expose
-    private List<RWBDistrictDonor> data;
-
-    @SerializedName("message")
-    @Expose
-    private String message;
 
 }

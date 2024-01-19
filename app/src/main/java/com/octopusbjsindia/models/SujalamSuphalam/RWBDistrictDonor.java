@@ -7,6 +7,30 @@ import java.util.List;
 
 public class RWBDistrictDonor {
 
+    @SerializedName("_id")
+    @Expose
+    private String donorId;
+
+    @SerializedName("full_name")
+    @Expose
+    private String fullName;
+
+    @SerializedName("mobile_number")
+    @Expose
+    private String mobileNumber;
+
+    @SerializedName("email_id")
+    @Expose
+    private String emailId;
+
+    @SerializedName("commitment")
+    @Expose
+    private Commitment commitment;
+
+    @SerializedName("donation_details")
+    @Expose
+    private List<DonationDetails> donationList;
+
     public String getDonorId() {
         return donorId;
     }
@@ -55,27 +79,5 @@ public class RWBDistrictDonor {
         this.donationList = donationList;
     }
 
-    @SerializedName("_id")
-    @Expose
-    private String donorId;
 
-    @SerializedName("full_name")
-    @Expose
-    private String fullName;
-
-    @SerializedName("mobile_number")
-    @Expose
-    private String mobileNumber;
-
-    @SerializedName("email_id")
-    @Expose
-    private String emailId;
-
-    @SerializedName("commitment")
-    @Expose
-    private Commitment commitment;
-
-    @SerializedName("donation_details")
-    @Expose
-    private List<DonationDetails> donationList;
 }

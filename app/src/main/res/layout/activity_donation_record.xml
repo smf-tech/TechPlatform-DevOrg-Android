@@ -94,7 +94,7 @@
                 app:endIconMode="custom">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_full_name"
+                    android:id="@+id/et_select_donor"
                     style="@style/RegistrationEditTextLayout"
                     android:focusable="false"
                     android:hint="Select Donor Name*"
@@ -112,9 +112,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="?selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
                 app:cardElevation="0dp"
                 app:strokeColor="@color/chip_stroke_color"
                 app:strokeWidth="1dp">
@@ -124,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:animateLayoutChanges="true"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:paddingHorizontal="16dp">
 
                     <TextView
                         android:id="@+id/titleCommitment"
@@ -132,6 +129,7 @@
                         android:layout_height="wrap_content"
                         android:drawableEnd="@drawable/ic_arrow_expand_more_24"
                         android:fontFamily="sans-serif-medium"
+                        android:paddingVertical="16dp"
                         android:text="Commitment Details"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textSize="18sp" />
@@ -148,7 +146,8 @@
                             style="@style/textinputstyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="8dp"
+                            app:prefixText="₹"
                             app:hintTextAppearance="@style/TextInputLayoutHint">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -157,7 +156,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/commitment"
-                                android:inputType="number" />
+                                android:inputType="number"
+                                android:maxLength="9"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <LinearLayout
@@ -233,7 +233,8 @@
                             android:layout_marginTop="16dp"
                             android:text="Add Commitment"
                             android:textAllCaps="false"
-                            app:cornerRadius="24dp" />
+                            app:cornerRadius="24dp"
+                            android:layout_marginBottom="16dp"/>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -250,9 +251,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:id="@+id/cardDonationDetail"
-                android:background="?selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
                 app:cardElevation="0dp"
                 app:strokeColor="@color/chip_stroke_color"
                 app:strokeWidth="1dp">
@@ -262,12 +260,13 @@
                     android:layout_height="wrap_content"
                     android:animateLayoutChanges="true"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:paddingHorizontal="16dp">
 
                     <TextView
                         android:id="@+id/titleDonation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingVertical="16dp"
                         android:drawableEnd="@drawable/ic_arrow_expand_more_24"
                         android:fontFamily="sans-serif-medium"
                         android:text="Donation Details"
@@ -286,7 +285,7 @@
                             style="@style/textinputstyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="8dp"
                             app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
                             app:endIconMode="custom">
 
@@ -304,7 +303,8 @@
                             style="@style/textinputstyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp">
+                            android:layout_marginTop="8dp"
+                            app:prefixText="₹">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/et_amount_received"
@@ -312,7 +312,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="Amount Received (in Rs)*"
-                                android:inputType="number" />
+                                android:inputType="number"
+                                android:maxLength="9"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -320,9 +321,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:hint="Payment Mode*"
-                            app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                            app:endIconMode="custom">
+                            android:hint="Payment Mode*">
 
                             <AutoCompleteTextView
                                 android:id="@+id/et_payment_mode"
@@ -335,6 +334,7 @@
                             style="@style/textinputstyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:id="@+id/il_cheque_no"
                             android:layout_marginTop="8dp">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -350,6 +350,7 @@
                             style="@style/textinputstyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:id="@+id/il_transaction_id"
                             android:layout_marginTop="8dp">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -386,9 +387,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:hint="Payment Type*"
-                            app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
-                            app:endIconMode="custom">
+                            android:hint="Payment Type*">
 
                             <AutoCompleteTextView
                                 android:id="@+id/et_payment_type"
@@ -405,7 +404,8 @@
                             android:layout_marginTop="16dp"
                             android:text="Submit Donation"
                             android:textAllCaps="false"
-                            app:cornerRadius="24dp" />
+                            app:cornerRadius="24dp"
+                            android:layout_marginBottom="16dp"/>
 
                     </LinearLayout>
                 </LinearLayout>
