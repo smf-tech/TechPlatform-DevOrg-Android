@@ -165,24 +165,7 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
             etTaluka.setText(selectedTaluka);
         }
 
-        CustomSpinnerObject customSpinnerObject1 = new CustomSpinnerObject();
-        customSpinnerObject1.setName("Bricks Maker");
-        customSpinnerObject1.set_id("624ae70c750ea48291611f07");
-        customSpinnerObject1.setSelected(false);
-        bTypeList.add(customSpinnerObject1);
-
-        CustomSpinnerObject customSpinnerObject2 = new CustomSpinnerObject();
-        customSpinnerObject2.setName("Farmer");
-        customSpinnerObject2.set_id("624ae6dd750ea48291611f06");
-        customSpinnerObject2.setSelected(false);
-        bTypeList.add(customSpinnerObject2);
-
-        CustomSpinnerObject customSpinnerObject3 = new CustomSpinnerObject();
-        customSpinnerObject3.setName("BDO/ Govt Administration");
-        customSpinnerObject3.set_id("645b35d8403cfb5d7f69ffcb");
-        customSpinnerObject3.setSelected(false);
-        bTypeList.add(customSpinnerObject3);
-
+        generateBeneficiaryTypeList();
 
 //        List<SSMasterDatabase> list = DatabaseManager.getDBInstance(Platform.getInstance()).
 //                getSSMasterDatabaseDao().getSSMasterData("SS");
@@ -204,6 +187,51 @@ public class SiltTransportationRecordActivity extends AppCompatActivity implemen
 //                }
 //            }
 //        }
+
+    }
+    private void generateBeneficiaryTypeList(){
+          /*CustomSpinnerObject customSpinnerObject1 = new CustomSpinnerObject();
+        customSpinnerObject1.setName("Bricks Maker");
+        customSpinnerObject1.set_id("624ae70c750ea48291611f07");
+        customSpinnerObject1.setSelected(false);
+        bTypeList.add(customSpinnerObject1);*/
+
+          /*CustomSpinnerObject customSpinnerObject3 = new CustomSpinnerObject();
+        customSpinnerObject3.setName("BDO/ Govt Administration");
+        customSpinnerObject3.set_id("645b35d8403cfb5d7f69ffcb");
+        customSpinnerObject3.setSelected(false);
+        bTypeList.add(customSpinnerObject3);*/
+
+        CustomSpinnerObject customSpinnerObject1 = new CustomSpinnerObject();
+        customSpinnerObject1.setName("Farmer");
+        customSpinnerObject1.set_id("624ae6dd750ea48291611f06");
+        customSpinnerObject1.setSelected(false);
+        bTypeList.add(customSpinnerObject1);
+
+        CustomSpinnerObject customSpinnerObject2 = new CustomSpinnerObject();
+        customSpinnerObject2.setName("Marginal Farmer");
+        customSpinnerObject2.set_id("65aa0f6eefc06efd56cac663");
+        customSpinnerObject2.setSelected(false);
+        bTypeList.add(customSpinnerObject2);
+
+        CustomSpinnerObject customSpinnerObject3 = new CustomSpinnerObject();
+        customSpinnerObject3.setName("Widow");
+        customSpinnerObject3.set_id("65aa0f7befc06efd56cac664");
+        customSpinnerObject3.setSelected(false);
+        bTypeList.add(customSpinnerObject3);
+
+        CustomSpinnerObject customSpinnerObject4 = new CustomSpinnerObject();
+        customSpinnerObject4.setName("Handicap");
+        customSpinnerObject4.set_id("65aa0f87efc06efd56cac665");
+        customSpinnerObject4.setSelected(false);
+        bTypeList.add(customSpinnerObject4);
+
+        CustomSpinnerObject customSpinnerObject5 = new CustomSpinnerObject();
+        customSpinnerObject5.setName("Farmer suiciding Family");
+        customSpinnerObject5.set_id("65aa0f99efc06efd56cac666");
+        customSpinnerObject5.setSelected(false);
+        bTypeList.add(customSpinnerObject5);
+
 
     }
 
