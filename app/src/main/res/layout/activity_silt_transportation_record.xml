@@ -210,7 +210,7 @@
                 <EditText
                     android:id="@+id/et_b_type"
                     style="@style/RegistrationEditTextLayout"
-                    android:hint="Select Beneficiary type" />
+                    android:hint="Select Beneficiary (Farmer) type" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

@@ -1104,12 +1104,13 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
     private void closeFABMenu() {
         isFABOpen = false;
 
+        fbSelect.startAnimation(rotateAntiClockWiseFabAnim);
         fabCreate.animate().translationY(0);
         fabCreateOperator.animate().translationY(0);
+        fabDonor.animate().translationY(0);
         fabCreate.setVisibility(View.GONE);
         fabCreateOperator.setVisibility(View.GONE);
         fabDonor.setVisibility(View.GONE);
-        fbSelect.startAnimation(rotateAntiClockWiseFabAnim);
         //fbSelect.setRotation(0);
         if (viewType == 1) {
             if (!isStructureAdd && !isOperatorAdd) {

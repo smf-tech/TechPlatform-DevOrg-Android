@@ -83,7 +83,14 @@ class DonationRecordActivity : AppCompatActivity(), APIDataListener, CustomSpinn
     private var finalUri: Uri? = null
     private var outputUri: Uri? = null
 
+    private var apiType: String = API_COMMITMENT
+
     private var rQueue: RequestQueue? = null
+
+    companion object {
+        const val API_COMMITMENT = "api_commitment"
+        const val API_DONATION = "api_donation"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -188,6 +195,7 @@ class DonationRecordActivity : AppCompatActivity(), APIDataListener, CustomSpinn
                     map["commitment_amount"] = etCommitment.text.toString()
                     val paramJson = gson.toJson(map)
 
+                    apiType = API_COMMITMENT
                     uploadData(
                         paramJson,
                         binding.btCommitment,
@@ -255,12 +263,13 @@ class DonationRecordActivity : AppCompatActivity(), APIDataListener, CustomSpinn
                     map["payment_type"] = etPaymentType.text.toString()
                     val paramJson = gson.toJson(map)
 
-                     uploadData(
-                         paramJson,
-                         binding.btSubmitDonation,
-                         BuildConfig.BASE_URL + Urls.SSModule.ADD_DONOR_DONATION_DETAIL,
-                         1
-                     )
+                    apiType = API_DONATION
+                    uploadData(
+                        paramJson,
+                        binding.btSubmitDonation,
+                        BuildConfig.BASE_URL + Urls.SSModule.ADD_DONOR_DONATION_DETAIL,
+                        1
+                    )
 
                 }
 
@@ -294,12 +303,20 @@ class DonationRecordActivity : AppCompatActivity(), APIDataListener, CustomSpinn
                         response.data,
                         charset(HttpHeaderParser.parseCharset(response.headers))
                     )
-                    val commonResponse = Gson().fromJson(jsonString, CommonResponse::class.java)
                     Log.d("response -", jsonString)
+                    val commonResponse = Gson().fromJson(jsonString, CommonResponse::class.java)
                     if (commonResponse.status == 200) {
                         Toast.makeText(this, commonResponse.message, Toast.LENGTH_SHORT).show()
                         //todo
-
+                        if (apiType == API_COMMITMENT) {
+                            //dibLE edit text and remove submit button
+                            binding.etCommitment.isEnabled = false
+                            binding.btCommitment.isVisible = false
+                            presenter?.getDistrictDonorsList(structureDistrictId!!, structureId!!)
+                        } else if (apiType == API_DONATION) {
+                            //clear all edit text field
+                            finish()
+                        }
                     } else {
                         Toast.makeText(this, commonResponse.message, Toast.LENGTH_SHORT).show()
                     }
@@ -376,7 +393,7 @@ class DonationRecordActivity : AppCompatActivity(), APIDataListener, CustomSpinn
         if (data != null) {
 
             donorsList = data.data as ArrayList<RWBDistrictDonor>
-
+            donorsListCustomObject.clear()
             for (i in data.data) {
                 val customDonor = CustomSpinnerObject()
                 customDonor._id = i.donorId
@@ -537,7 +554,6 @@ class DonationRecordActivity : AppCompatActivity(), APIDataListener, CustomSpinn
     }
 
     override fun onSuccessListener(requestID: String?, response: String?) {
-        TODO("Not yet implemented")
     }
 
     override fun showProgressBar() {
@@ -619,6 +635,8 @@ class DonationRecordActivity : AppCompatActivity(), APIDataListener, CustomSpinn
                     }
                 } else {
                     binding.apply {
+                        etCommitment.setText("")
+                        setAmountCalculation(0)
                         etCommitment.isEnabled = true
                         btCommitment.isVisible = true
                     }

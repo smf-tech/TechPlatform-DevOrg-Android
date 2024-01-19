@@ -130,7 +130,7 @@
                         android:drawableEnd="@drawable/ic_arrow_expand_more_24"
                         android:fontFamily="sans-serif-medium"
                         android:paddingVertical="16dp"
-                        android:text="Commitment Details"
+                        android:text="Commitment Entry"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textSize="18sp" />
 
@@ -140,6 +140,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:visibility="gone"
+                        android:paddingBottom="16dp"
                         tools:visibility="visible">
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -233,8 +234,7 @@
                             android:layout_marginTop="16dp"
                             android:text="Add Commitment"
                             android:textAllCaps="false"
-                            app:cornerRadius="24dp"
-                            android:layout_marginBottom="16dp"/>
+                            app:cornerRadius="24dp" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -269,7 +269,7 @@
                         android:paddingVertical="16dp"
                         android:drawableEnd="@drawable/ic_arrow_expand_more_24"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Donation Details"
+                        android:text="Donation Entry"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textSize="18sp" />
 
