@@ -313,6 +313,7 @@
                                 android:layout_height="wrap_content"
                                 android:hint="Amount Received (in Rs)*"
                                 android:inputType="number"
+                                android:imeOptions="actionDone"
                                 android:maxLength="9"/>
                         </com.google.android.material.textfield.TextInputLayout>
 

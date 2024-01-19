@@ -343,7 +343,7 @@ class CreatePotentialDonor : AppCompatActivity(), APIDataListener, CustomSpinner
             Snackbar.make(binding.root, "Please enter valid email", Snackbar.LENGTH_SHORT)
                 .setAnchorView(binding.btSubmit).show()
             return false
-        } else if (binding.etPanNumber.text.isNullOrBlank() || binding.etPanNumber.text.toString().length < 10) {
+        } else if (binding.etPanNumber.text.isNullOrBlank() || binding.etPanNumber.text.toString().trim().replace(" ","").length < 10) {
             Snackbar.make(binding.root, "Please enter valid PAN number", Snackbar.LENGTH_SHORT)
                 .setAnchorView(binding.btSubmit).show()
             return false

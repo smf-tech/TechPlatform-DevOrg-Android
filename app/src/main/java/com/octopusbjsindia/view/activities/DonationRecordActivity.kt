@@ -158,6 +158,10 @@ class DonationRecordActivity : AppCompatActivity(), APIDataListener, CustomSpinn
                 )
             }
 
+            etPaymentMode.setOnClickListener {
+                hideKeyboard(it)
+            }
+
             etDate.setOnClickListener {
                 showDateDialog(this@DonationRecordActivity, etDate)
             }
@@ -652,9 +656,9 @@ class DonationRecordActivity : AppCompatActivity(), APIDataListener, CustomSpinn
             val backhoeHr = workScope?.div(45)
             val excavatorHr = workScope?.div(100)
 
-            tvWorkScope.text = "$workScope Cub"
-            tvBhHours.text = "$backhoeHr Hours"
-            tvExHours.text = "$excavatorHr Hours"
+            tvWorkScope.text = workScope.toString()
+            tvBhHours.text = backhoeHr.toString()
+            tvExHours.text = excavatorHr.toString()
 
         }
     }
