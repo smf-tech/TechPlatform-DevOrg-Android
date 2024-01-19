@@ -44,7 +44,7 @@ public class StructureListAdapter extends RecyclerView.Adapter<StructureListAdap
         holder.tvStatus.setText(structureData.getStructureStatus());
         holder.tvStructureCode.setText(structureData.getStructureCode());
         holder.tvType.setText(structureData.getStructureType());
-        holder.tvWorkType.setText(structureData.getStructureWorkType());
+        //holder.tvWorkType.setText(structureData.getStructureWorkType());
         holder.tvStructureName.setText(structureData.getStructureName());
         holder.tvDepartment.setText(structureData.getStructureDepartmentName());
         holder.tvLastUpdatedTime.setText(structureData.getUpdatedDate());

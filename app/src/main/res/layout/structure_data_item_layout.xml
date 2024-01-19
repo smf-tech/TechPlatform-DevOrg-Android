@@ -85,6 +85,7 @@
             style="@style/StyleTextViewLabel"
             android:layout_below="@+id/tv_type"
             android:layout_marginTop="8dp"
+            android:visibility="gone"
             android:text="Work Type" />
 
         <TextView
@@ -94,6 +95,7 @@
             android:layout_below="@+id/tv_work_label"
             android:fontFamily="@font/opensans_semibold"
             android:gravity="start"
+            android:visibility="gone"
             tools:text="12 apr" />
 
         <TextView
