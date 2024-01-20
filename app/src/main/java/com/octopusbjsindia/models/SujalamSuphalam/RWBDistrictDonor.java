@@ -27,9 +27,9 @@ public class RWBDistrictDonor {
     @Expose
     private Commitment commitment;
 
-    @SerializedName("donation_details")
+    @SerializedName("DonationDetails")
     @Expose
-    private List<DonationDetails> donationList;
+    private DonationDetails donationDetails;
 
     public String getDonorId() {
         return donorId;
@@ -71,13 +71,12 @@ public class RWBDistrictDonor {
         this.commitment = commitment;
     }
 
-    public List<DonationDetails> getDonationList() {
-        return donationList;
+
+    public DonationDetails getDonationDetails() {
+        return donationDetails;
     }
 
-    public void setDonationList(List<DonationDetails> donationList) {
-        this.donationList = donationList;
+    public void setDonationDetails(DonationDetails donationDetails) {
+        this.donationDetails = donationDetails;
     }
-
-
 }

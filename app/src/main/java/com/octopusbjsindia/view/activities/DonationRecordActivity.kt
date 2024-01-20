@@ -404,6 +404,7 @@ class DonationRecordActivity : AppCompatActivity(), APIDataListener, CustomSpinn
                 customDonor.name = "${i.fullName} | ${i.mobileNumber}"
                 donorsListCustomObject.add(customDonor)
             }
+
         } else {
             showNoDataMessage()
         }
@@ -645,7 +646,7 @@ class DonationRecordActivity : AppCompatActivity(), APIDataListener, CustomSpinn
                         btCommitment.isVisible = true
                     }
                 }
-
+                setTotalDonationReceivedAmount(selectedDonor.donationDetails?.totalDonationAmount)
             }
         }
     }
@@ -662,5 +663,19 @@ class DonationRecordActivity : AppCompatActivity(), APIDataListener, CustomSpinn
 
         }
     }
+
+    private fun setTotalDonationReceivedAmount(amount: String?){
+        binding.apply {
+            amount?.let {amount ->
+                if (amount.isBlank()){
+                    tvDonationReceived.text = "₹ 0"
+                }else{
+                    tvDonationReceived.text = "₹ $amount"
+                }
+
+            }
+        }
+    }
+
 
 }

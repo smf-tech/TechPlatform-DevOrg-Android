@@ -3,30 +3,32 @@ package com.octopusbjsindia.models.SujalamSuphalam;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class DonationDetails {
 
-    public String getDonationId() {
-        return donationId;
-    }
-
-    public void setDonationId(String donationId) {
-        this.donationId = donationId;
-    }
-
-    public String getDonationAmount() {
-        return donationAmount;
-    }
-
-    public void setDonationAmount(String donationAmount) {
-        this.donationAmount = donationAmount;
-    }
-
-    @SerializedName("_id")
+    @SerializedName("donation_entity_list") //todo update key from backend
     @Expose
-    private String donationId;
+    private List<DonationEntity> donationEntityList;
 
-    @SerializedName("donation_amount")
+    @SerializedName("total_donation_amount")
     @Expose
-    private String donationAmount;
+    private String totalDonationAmount;
 
+
+    public List<DonationEntity> getDonationEntityList() {
+        return donationEntityList;
+    }
+
+    public void setDonationEntityList(List<DonationEntity> donationEntityList) {
+        this.donationEntityList = donationEntityList;
+    }
+
+    public String getTotalDonationAmount() {
+        return totalDonationAmount;
+    }
+
+    public void setTotalDonationAmount(String totalDonationAmount) {
+        this.totalDonationAmount = totalDonationAmount;
+    }
 }
