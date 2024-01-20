@@ -125,6 +125,8 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         holder.tvTaluka.setText(ssDataList.get(position).getTaluka());
         holder.tvVillage.setText(ssDataList.get(position).getVillage());
         holder.tvUpdated.setText(ssDataList.get(position).getUpdatedDate());
+        holder.tvCommitment.setText(ssDataList.get(position).getCommitment());
+        holder.tvDonation.setText(ssDataList.get(position).getDonation());
         if (isSave) {
             if (ssDataList.get(position).getDeployedMachineDetails().size() == 0) {
                 holder.tvMachinCount.setText("None");
@@ -180,7 +182,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvStatus, tvReason, tvStructureCode, tvStructureType, tvWorkType, tvStructureName,
                 tvStructureOwnerDepartment, tvContact, tvUpdated, tvMachinCount, tvTaluka, tvVillage,
-                tvBoundary, tvStartDate, tvEndDate;
+                tvBoundary, tvStartDate, tvEndDate, tvCommitment, tvDonation;
 
         ImageView btnPopupMenu;
         LinearLayout lyStartData;
@@ -206,6 +208,8 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             tvEndDate = itemView.findViewById(R.id.tv_end_date);
             //btSave = itemView.findViewById(R.id.bt_save);
             tvBoundary = itemView.findViewById(R.id.tv_boundary);
+            tvCommitment = itemView.findViewById(R.id.tv_commitment);
+            tvDonation = itemView.findViewById(R.id.tv_donation);
 //            if (isSave) {
 //                btSave.setText("Save Offline");
 //            } else {

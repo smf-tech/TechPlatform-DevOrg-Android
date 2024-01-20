@@ -141,6 +141,28 @@
 
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_machin_count_label"
+                        style="@style/StyleTextViewLabel"
+                        android:text="Deployed Machine Count" />
+
+                    <TextView
+                        android:id="@+id/tv_machin_count"
+                        style="@style/TextViewRegularStyle"
+                        android:clickable="true"
+                        tools:text="None"
+                        android:background="?selectableItemBackground"
+                        android:layout_below="@+id/tv_machin_count_label"
+                        android:textColor="@color/colorPrimary" />
+
+                </RelativeLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -177,29 +199,6 @@
                 android:orientation="horizontal"
                 android:weightSum="2">
 
-                <!--    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/tv_structure_lable"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_10dp"
-                            android:text="Structure Name"
-                            android:textSize="@dimen/dimen_10dp" />
-
-                        <TextView
-                            android:id="@+id/tv_structure_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/tv_structure_lable"
-                            android:layout_marginStart="@dimen/dimen_10dp"
-                            android:fontFamily="@font/opensans_semibold"
-                            android:textSize="@dimen/text_size_13" />
-                    </RelativeLayout>-->
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -225,28 +224,16 @@
                     android:layout_weight="1">
 
                     <TextView
-                        android:id="@+id/tv_machin_count_label"
+                        android:id="@+id/tv_commitment_label"
                         style="@style/StyleTextViewLabel"
-                        android:text="Deployed Machine Count" />
+                        android:text="Commitment Amount" />
 
                     <TextView
-                        android:id="@+id/tv_machin_count"
+                        android:id="@+id/tv_commitment"
                         style="@style/TextViewRegularStyle"
-                        android:clickable="true"
-                        tools:text="None"
                         android:background="?selectableItemBackground"
-                        android:layout_below="@+id/tv_machin_count_label"
+                        android:layout_below="@+id/tv_commitment_label"
                         android:textColor="@color/colorPrimary" />
-
-                    <TextView
-                        android:id="@+id/tv_updated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_machin_count_label"
-                        android:layout_marginStart="@dimen/dimen_10dp"
-                        android:layout_toEndOf="@+id/tv_machin_count"
-                        android:textSize="@dimen/dimen_10dp"
-                        android:visibility="gone" />
 
                 </RelativeLayout>
 
@@ -277,31 +264,26 @@
 
                 </RelativeLayout>
 
-                <!--
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1">
 
-                                    <TextView
-                                        android:id="@+id/tv_village_lbl"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/dimen_10dp"
-                                        android:text="Village"
-                                        android:textSize="@dimen/dimen_10dp" />
+                    <TextView
+                        android:id="@+id/tv_donation_label"
+                        style="@style/StyleTextViewLabel"
+                        android:text="Donation Amount" />
 
-                                    <TextView
-                                        android:id="@+id/tv_village"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/tv_village_lbl"
-                                        android:layout_marginStart="@dimen/dimen_10dp"
-                                        android:fontFamily="@font/opensans_semibold"
-                                        android:textSize="@dimen/text_size_13" />
+                    <TextView
+                        android:id="@+id/tv_donation"
+                        style="@style/TextViewRegularStyle"
+                        android:background="?selectableItemBackground"
+                        android:layout_below="@+id/tv_donation_label"
+                        android:textColor="@color/colorPrimary" />
 
-                                </RelativeLayout>
-                -->
+                </RelativeLayout>
+
 
             </LinearLayout>
 
