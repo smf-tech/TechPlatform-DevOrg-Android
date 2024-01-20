@@ -41,7 +41,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                     android:hint="@string/owner_first_name"
-                    android:inputType="textPersonName"
+                    android:inputType="textPersonName|textCapWords"
                     android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -56,7 +56,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                     android:hint="@string/owner_last_name"
-                    android:inputType="textPersonName"
+                    android:inputType="textPersonName|textCapWords"
                     android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -135,7 +135,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                     android:hint="@string/operator_first_name"
-                    android:inputType="textPersonName"
+                    android:inputType="textPersonName|textCapWords"
                     android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -150,7 +150,7 @@
                     style="@style/RegistrationEditTextLayout"
                     android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                     android:hint="@string/operator_last_name"
-                    android:inputType="textPersonName"
+                    android:inputType="textPersonName|textCapWords"
                     android:maxLength="50" />
             </com.google.android.material.textfield.TextInputLayout>
 

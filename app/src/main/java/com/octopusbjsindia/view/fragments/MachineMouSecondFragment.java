@@ -42,6 +42,7 @@ import com.octopusbjsindia.database.DatabaseManager;
 import com.octopusbjsindia.listeners.CustomSpinnerListener;
 import com.octopusbjsindia.models.SujalamSuphalam.MasterDataList;
 import com.octopusbjsindia.models.SujalamSuphalam.MouDetails;
+import com.octopusbjsindia.models.SujalamSuphalam.OperatorDetails;
 import com.octopusbjsindia.models.SujalamSuphalam.ProviderInformation;
 import com.octopusbjsindia.models.SujalamSuphalam.SSMasterDatabase;
 import com.octopusbjsindia.models.common.CustomSpinnerObject;
@@ -250,12 +251,12 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
     private void setUIForMouUpdate() {
         etProviderFirstName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getProviderInformation().getFirstName());
-        etProviderFirstName.setFocusable(false);
-        etProviderFirstName.setLongClickable(false);
+        //etProviderFirstName.setFocusable(false);
+        //etProviderFirstName.setLongClickable(false);
         etProviderLastName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getProviderInformation().getLastName());
-        etProviderLastName.setFocusable(false);
-        etProviderLastName.setLongClickable(false);
+       // etProviderLastName.setFocusable(false);
+        //etProviderLastName.setLongClickable(false);
 
 //        etSupervisorFName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
 //                getProviderInformation().getFirstName());
@@ -269,13 +270,13 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 //                getMachine().getMachineMobileNumber());
 
         etOperatorFName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getProviderInformation().getFirstName());
-        etOperatorFName.setFocusable(false);
-        etOperatorFName.setLongClickable(false);
+                getOperatorDetails().getFirstName());
+      // etOperatorFName.setFocusable(false);
+        //etOperatorFName.setLongClickable(false);
         etOperatorLName.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
-                getProviderInformation().getLastName());
-        etOperatorLName.setFocusable(false);
-        etOperatorLName.setLongClickable(false);
+                getOperatorDetails().getLastName());
+       // etOperatorLName.setFocusable(false);
+       // etOperatorLName.setLongClickable(false);
         etOperatorMobile.setText(((MachineMouActivity) getActivity()).getMachineDetailData().
                 getMachine().getMachineMobileNumber());
 
@@ -559,6 +560,14 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 //                        toString().trim()));
 //        ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setMachineMobileNumber
 //                (etMachineMobile.getText().toString().trim());
+
+        OperatorDetails operatorDetails = new OperatorDetails();
+        ((MachineMouActivity) getActivity()).getMachineDetailData().setOperatorDetails(operatorDetails);
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setFirstName
+                (etOperatorFName.getText().toString().trim());
+        ((MachineMouActivity) getActivity()).getMachineDetailData().getOperatorDetails().setLastName
+                (etOperatorLName.getText().toString().trim());
+
         ((MachineMouActivity) getActivity()).getMachineDetailData().getMachine().setOperatorName(
                 (etOperatorFName.getText().toString().trim() + " " + etOperatorLName.getText().
                         toString().trim()));
