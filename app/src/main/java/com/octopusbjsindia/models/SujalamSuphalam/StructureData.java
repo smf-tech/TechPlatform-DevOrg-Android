@@ -119,6 +119,16 @@ public class StructureData implements Serializable {
     @Ignore
     private boolean isSavedOffine = false;
 
+    @ColumnInfo(name = "commitment")
+    @SerializedName("commitment")
+    @Expose
+    private String commitment;
+
+    @ColumnInfo(name = "donation")
+    @SerializedName("donation")
+    @Expose
+    private String donation;
+
     public boolean isSelectedForDeployment() {
         return isSelectedForDeployment;
     }
@@ -336,6 +346,22 @@ public class StructureData implements Serializable {
 
     public void setWorkCompletedDate(String workCompletedDate) {
         this.workCompletedDate = workCompletedDate;
+    }
+
+    public String getCommitment() {
+        return commitment;
+    }
+
+    public void setCommitment(String commitment) {
+        this.commitment = commitment;
+    }
+
+    public String getDonation() {
+        return donation;
+    }
+
+    public void setDonation(String donation) {
+        this.donation = donation;
     }
 
 }
