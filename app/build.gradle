@@ -4,22 +4,13 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'kotlin-android'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'SujalamSufalamKey'
-            keyPassword 'ss@123'
-            storeFile file('ss_certificates')
-            storePassword 'ss@123'
-        }
-    }
-
-    compileSdkVersion 34
     namespace 'com.octopusbjsindia'
 
     def dateFormat = new Date().format('ddMMYYYY')
 
     defaultConfig {
         applicationId 'com.octopusbjsindia'
+        compileSdk 34
         minSdkVersion 22
         targetSdkVersion 34
         versionCode 41
@@ -34,6 +25,14 @@ android {
         }
         //For changing app bundle name (.aab file)
         setProperty("archivesBaseName", "Octopus" +"_v" + versionName  + "_"+ dateFormat)
+    }
+    signingConfigs {
+        config {
+            keyAlias 'SujalamSufalamKey'
+            keyPassword 'ss@123'
+            storeFile file('ss_certificates')
+            storePassword 'ss@123'
+        }
     }
     sourceSets {
         androidTest.assets.srcDirs +=
@@ -97,7 +96,6 @@ android {
         checkReleaseBuilds false
         warningsAsErrors true
     }
-    namespace 'com.octopusbjsindia'
 }
 
 dependencies {

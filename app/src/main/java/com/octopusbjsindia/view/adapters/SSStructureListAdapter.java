@@ -22,6 +22,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -119,14 +120,25 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
         holder.tvStatus.setText(ssDataList.get(position).getStructureStatus());
         holder.tvStructureCode.setText(ssDataList.get(position).getStructureCode());
         holder.tvStructureType.setText(ssDataList.get(position).getStructureType());
-        holder.tvWorkType.setText(ssDataList.get(position).getStructureWorkType());
+        //holder.tvWorkType.setText(ssDataList.get(position).getStructureWorkType());
         holder.tvStructureName.setText(ssDataList.get(position).getStructureName());
         holder.tvStructureOwnerDepartment.setText(ssDataList.get(position).getStructureDepartmentName());
         holder.tvTaluka.setText(ssDataList.get(position).getTaluka());
         holder.tvVillage.setText(ssDataList.get(position).getVillage());
-        holder.tvUpdated.setText(ssDataList.get(position).getUpdatedDate());
-        holder.tvCommitment.setText(ssDataList.get(position).getCommitment());
-        holder.tvDonation.setText(ssDataList.get(position).getDonation());
+        //holder.tvUpdated.setText(ssDataList.get(position).getUpdatedDate());
+        if (ssDataList.get(position).getCommitment() == null || ssDataList.get(position).getCommitment().isBlank()) {
+            holder.lytCommitment.setVisibility(View.GONE);
+        } else {
+            holder.lytCommitment.setVisibility(View.VISIBLE);
+            holder.tvCommitment.setText(ssDataList.get(position).getCommitment());
+        }
+        if (ssDataList.get(position).getDonation() == null || ssDataList.get(position).getDonation().isBlank()) {
+            holder.lytDonation.setVisibility(View.GONE);
+        } else {
+            holder.lytDonation.setVisibility(View.VISIBLE);
+            holder.tvDonation.setText(ssDataList.get(position).getDonation());
+        }
+
         if (isSave) {
             if (ssDataList.get(position).getDeployedMachineDetails().size() == 0) {
                 holder.tvMachinCount.setText("None");
@@ -184,6 +196,7 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                 tvStructureOwnerDepartment, tvContact, tvUpdated, tvMachinCount, tvTaluka, tvVillage,
                 tvBoundary, tvStartDate, tvEndDate, tvCommitment, tvDonation;
 
+        RelativeLayout lytCommitment, lytDonation;
         ImageView btnPopupMenu;
         LinearLayout lyStartData;
         PopupMenu popup;
@@ -196,11 +209,11 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             tvReason = itemView.findViewById(R.id.tv_reason);
             tvStructureCode = itemView.findViewById(R.id.tv_structure_code);
             tvStructureType = itemView.findViewById(R.id.tv_structure_type);
-            tvWorkType = itemView.findViewById(R.id.tv_work_type);
+            //tvWorkType = itemView.findViewById(R.id.tv_work_type);
             tvStructureName = itemView.findViewById(R.id.tv_structure_name);
             tvStructureOwnerDepartment = itemView.findViewById(R.id.tv_structure_owner_department);
             tvContact = itemView.findViewById(R.id.tv_contact);
-            tvUpdated = itemView.findViewById(R.id.tv_updated);
+            // tvUpdated = itemView.findViewById(R.id.tv_updated);
             tvMachinCount = itemView.findViewById(R.id.tv_machin_count);
             tvTaluka = itemView.findViewById(R.id.tv_taluka);
             tvVillage = itemView.findViewById(R.id.tv_village);
@@ -209,7 +222,9 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             //btSave = itemView.findViewById(R.id.bt_save);
             tvBoundary = itemView.findViewById(R.id.tv_boundary);
             tvCommitment = itemView.findViewById(R.id.tv_commitment);
+            lytCommitment = itemView.findViewById(R.id.lytCommitment);
             tvDonation = itemView.findViewById(R.id.tv_donation);
+            lytDonation = itemView.findViewById(R.id.lytDonation);
 //            if (isSave) {
 //                btSave.setText("Save Offline");
 //            } else {

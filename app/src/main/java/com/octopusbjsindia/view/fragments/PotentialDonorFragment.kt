@@ -60,8 +60,13 @@ class PotentialDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener
 
     fun populatePotentialDonorList(requestID: String?, data: RWBDonorApiResponse?) {
         if (data != null) {
+            //sort list alphabetically
+            val sortedList : List<RWBDonor> = data.data.sortedBy {
+                it.fullName.toString()
+            }
+
             binding.lyNoData.isVisible = false
-            donorAdapter.submitList(data.data)
+            donorAdapter.submitList(sortedList)
         } else {
             showNoDataMessage()
         }

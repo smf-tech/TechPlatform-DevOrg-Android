@@ -26,9 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="0dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:orientation="horizontal">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -51,7 +49,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="0dp"
                     android:layout_weight="1">
 
                     <TextView
@@ -125,8 +123,9 @@
                 android:orientation="horizontal">
 
                 <RelativeLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
                     android:layout_weight="1">
 
                     <TextView
@@ -142,7 +141,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1">
@@ -218,9 +217,12 @@
 
 
                 <RelativeLayout
+                    android:id="@+id/lytCommitment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_weight="1">
 
                     <TextView
@@ -250,6 +252,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
                     android:layout_weight="1">
 
                     <TextView
@@ -265,9 +268,12 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/lytDonation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:visibility="gone"
+                    tools:visibility="visible"
                     android:layout_weight="1">
 
                     <TextView

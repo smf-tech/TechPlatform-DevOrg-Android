@@ -72,7 +72,7 @@ class DonationRecordActivity : AppCompatActivity(), APIDataListener, CustomSpinn
     private var structureId: String? = null
     private var structureCode: String? = null
 
-    private var donorsList = ArrayList<RWBDistrictDonor>()
+    private var donorsList = listOf<RWBDistrictDonor>()
     private var selectedDonor = RWBDistrictDonor()
     private val donorsListCustomObject = ArrayList<CustomSpinnerObject>()
     private var selectedDonorId: String? = null
@@ -395,10 +395,14 @@ class DonationRecordActivity : AppCompatActivity(), APIDataListener, CustomSpinn
 
     fun populateDistrictDonorList(requestID: String?, data: RWBDistrictDonorsAPIResponse?) {
         if (data != null) {
+            //sort list alphabetically
+            val sortedList = data.data.sortedBy {
+                it.fullName.toString()
+            }
 
-            donorsList = data.data as ArrayList<RWBDistrictDonor>
+            donorsList = sortedList
             donorsListCustomObject.clear()
-            for (i in data.data) {
+            for (i in donorsList) {
                 val customDonor = CustomSpinnerObject()
                 customDonor._id = i.donorId
                 customDonor.name = "${i.fullName} | ${i.mobileNumber}"
