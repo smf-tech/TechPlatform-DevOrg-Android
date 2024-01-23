@@ -30,4 +30,20 @@
 -keepattributes *Annotation*
 -keep class androidx.appcompat.widget.** { *; }
 
+-dontwarn com.octopusbjsindia.models.**
+-keep class com.octopusbjsindia.models.** {*;}
+-dontwarn com.octopusbjsindia.matrimonyregistration.model.**
+-keep class com.octopusbjsindia.matrimonyregistration.model.** {*;}
+-dontwarn com.octopusbjsindia.utility.**
+-keep class com.octopusbjsindia.utility.** {*;}
+
+
+-dontwarn com.yalantis.ucrop**
+-keep class com.yalantis.ucrop** { *; }
+-keep interface com.yalantis.ucrop** { *; }
+
+# Retain generic signatures of TypeToken and its subclasses with R8 version 3.0 and higher.
+-keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
+-keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
+
 

@@ -106,6 +106,7 @@
 
     <!--Home Menu Items-->
     <string name="menu_home">Home</string>
+    <string name="menu_stories">Stories</string>
     <string name="menu_community">My Community</string>
     <string name="menu_forms">Forms</string>
     <string name="menu_teams">Approvals</string>
@@ -565,7 +566,7 @@
     <string name="confirm_account_no">Confirm Bank Account Number</string>
     <string name="account_image">Upload Image (Cancelled Cheque/Passbook front page)</string>
     <string name="mou_upload" translatable="false">Upload MOU copy</string>
-    <string name="machine_per_hour_rate" translatable="false">Machine rate per hour(In Rupees)*</string>
+    <string name="machine_per_hour_rate" translatable="false">Machine rate per hour*</string>
     <string name="account_holder_name">Account Holder\'s Name</string>
     <string name="account_type">Account Type</string>
     <string name="operator_name">Machine Operator Name</string>

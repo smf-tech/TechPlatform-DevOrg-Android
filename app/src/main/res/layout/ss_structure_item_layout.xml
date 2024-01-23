@@ -233,9 +233,7 @@
                     <TextView
                         android:id="@+id/tv_commitment"
                         style="@style/TextViewRegularStyle"
-                        android:background="?selectableItemBackground"
-                        android:layout_below="@+id/tv_commitment_label"
-                        android:textColor="@color/colorPrimary" />
+                        android:layout_below="@+id/tv_commitment_label" />
 
                 </RelativeLayout>
 
@@ -284,9 +282,7 @@
                     <TextView
                         android:id="@+id/tv_donation"
                         style="@style/TextViewRegularStyle"
-                        android:background="?selectableItemBackground"
-                        android:layout_below="@+id/tv_donation_label"
-                        android:textColor="@color/colorPrimary" />
+                        android:layout_below="@+id/tv_donation_label" />
 
                 </RelativeLayout>
 

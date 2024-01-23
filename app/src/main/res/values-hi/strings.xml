@@ -102,6 +102,7 @@
 
     <!--Home Menu Items-->
     <string name="menu_home">होम</string>
+    <string name="menu_stories">स्टोरीज</string>
     <string name="menu_community">मेरा समाज</string>
     <string name="menu_forms">फार्म</string>
     <string name="menu_teams">टीम</string>

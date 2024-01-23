@@ -12,7 +12,7 @@
         android:layout_centerVertical="true"
         android:gravity="center_horizontal"
         android:textSize="@dimen/text_size_14"
-        android:textColor="@color/selector_tab_text_deafult"
+        android:textColor="@color/selector_tab_text_colored"
         android:fontFamily="@font/opensans_bold"
         tools:ignore="RelativeOverlap"
         android:text="forms"/>
@@ -30,7 +30,7 @@
         android:textSize="@dimen/text_size_10"
         android:fontFamily="@font/opensans_regular"
         android:visibility="visible"
-        android:text="5"/>
+        android:text="0"/>
 
 </RelativeLayout>
 

@@ -535,6 +535,7 @@ class ProspectDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener,
     }
 
     fun showNoDataMessage() {
+        donorAdapter.submitList(null)
         binding.lyNoData.isVisible = true
     }
 

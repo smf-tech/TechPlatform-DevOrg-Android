@@ -23,7 +23,6 @@
         android:src="@android:drawable/ic_input_add"
         app:tint="@color/white"
         app:backgroundTint="@color/tab_selector"
-        app:fabSize="mini"
         tools:ignore="RelativeOverlap" />
 
     <RelativeLayout

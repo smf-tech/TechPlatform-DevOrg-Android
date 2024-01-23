@@ -1299,15 +1299,17 @@ public class StructureMachineListFragment extends Fragment implements APIDataLis
                     filteredMachineListData.clear();
                     for (MachineData machineData : ssMachineListData) {
                         for (String talukaId : filterTalukaIds) {
-                            if (machineData.getTalukaId().equalsIgnoreCase(talukaId)) {
-                                if (selectedStatus != 0) {
-                                    if (machineData.getStatusCode() == selectedStatus) {
+                            if (machineData.getTalukaId()!=null) {
+                                if (machineData.getTalukaId().equalsIgnoreCase(talukaId)) {
+                                    if (selectedStatus != 0) {
+                                        if (machineData.getStatusCode() == selectedStatus) {
+                                            filteredMachineListData.add(machineData);
+                                        }
+                                    } else {
                                         filteredMachineListData.add(machineData);
                                     }
-                                } else {
-                                    filteredMachineListData.add(machineData);
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }

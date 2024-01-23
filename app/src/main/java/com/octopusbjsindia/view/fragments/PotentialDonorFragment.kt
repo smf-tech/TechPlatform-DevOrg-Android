@@ -73,6 +73,7 @@ class PotentialDonorFragment : Fragment(), DonorsListAdapter.OnItemClickListener
     }
 
     fun showNoDataMessage() {
+        donorAdapter.submitList(null)
         binding.lyNoData.isVisible = true
     }
 

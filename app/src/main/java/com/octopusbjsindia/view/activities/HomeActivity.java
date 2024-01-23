@@ -73,6 +73,7 @@ import com.octopusbjsindia.utility.ForceUpdateChecker;
 import com.octopusbjsindia.utility.PreferenceHelper;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.fragments.HomeFragment;
+import com.octopusbjsindia.view.fragments.StoriesFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -456,6 +457,14 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 getString(R.string.app_name_ss), false);
     }
 
+    private void loadStories(){
+        /*for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+            getSupportFragmentManager().popBackStack();
+        }*/
+        Util.launchFragment(new StoriesFragment(), this,
+                getString(R.string.menu_stories), true);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -523,6 +532,10 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
         switch (menuId) {
             case R.id.action_menu_home:
                 loadHomePage();
+                break;
+
+            case R.id.action_menu_stories:
+                loadStories();
                 break;
 
             case R.id.action_home_sync:
@@ -846,11 +859,7 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 Menu navMenu = navigationView.getMenu();
                 if (navMenu != null) {
                     for (Modules m : tabNames) {
-                        if (m.isActive()) {
-                            navMenu.findItem(m.getResId()).setVisible(true);
-                        } else {
-                            navMenu.findItem(m.getResId()).setVisible(false);
-                        }
+                        navMenu.findItem(m.getResId()).setVisible(m.isActive());
                     }
                 }
             }

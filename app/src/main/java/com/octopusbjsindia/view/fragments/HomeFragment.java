@@ -47,11 +47,10 @@ import static com.octopusbjsindia.utility.Constants.RequestStatus.DEFAULT_MODULE
 
 public class HomeFragment extends Fragment implements PlatformTaskListener, APIDataListener, HomeActivity.OnSyncClicked {
 
-    private final int[] tabIcons = {
+   /* private final int[] tabIcons = {
             R.drawable.ic_home_24,
             R.drawable.ic_newspaper_24
-          /*  R.drawable.ic_globe_24*/
-    };
+    };*/
     private Home homeData;
     private Context context;
     private View homeFragmentView;
@@ -130,7 +129,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
         if(getActivity() != null && isAdded()) {
             ViewPagerAdapter adapter = new ViewPagerAdapter(childFragmentManager);
             adapter.addFragment(dashboardFragment, getString(R.string.tab_dashboard));
-            adapter.addFragment(new StoriesFragment(), getString(R.string.tab_stories));
+            //adapter.addFragment(new StoriesFragment(), getString(R.string.tab_stories));
             //adapter.addFragment(new ConnectFragment(), getString(R.string.tab_connect));
             viewPager.setAdapter(adapter);
         }
@@ -163,11 +162,13 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
     public void onFailureListener(String requestID, String message) {
 
         Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
+
     }
 
     @Override
     public void onErrorListener(String requestID, VolleyError error) {
         Util.showToast(getResources().getString(R.string.msg_something_went_wrong), this);
+
     }
 
     @Override
@@ -177,15 +178,19 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
 
     @Override
     public void showProgressBar() {
-        if (((HomeActivity) getActivity()).lytProgress!=null){
-            ((HomeActivity) getActivity()).lytProgress.setVisibility(View.VISIBLE);
+        if (((HomeActivity) getActivity())!=null) {
+            if (((HomeActivity) getActivity()).lytProgress != null) {
+                ((HomeActivity) getActivity()).lytProgress.setVisibility(View.VISIBLE);
+            }
         }
     }
 
     @Override
     public void hideProgressBar() {
-        if (((HomeActivity) getActivity()).lytProgress!=null) {
-            ((HomeActivity) getActivity()).lytProgress.setVisibility(View.GONE);
+        if (((HomeActivity) getActivity())!=null) {
+            if (((HomeActivity) getActivity()).lytProgress != null) {
+                ((HomeActivity) getActivity()).lytProgress.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -218,15 +223,14 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
                             Constants.RequestStatus.PENDING : Constants.RequestStatus.APPROVED);
 
             ViewPager viewPager = homeFragmentView.findViewById(R.id.home_view_pager);
-            viewPager.setOffscreenPageLimit(2);
+            //viewPager.setOffscreenPageLimit(2);
             setupViewPager(viewPager);
 
-            TabLayout tabLayout = homeFragmentView.findViewById(R.id.home_tabs);
+            /*TabLayout tabLayout = homeFragmentView.findViewById(R.id.home_tabs);
             tabLayout.setupWithViewPager(viewPager);
 
             tabLayout.getTabAt(0).setIcon(tabIcons[0]);
             tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-           // tabLayout.getTabAt(2).setIcon(tabIcons[2]);
 
             tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
@@ -240,10 +244,6 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
                             ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.STORIES);
                             break;
 
-                       /* case 2:
-                            ((HomeActivity) getActivity()).setActionBarTitle(Constants.Home.CONNECT);
-                            break;*/
-
                     }
                 }
 
@@ -254,7 +254,7 @@ public class HomeFragment extends Fragment implements PlatformTaskListener, APID
                 @Override
                 public void onTabReselected(TabLayout.Tab tab) {
                 }
-            });
+            });*/
             ((HomeActivity) context).setActionBarTitle(getResources().getString(R.string.app_name_ss));
             //return;
         }

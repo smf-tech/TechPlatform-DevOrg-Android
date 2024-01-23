@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.tabs.TabLayout
+   <!-- <com.google.android.material.tabs.TabLayout
         android:id="@+id/home_tabs"
         android:layout_width="match_parent"
         style="@style/Widget.MaterialComponents.TabLayout.Colored"
@@ -14,7 +14,7 @@
         app:tabMode="fixed"
         app:tabInlineLabel="true"
         app:tabTextAppearance="@style/HomeTabLayoutTextStyle"
-        app:tabIndicatorColor="@color/tab_selector"/>
+        app:tabIndicatorColor="@color/tab_selector"/>-->
       <!--  app:tabIndicatorColor="@color/tab_selector"
         android:background="@color/colorPrimary"
         app:tabTextColor="@color/tab_grey"
@@ -26,6 +26,6 @@
         android:id="@+id/home_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/home_tabs"
+
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 </RelativeLayout>

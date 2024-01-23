@@ -4,7 +4,7 @@
     android:id="@+id/rl_matrimony_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/google_in">
+    android:background="@color/white">
 
     <LinearLayout
         android:id="@+id/ly_filter"
@@ -80,7 +80,6 @@
         android:layout_below="@+id/ly_filter"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
-        android:background="@drawable/dark_grey_oval_back"
         android:orientation="horizontal">
 
         <TextView
@@ -172,7 +171,7 @@
         android:layerType="software"
         android:paddingHorizontal="16dp"
         android:paddingTop="8dp"
-        android:paddingBottom="32dp" />
+        android:paddingBottom="54dp" />
 
     <RelativeLayout
         android:id="@+id/ly_no_data"

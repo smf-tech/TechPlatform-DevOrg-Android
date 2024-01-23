@@ -10,13 +10,15 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabGravity="start"
-        app:tabSelectedTextColor="@color/colorPrimary"
-        app:tabMode="auto" />
+        android:elevation="8dp"
+        style="@style/Widget.MaterialComponents.TabLayout.Colored"
+        app:tabSelectedTextColor="@color/white"
+        app:tabMode="auto" >
+    </com.google.android.material.tabs.TabLayout>
 
-    <!--android:background="@color/colorPrimary"-->
 
     <!--<ImageView-->
         <!--android:layout_width="match_parent"-->

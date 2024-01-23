@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ import com.octopusbjsindia.presenter.StoriesFragmentPresenter;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.CreateFeedActivity;
+import com.octopusbjsindia.view.activities.HomeActivity;
 import com.octopusbjsindia.view.adapters.FeedsAdapter;
 
 import java.util.ArrayList;
@@ -64,6 +66,10 @@ public class StoriesFragment extends Fragment implements APIDataListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getActivity() != null && getArguments() != null) {
+            String title = (String) getArguments().getSerializable("TITLE");
+            ((HomeActivity) getActivity()).setActionBarTitle(title);}
     }
 
     @Override

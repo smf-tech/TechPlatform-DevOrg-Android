@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_home_24"
             android:title="@string/menu_home" />
         <item
+            android:id="@+id/action_menu_stories"
+            android:icon="@drawable/ic_newspaper_24"
+            android:title="@string/menu_stories" />
+        <item
             android:id="@+id/action_home_sync"
             android:icon="@drawable/ic_sync_24"
             android:title="@string/update_data" />

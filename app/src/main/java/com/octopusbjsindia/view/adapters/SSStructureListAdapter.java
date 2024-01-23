@@ -130,13 +130,13 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
             holder.lytCommitment.setVisibility(View.GONE);
         } else {
             holder.lytCommitment.setVisibility(View.VISIBLE);
-            holder.tvCommitment.setText(ssDataList.get(position).getCommitment());
+            holder.tvCommitment.setText("₹ "+ssDataList.get(position).getCommitment());
         }
         if (ssDataList.get(position).getDonation() == null || ssDataList.get(position).getDonation().isBlank()) {
             holder.lytDonation.setVisibility(View.GONE);
         } else {
             holder.lytDonation.setVisibility(View.VISIBLE);
-            holder.tvDonation.setText(ssDataList.get(position).getDonation());
+            holder.tvDonation.setText("₹ "+ ssDataList.get(position).getDonation());
         }
 
         if (isSave) {
