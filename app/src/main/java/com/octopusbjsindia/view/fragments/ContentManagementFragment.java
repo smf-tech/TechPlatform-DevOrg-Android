@@ -1,5 +1,8 @@
 package com.octopusbjsindia.view.fragments;
 
+import static android.content.Context.DOWNLOAD_SERVICE;
+import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,6 +15,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -57,9 +61,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static android.content.Context.DOWNLOAD_SERVICE;
-import static com.octopusbjsindia.utility.Util.getUserObjectFromPref;
 
 public class ContentManagementFragment extends Fragment implements APIDataListener, View.OnClickListener {
 
@@ -161,14 +162,18 @@ public class ContentManagementFragment extends Fragment implements APIDataListen
         if (expandableListAdapter != null) {
             expandableListAdapter.notifyDataSetChanged();
         }
-        getActivity().registerReceiver(onDownloadComplete, new IntentFilter
-                (DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            getActivity().registerReceiver(onDownloadComplete, new IntentFilter
+                    (DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_EXPORTED);
+        } else {
+            getActivity().registerReceiver(onDownloadComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getActivity().unregisterReceiver(onDownloadComplete);
+        requireActivity().unregisterReceiver(onDownloadComplete);
     }
 
     private void updateListView() {

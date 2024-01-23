@@ -69,7 +69,7 @@ public class PendingFormsFragment extends Fragment {
         filter.addAction(PARTIAL_FORM_REMOVED);
         filter.addAction(EVENT_FORM_SUBMITTED);
 
-        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
+        LocalBroadcastManager.getInstance(requireContext())
                 .registerReceiver(new BroadcastReceiver() {
                     @Override
                     public void onReceive(final Context context, final Intent intent) {

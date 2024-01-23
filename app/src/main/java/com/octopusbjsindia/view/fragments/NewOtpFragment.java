@@ -71,7 +71,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     private CountDownTimer timer;
     private MaterialButton mBtnVerify;
     private TextView tvOtpTimer;
-    private TextView tvOtpMessage,txtError;
+    private TextView tvOtpMessage, txtError;
     private MaterialButton tvResendOtp;
     private TextInputEditText mOtp1, mOtp2, mOtp3, mOtp4, mOtp5, mOtp6;
     private ProgressBar pbVerifyLogin;
@@ -112,7 +112,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         txtError = view.findViewById(R.id.txt_error_msg);
         lytResendTimer = view.findViewById(R.id.lyt_resend_otp);
 
-       // sb = new StringBuilder();
+        // sb = new StringBuilder();
 
 
         mOtp1.requestFocus();
@@ -160,14 +160,14 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_verify:
-                Util.hideKeyboardWithView(requireContext(),view);
+                Util.hideKeyboardWithView(requireContext(), view);
                 if (mOtp1.getText().toString().trim().equals("") || mOtp2.getText().toString().trim().equals("") ||
                         mOtp3.getText().toString().trim().equals("") || mOtp4.getText().toString().trim().equals("") ||
                         mOtp5.getText().toString().trim().equals("") || mOtp6.getText().toString().trim().equals("")) {
                     txtError.setVisibility(View.VISIBLE);
                     txtError.setTextColor(getResources().getColor(R.color.red));
                     txtError.setText("Please enter 6 digit OTP");
-                }else {
+                } else {
                     txtError.setVisibility(View.GONE);
                     if (Util.isConnected(getActivity())) {
                         verifyUser();
@@ -245,12 +245,12 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             } else {
                 deviceId = Settings.Secure.getString(getActivity().getApplicationContext().
                         getContentResolver(), Settings.Secure.ANDROID_ID);
-                Log.d("Android","Android ID : "+deviceId);
+                Log.d("Android", "Android ID : " + deviceId);
             }
         } else {
             deviceId = Settings.Secure.getString(getActivity().getApplicationContext().
                     getContentResolver(), Settings.Secure.ANDROID_ID);
-            Log.d("Android","Android ID : "+deviceId);
+            Log.d("Android", "Android ID : " + deviceId);
         }
     }
 
@@ -274,7 +274,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
             tvResendOtp.setVisibility(View.VISIBLE);
 
             tvOtpMessage.setText(getResources().getString(R.string.msg_verify_otp_text));
-           // tvOtpTimer.setVisibility(View.GONE);
+            // tvOtpTimer.setVisibility(View.GONE);
             lytResendTimer.setVisibility(View.GONE);
 
             // Verify user automatically once OTP received
@@ -355,7 +355,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
 
     private void resetTimer() {
         tvOtpTimer.setText("");
-       // tvOtpTimer.setVisibility(View.GONE);
+        // tvOtpTimer.setVisibility(View.GONE);
         lytResendTimer.setVisibility(View.GONE);
         deRegisterOtpSmsReceiver();
         currentSec = 0;
@@ -432,7 +432,7 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         try {
             Util.saveUserMobileInPref(sLoginInfo.getMobileNumber());
             PreferenceHelper preferenceHelper = new PreferenceHelper(getActivity());
-            preferenceHelper.isCheckOut(PreferenceHelper.TOKEN_KEY,true);
+            preferenceHelper.isCheckOut(PreferenceHelper.TOKEN_KEY, true);
 
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(Constants.Login.LOGIN_OTP_VERIFY_DATA, sLoginInfo);
@@ -480,7 +480,10 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
                 }
             };
 
-            Platform.getInstance().registerReceiver(mIntentReceiver, intentFilter);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Platform.getInstance().registerReceiver(mIntentReceiver, intentFilter, Context.RECEIVER_EXPORTED);
+            } else Platform.getInstance().registerReceiver(mIntentReceiver, intentFilter);
+
         });
     }
 

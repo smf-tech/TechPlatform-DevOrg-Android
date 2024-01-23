@@ -161,7 +161,7 @@ public class SubmittedFormsFragment extends Fragment implements FormStatusCallLi
         filter.addAction(EVENT_FORM_SUBMITTED);
         filter.addAction(PARTIAL_FORM_ADDED);
 
-        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).registerReceiver(new BroadcastReceiver() {
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(final Context context, final Intent intent) {
                 String action = Objects.requireNonNull(intent.getAction());

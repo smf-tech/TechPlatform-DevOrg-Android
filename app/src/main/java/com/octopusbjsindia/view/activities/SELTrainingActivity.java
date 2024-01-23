@@ -1,4 +1,5 @@
 package com.octopusbjsindia.view.activities;
+
 import static com.octopusbjsindia.utility.Constants.VideoTutorialModule.VIDEO_SEEN;
 
 import android.app.ActionBar;
@@ -13,6 +14,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -52,7 +54,7 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
     private DownloadManager downloadmanager;
     private long downloadID;
     private String filename;
-    private ArrayList<SELAssignmentData> assignmentList= new ArrayList<>();
+    private ArrayList<SELAssignmentData> assignmentList = new ArrayList<>();
     private List<Long> downloadIdList = new ArrayList<>();
     public int selectedFormPostion;
     private int type = -1;
@@ -66,7 +68,10 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initView() {
-        this.registerReceiver(onSELDownloadComplete, new IntentFilter
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            this.registerReceiver(onSELDownloadComplete, new IntentFilter
+                    (DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_EXPORTED);
+        } else this.registerReceiver(onSELDownloadComplete, new IntentFilter
                 (DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
@@ -93,7 +98,7 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
         ivThumbnail.setOnClickListener(this);
         assignmentList = (ArrayList<SELAssignmentData>) trainingObject.getAssignmentList();
 
-        if(trainingObject.getReadingDataList()!= null && trainingObject.getReadingDataList().size()>0) {
+        if (trainingObject.getReadingDataList() != null && trainingObject.getReadingDataList().size() > 0) {
             selTrainingAdapter = new SELTrainingAdapter(this, trainingObject.getReadingDataList());
             rvReadingContent.setLayoutManager(new LinearLayoutManager(this));
             rvReadingContent.setAdapter(selTrainingAdapter);
@@ -101,7 +106,7 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
             findViewById(R.id.tv_reading_label).setVisibility(View.GONE);
             rvReadingContent.setVisibility(View.GONE);
         }
-        if(assignmentList!= null && assignmentList.size()>0) {
+        if (assignmentList != null && assignmentList.size() > 0) {
             selAssignmentAdapter = new SELAssignmentAdapter(this,
                     assignmentList, trainingObject.isVideoSeen());
             rvFormAssignment.setLayoutManager(new LinearLayoutManager(this));
@@ -130,7 +135,10 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onResume() {
         super.onResume();
-        this.registerReceiver(onSELDownloadComplete, new IntentFilter
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            this.registerReceiver(onSELDownloadComplete, new IntentFilter
+                    (DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_EXPORTED);
+        } else this.registerReceiver(onSELDownloadComplete, new IntentFilter
                 (DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
@@ -205,7 +213,7 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void beginDownload(String url, int position, int type) {
-        this.type= type;
+        this.type = type;
         downloadmanager = (DownloadManager) this.getSystemService(DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(url);
         File file = new File(uri.getPath());
@@ -267,10 +275,10 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
             if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(action)) {
                 Util.showToast("Download completed.", this);
                 if (downloadPosition != -1) {
-                    if(type == 0) {
+                    if (type == 0) {
                         trainingObject.getReadingDataList().get(downloadPosition).setDownloadStarted(false);
                         selTrainingAdapter.notifyDataSetChanged();
-                    } else if(type == 1) {
+                    } else if (type == 1) {
                         trainingObject.getAssignmentList().get(downloadPosition).setDownloadStarted(false);
                         selAssignmentAdapter.notifyDataSetChanged();
                     }
@@ -279,21 +287,22 @@ public class SELTrainingActivity extends AppCompatActivity implements View.OnCli
         }
     };
 
-    public void displayForm(String formId, int position){
+    public void displayForm(String formId, int position) {
         selectedFormPostion = position;
         Intent intent = new Intent(this, FormDisplayActivity.class);
         intent.putExtra(Constants.PM.FORM_ID, formId);
-        startActivityForResult(intent,1001);
+        startActivityForResult(intent, 1001);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1001) {
-            if(resultCode == Activity.RESULT_OK){
-                String id=data.getStringExtra("id");
-                for(int i=0;i<assignmentList.size();i++){
-                    if(id.equalsIgnoreCase(assignmentList.get(i).getFormId())){
+            if (resultCode == Activity.RESULT_OK) {
+                String id = data.getStringExtra("id");
+                for (int i = 0; i < assignmentList.size(); i++) {
+                    if (id.equalsIgnoreCase(assignmentList.get(i).getFormId())) {
                         assignmentList.get(i).setFormSubmitted(true);
                         selAssignmentAdapter.notifyDataSetChanged();
                     }
