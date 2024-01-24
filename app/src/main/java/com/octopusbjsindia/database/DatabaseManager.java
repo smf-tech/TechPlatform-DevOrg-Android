@@ -43,7 +43,7 @@ public class DatabaseManager {
             appDatabase = Room.databaseBuilder(context.getApplicationContext(),
                     AppDatabase.class, Constants.App.DATABASE_NAME)
                     .allowMainThreadQueries()
-                    .addMigrations(MIGRATION_10_TO_11)
+                    .addMigrations(MIGRATION_11_TO_12)
                     .build();
         }
 
@@ -134,6 +134,14 @@ public class DatabaseManager {
         public void migrate(@NonNull SupportSQLiteDatabase database) {
              // Added one column "haltReason" in table "OperatorRequestResponseModel"
             database.execSQL("ALTER TABLE OperatorRequestResponseModel ADD COLUMN haltReason TEXT DEFAULT ''");
+        }
+    };
+
+    private static final Migration MIGRATION_11_TO_12 = new Migration(11, 12) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE StructureData ADD COLUMN commitment TEXT DEFAULT ''");
+            database.execSQL("ALTER TABLE StructureData ADD COLUMN donation TEXT DEFAULT ''");
         }
     };
 
