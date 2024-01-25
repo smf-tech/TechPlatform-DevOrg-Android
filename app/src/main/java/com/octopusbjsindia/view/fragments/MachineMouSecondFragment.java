@@ -669,7 +669,7 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
 //                finalUri = Util.getUri(imageFilePath);
 //                Crop.of(outputUri, finalUri).start(getContext(), this);
                 finalUri = Uri.fromFile(new File(currentPhotoPath));
-                Crop.of(finalUri, finalUri).start(getContext(), this);
+                Util.openCropActivityFreeCrop(requireContext(),this, finalUri, finalUri);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -684,13 +684,12 @@ public class MachineMouSecondFragment extends Fragment implements View.OnClickLi
                     getImageFile();
                     outputUri = data.getData();
                     finalUri = Uri.fromFile(new File(currentPhotoPath));
-                    Crop.of(outputUri, finalUri).start(getContext(), this);
-                    //Util.openCropActivityFreeCrop(requireActivity(), outputUri, finalUri);
+                    Util.openCropActivityFreeCrop(requireContext(),this, outputUri, finalUri);
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage());
                 }
             }
-        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+        } else if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
             try {
                 imageFile = new File(Objects.requireNonNull(finalUri.getPath()));
                 //imgMOUCopy.setImageURI(finalUri);

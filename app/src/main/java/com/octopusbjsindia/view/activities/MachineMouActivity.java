@@ -206,7 +206,7 @@ public class MachineMouActivity extends AppCompatActivity implements View.OnClic
                         hideProgressBar();
                         Toast.makeText(getApplication(), getResources().getString(R.string.msg_failure),
                                 Toast.LENGTH_SHORT).show();
-                        Log.d("Error", error.getMessage());
+                        Log.d("Error", error.getMessage().toString());
                     }
                 }) {
 

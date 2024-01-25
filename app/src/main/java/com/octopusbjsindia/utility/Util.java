@@ -773,18 +773,18 @@ public class Util {
 
 
     public static String getDateFromTimestamp(Long timeStamp, String dateTimeFormat) {
-       // if (timeStamp > 0) {
-            try {
-                int length = (int) (Math.log10(timeStamp) + 1);
-                if (length == 10) {
-                    timeStamp = timeStamp * 1000;
-                }
-                Date d = new Timestamp(timeStamp);
-
-                return getFormattedDate(d.toString(), dateTimeFormat);
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
+        // if (timeStamp > 0) {
+        try {
+            int length = (int) (Math.log10(timeStamp) + 1);
+            if (length == 10) {
+                timeStamp = timeStamp * 1000;
             }
+            Date d = new Timestamp(timeStamp);
+
+            return getFormattedDate(d.toString(), dateTimeFormat);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
         //}
         return "";
     }
@@ -2118,6 +2118,15 @@ public class Util {
                 .start(activity);
     }
 
+    public static void openCropActivityFreeCrop(Context context, Fragment fragment, Uri sourceUri, Uri destinationUri) {
+        UCrop.Options options = new UCrop.Options();
+        options.setFreeStyleCropEnabled(true);
+        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.SCALE, UCropActivity.SCALE);
+        UCrop.of(sourceUri, destinationUri)
+                .withOptions(options)
+                .start(context, fragment);
+    }
+
     public static void openCropActivityFreeCropWithFragment(Activity activity, Fragment fragment, Uri sourceUri, Uri destinationUri) {
         UCrop.Options options = new UCrop.Options();
         options.setFreeStyleCropEnabled(true);
@@ -2247,10 +2256,10 @@ public class Util {
         return value != null && !TextUtils.isEmpty(value.trim());
     }
 
-    public static void setTextElseDash(TextView tv,String value){
-        if (value!=null&& !TextUtils.isEmpty(value)){
+    public static void setTextElseDash(TextView tv, String value) {
+        if (value != null && !TextUtils.isEmpty(value)) {
             tv.setText(value);
-        }else tv.setText("-");
+        } else tv.setText("-");
     }
 
 }

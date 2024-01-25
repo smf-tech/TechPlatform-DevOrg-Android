@@ -139,6 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
+                app:chipStrokeWidth="1dp"
                 android:minHeight="54dp"
                 android:text="Structure" />
 
@@ -149,6 +150,7 @@
                 app:chipIconEnabled="true"
                 app:chipIcon="@drawable/ic_create_machine"
                 android:text="Machine"
+                app:chipStrokeWidth="1dp"
                 android:minHeight="54dp"
                 style="@style/Chip.Choice"/>
         </com.google.android.material.chip.ChipGroup>
