@@ -44,8 +44,8 @@
             android:gravity="center_vertical"
             android:hint="@string/district"
             android:paddingStart="@dimen/dimen_10dp"
-            android:textColor="?android:textColorPrimary"
             android:singleLine="true"
+            android:textColor="?android:textColorPrimary"
             android:textColorHint="@color/medium_grey" />
 
         <TextView
@@ -134,25 +134,25 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_structure"
                 style="@style/Chip.Choice"
-                app:chipIconEnabled="true"
-                app:chipIcon="@drawable/ic_create_structure"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                app:chipStrokeWidth="1dp"
                 android:minHeight="54dp"
-                android:text="Structure" />
+                android:text="Structure"
+                app:chipIcon="@drawable/ic_create_structure"
+                app:chipIconEnabled="true"
+                app:chipStrokeWidth="1dp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_machine"
+                style="@style/Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:chipIconEnabled="true"
-                app:chipIcon="@drawable/ic_create_machine"
-                android:text="Machine"
-                app:chipStrokeWidth="1dp"
                 android:minHeight="54dp"
-                style="@style/Chip.Choice"/>
+                android:text="Machine"
+                app:chipIcon="@drawable/ic_create_machine"
+                app:chipIconEnabled="true"
+                app:chipStrokeWidth="1dp" />
         </com.google.android.material.chip.ChipGroup>
 
     </LinearLayout>

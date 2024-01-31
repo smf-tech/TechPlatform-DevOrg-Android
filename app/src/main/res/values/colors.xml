@@ -37,6 +37,7 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="textPrimary">#DD000000</color>
+    <color name="textSecondary">#AB000000</color>
     <color name="red">#FF0000</color>
     <color name="pink">#f05fa4</color>
     <color name="green">#8BC34A</color>

@@ -64,8 +64,8 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
     private final String STRUCTURE_STATUS = "StructureStatus";
     private ArrayList<StructureData> ssDataList;
     private Activity activity;
-    private boolean isSave, isSaveOfflineStructure, isStructurePreparation, isCommunityMobilization,
-            isVisitMonitoring, isStructureComplete, isStructureClose, isStructureBoundary, isDailyMachineRecord;
+    private boolean isSave, isSaveOfflineStructure, isStructurePreparation, isCommunityMobilization,isSiltTransportAdd,
+            isVisitMonitoring, isStructureComplete,isStructureAdd,isDonorAdd, isStructureClose, isStructureBoundary, isDailyMachineRecord;
 
     public SSStructureListAdapter(FragmentActivity activity, ArrayList<StructureData> ssStructureListData,
                                   boolean isSave) {
@@ -97,7 +97,16 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_CLOSE)) {
                     isStructureClose = true;
                     continue;
-                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_BOUNDARY)) {
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_STRUCTURE)) {
+                    isStructureAdd = true;
+                    continue;
+                }else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_SILT_TRANSPORT_FORM)) {
+                    isSiltTransportAdd = true;
+                    continue;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_ADD_DONOR)) {
+                    isDonorAdd = true;
+                    continue;
+                }else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_STRUCTURE_BOUNDARY)) {
                     isStructureBoundary = true;
                     continue;
                 } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_DAILY_MACHINE_RECORD)) {
@@ -307,11 +316,15 @@ public class SSStructureListAdapter extends RecyclerView.Adapter<SSStructureList
                         popup.getMenu().findItem(R.id.action_structure_close).setVisible(false);
                     }
 
-                    if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_HALTED
-                            || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_IN_PROGRESS) {
-                        popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+                    if (isSiltTransportAdd) {
+                        if (ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_HALTED
+                                || ssDataList.get(getAdapterPosition()).getStructureStatusCode() == Constants.SSModule.STRUCTURE_IN_PROGRESS) {
+                            popup.getMenu().findItem(R.id.action_silt_transportation_record).setVisible(true);
+                        }
                     }
 
+                    popup.getMenu().findItem(R.id.action_donation_record).setVisible(isDonorAdd);
+                    popup.getMenu().findItem(R.id.action_edit_structure).setVisible(isStructureAdd);
 
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override

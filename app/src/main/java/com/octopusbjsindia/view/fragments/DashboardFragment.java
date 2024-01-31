@@ -112,8 +112,8 @@ public class DashboardFragment extends Fragment {
         CustomViewPager viewPager = dashboardView.findViewById(R.id.view_pager);
         setupViewPager(viewPager);
         tabLayout = dashboardView.findViewById(R.id.tabs);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-        tabLayout.setTabMode(TabLayout.MODE_AUTO);
+        //tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
 

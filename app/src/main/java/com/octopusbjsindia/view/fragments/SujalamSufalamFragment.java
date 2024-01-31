@@ -2,6 +2,7 @@ package com.octopusbjsindia.view.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,12 +17,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -415,41 +419,39 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
 
     private void setMachineView(){
         viewType = 2;
-      /*  tvMachineView.setTextColor(getResources().getColor(R.color.dark_grey));
-        tvMachineView.setTypeface(tvMachineView.getTypeface(), Typeface.BOLD);
-        tvStructureView.setTextColor(getResources().getColor(R.color.text_lite_grey));
-        tvStructureView.setTypeface(tvStructureView.getTypeface(), Typeface.NORMAL);
-        tvToggle.setBackgroundResource(R.drawable.ic_toggle_machine_view);*/
-        chipStructure.setChipStrokeWidth(3f);
-        chipMachine.setChipStrokeWidth(0f);
+
+        setHighlightedChip(chipMachine);
+        removeHighlightedChip(chipStructure);
+
         rvSSAnalytics.setAdapter(machineAnalyticsAdapter);
         machineAnalyticsAdapter.notifyDataSetChanged();
-        if(isMachineView) {
+
+        btnSsView.setText("Machine View");
+       /* if(isMachineView) {
             btnSsView.setVisibility(View.VISIBLE);
             btnSsView.setText("Machine View");
         } else {
             btnSsView.setVisibility(View.INVISIBLE);
-        }
+        }*/
         manageUI();
     }
 
     private void setStructureView(){
         viewType = 1;
-       /* tvStructureView.setTextColor(getResources().getColor(R.color.dark_grey));
-        tvStructureView.setTypeface(tvStructureView.getTypeface(), Typeface.BOLD);
-        tvMachineView.setTextColor(getResources().getColor(R.color.text_lite_grey));
-        tvMachineView.setTypeface(tvMachineView.getTypeface(), Typeface.NORMAL);
-        tvToggle.setBackgroundResource(R.drawable.ic_toggle_structure_view);*/
-        chipStructure.setChipStrokeWidth(0f);
-        chipMachine.setChipStrokeWidth(3f);
+
+        setHighlightedChip(chipStructure);
+        removeHighlightedChip(chipMachine);
+
         rvSSAnalytics.setAdapter(structureAnalyticsAdapter);
         structureAnalyticsAdapter.notifyDataSetChanged();
-        if(isStructureView) {
+
+        btnSsView.setText("Structure View");
+       /* if(isStructureView) {
             btnSsView.setVisibility(View.VISIBLE);
             btnSsView.setText("Structure View");
         } else {
             btnSsView.setVisibility(View.INVISIBLE);
-        }
+        }*/
         manageUI();
     }
 
@@ -836,5 +838,23 @@ public class SujalamSufalamFragment extends Fragment implements View.OnClickList
 
         }
 
+    }
+
+    private void setHighlightedChip(Chip chip){
+        chip.setChipStrokeWidth(0f);
+        chip.setChecked(true);
+        chip.setSelected(true);
+        chip.setChipBackgroundColorResource(R.color.chip_background_color);
+        chip.setTextColor(getResources().getColor(R.color.colorPrimary));
+        chip.setChipIconTintResource(R.color.colorPrimary);
+    }
+
+    private void removeHighlightedChip(Chip chip){
+        chip.setChipStrokeWidth(3f);
+        chip.setChecked(false);
+        chip.setSelected(false);
+        chip.setChipBackgroundColorResource(R.color.white);
+        chip.setTextColor(getResources().getColor(R.color.textSecondary));
+        chip.setChipIconTintResource(R.color.textSecondary);
     }
 }

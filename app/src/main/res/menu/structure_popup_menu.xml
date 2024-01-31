@@ -7,7 +7,7 @@
     <item
         android:id="@+id/action_donation_record"
         android:title="Donation Record"
-        android:visible="true"/>
+        android:visible="false"/>
     <item
         android:id="@+id/action_preparation"
         android:title="Structure Preparation"

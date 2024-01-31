@@ -14,10 +14,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.octopusbjsindia.R;
 import com.octopusbjsindia.models.SujalamSuphalam.SSAnalyticsData;
+import com.octopusbjsindia.models.home.RoleAccessAPIResponse;
+import com.octopusbjsindia.models.home.RoleAccessList;
+import com.octopusbjsindia.models.home.RoleAccessObject;
+import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.activities.SSActionsActivity;
 import com.octopusbjsindia.view.activities.ssgp.GPActionsActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SSAnalyticsAdapter extends RecyclerView.Adapter<SSAnalyticsAdapter.ViewHolder> {
 
@@ -26,6 +32,7 @@ public class SSAnalyticsAdapter extends RecyclerView.Adapter<SSAnalyticsAdapter.
     String title;
     Context mContext;
     private String project;
+    private boolean isMachineView, isStructureView;
 
     public SSAnalyticsAdapter(Context mContext, ArrayList<SSAnalyticsData> ssAnalyticsDataList,
                               int viewType, String title, String project) {
@@ -34,6 +41,20 @@ public class SSAnalyticsAdapter extends RecyclerView.Adapter<SSAnalyticsAdapter.
         this.title = title;
         this.mContext = mContext;
         this.project = project;
+
+       /* RoleAccessAPIResponse roleAccessAPIResponse = Util.getRoleAccessObjectFromPref();
+        RoleAccessList roleAccessList = roleAccessAPIResponse.getData();
+
+        if (roleAccessList != null) {
+            List<RoleAccessObject> roleAccessObjectList = roleAccessList.getRoleAccess();
+            for (RoleAccessObject roleAccessObject : roleAccessObjectList) {
+                if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VIEW_MACHINES)) {
+                    isMachineView = true;
+                } else if (roleAccessObject.getActionCode().equals(Constants.SSModule.ACCESS_CODE_VIEW_STRUCTURES)) {
+                    isStructureView = true;
+                }
+            }
+        }*/
     }
 
     @NonNull
@@ -46,30 +67,31 @@ public class SSAnalyticsAdapter extends RecyclerView.Adapter<SSAnalyticsAdapter.
     @Override
     public void onBindViewHolder(@NonNull SSAnalyticsAdapter.ViewHolder holder, int position) {
         SSAnalyticsData ssAnalyticsData = ssAnalyticsDataList.get(position);
-            if(ssAnalyticsData.getStatus()!=null){
-                holder.tvLabel.setText(ssAnalyticsData.getStatus());
-                holder.pbSsAnalytics.setProgress(ssAnalyticsData.getPercentValue());
-                if (project.equalsIgnoreCase("MR")) {
-                    holder.tvResult.setText(String.valueOf(ssAnalyticsData.getPercentValue()));
-                } else {
-                    holder.tvResult.setText(String.valueOf(ssAnalyticsData.getPercentValue()) + "%");
-                }
+        if (ssAnalyticsData.getStatus() != null) {
+            holder.tvLabel.setText(ssAnalyticsData.getStatus());
+            holder.pbSsAnalytics.setProgress(ssAnalyticsData.getPercentValue());
+            if (project.equalsIgnoreCase("MR")) {
+                holder.tvResult.setText(String.valueOf(ssAnalyticsData.getPercentValue()));
+            } else {
+                holder.tvResult.setText(ssAnalyticsData.getPercentValue() + "%");
+            }
 //                holder.tvValue.setVisibility(View.INVISIBLE);
 //                holder.tvValueUnit.setVisibility(View.INVISIBLE);
-            } else{
-                holder.tvLabel.setText(ssAnalyticsData.getTitle());
-                holder.pbSsAnalytics.setVisibility(View.INVISIBLE);
-                holder.tvResult.setVisibility(View.INVISIBLE);
+        } else {
+            holder.tvLabel.setText(ssAnalyticsData.getTitle());
+            holder.pbSsAnalytics.setVisibility(View.INVISIBLE);
+            holder.tvResult.setVisibility(View.INVISIBLE);
 //                holder.tvValue.setText(ssAnalyticsData.getValue());
 //                holder.tvValueUnit.setText(ssAnalyticsData.getUnit());
-            }
+        }
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvLabel, tvResult, tvValue, tvValueUnit;
         CircularProgressBar pbSsAnalytics;
         LinearLayout lyMain;
-        ViewHolder(View itemView){
+
+        ViewHolder(View itemView) {
             super(itemView);
             tvLabel = itemView.findViewById(R.id.tv_label);
             tvResult = itemView.findViewById(R.id.tv_result);
@@ -77,24 +99,22 @@ public class SSAnalyticsAdapter extends RecyclerView.Adapter<SSAnalyticsAdapter.
             //tvValueUnit = itemView.findViewById(R.id.tv_value_unit);
             pbSsAnalytics = itemView.findViewById(R.id.pb_ss_analytics);
             lyMain = itemView.findViewById(R.id.ly_main);
-            lyMain.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (project.equalsIgnoreCase("SS")) {
-                        Intent intent = new Intent(mContext, SSActionsActivity.class);
-                        intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
-                        intent.putExtra("selectedStatus", ssAnalyticsDataList.get(getAdapterPosition()).getStatusCode());
-                        intent.putExtra("viewType", viewType);
-                        intent.putExtra("title", title);
-                        mContext.startActivity(intent);
-                    } else if (project.equalsIgnoreCase("GP")) {
-                        Intent intent = new Intent(mContext, GPActionsActivity.class);
-                        intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
-                        intent.putExtra("selectedStatus", ssAnalyticsDataList.get(getAdapterPosition()).getStatusCode());
-                        intent.putExtra("viewType", viewType);
-                        intent.putExtra("title", title);
-                        mContext.startActivity(intent);
-                    }
+            lyMain.setOnClickListener(view -> {
+                if (project.equalsIgnoreCase("SS")) {
+                    Intent intent = new Intent(mContext, SSActionsActivity.class);
+                    intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+                    intent.putExtra("selectedStatus", ssAnalyticsDataList.get(getAdapterPosition()).getStatusCode());
+                    intent.putExtra("viewType", viewType);
+                    intent.putExtra("title", title);
+                    mContext.startActivity(intent);
+
+                } else if (project.equalsIgnoreCase("GP")) {
+                    Intent intent = new Intent(mContext, GPActionsActivity.class);
+                    intent.putExtra("SwitchToFragment", "StructureMachineListFragment");
+                    intent.putExtra("selectedStatus", ssAnalyticsDataList.get(getAdapterPosition()).getStatusCode());
+                    intent.putExtra("viewType", viewType);
+                    intent.putExtra("title", title);
+                    mContext.startActivity(intent);
                 }
             });
 

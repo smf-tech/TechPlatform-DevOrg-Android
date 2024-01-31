@@ -12,11 +12,10 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabGravity="start"
         android:elevation="8dp"
         style="@style/Widget.MaterialComponents.TabLayout.Colored"
         app:tabSelectedTextColor="@color/white"
-        app:tabMode="auto" >
+        app:tabMode="scrollable" >
     </com.google.android.material.tabs.TabLayout>
 
 

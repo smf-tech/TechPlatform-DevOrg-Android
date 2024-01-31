@@ -29,7 +29,8 @@
         android:layout_centerVertical="true"
         android:textSize="@dimen/text_size_10"
         android:fontFamily="@font/opensans_regular"
-        android:visibility="visible"
+        android:visibility="gone"
+        tools:visibility="visible"
         android:text="0"/>
 
 </RelativeLayout>
