@@ -546,6 +546,11 @@ public class HomeActivity extends BaseActivity implements ForceUpdateChecker.OnU
                 showLanguageChangeDialog();
                 break;
 
+            case R.id.action_menu_privacy_policy:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://bjsindia.org/PrivacyPolicy.html"));
+                startActivity(browserIntent);
+                break;
+
             case R.id.action_menu_share_app:
                 try {
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);

@@ -118,6 +118,7 @@
     <string name="menu_leaves_attendance">छुटींया और उपस्थिति</string>
 
     <string name="menu_change_language">भाषा बदलो</string>
+    <string name="menu_privacy_policy">प्रायव्हसी पॉलिसी</string>
     <string name="menu_rate_us">रेटिंग दें</string>
     <string name="menu_call_us">कॉल करें</string>
     <string name="menu_settings">सेटिंग्स</string>
@@ -542,7 +543,7 @@
     <string name="create_feed">Create Feed</string>
     <string name="msg_select_org">Please select organization.</string>
     <string name="msg_select_school">Please select school</string>
-    <string name="share_app">Share app</string>
+    <string name="share_app">ऐप शेयर करें</string>
     <string name="enter_meter_reading">मीटर रीडिंग दर्ज करें</string>
     <string name="msg_images_limit">You can not attach more than 10 images.</string>
     <string name="boundry_befor_satrt">Please click the start button and start walking..</string>

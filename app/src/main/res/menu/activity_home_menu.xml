@@ -89,6 +89,10 @@
             android:icon="@drawable/ic_language_24"
             android:title="@string/menu_change_language" />
         <item
+            android:id="@+id/action_menu_privacy_policy"
+            android:icon="@drawable/ic_policy_black_24dp"
+            android:title="@string/menu_privacy_policy" />
+        <item
             android:id="@+id/action_menu_rate_us"
             android:icon="@drawable/ic_star_border_24"
             android:title="@string/menu_rate_us" />

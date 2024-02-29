@@ -121,7 +121,8 @@
     <string name="menu_account">Account</string>
     <string name="menu_leaves_attendance">Leaves and Attendance</string>
 
-    <string name="menu_change_language">Change Language</string>
+    <string name="menu_change_language">Change language</string>
+    <string name="menu_privacy_policy">Privacy policy</string>
     <string name="menu_rate_us">Rate Us</string>
     <string name="menu_call_us">Call Us</string>
     <string name="menu_settings">Settings</string>
