@@ -90,9 +90,24 @@
                                     android:gravity="center_vertical"
                                     android:paddingStart="@dimen/dimen_05dp"
                                     android:paddingEnd="@dimen/dimen_10dp"
-                                    android:text=""
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/text_size_10" />
+
+                                <TextView
+                                    android:id="@+id/tv_promotional"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="@dimen/dimen_25dp"
+                                    android:layout_marginTop="@dimen/dimen_16dp"
+                                    android:layout_below="@id/iv_icon_published"
+                                    android:background="@drawable/ic_publish_ribbon"
+                                    android:fontFamily="@font/opensans_bold"
+                                    android:gravity="center_vertical"
+                                    android:paddingStart="@dimen/dimen_05dp"
+                                    android:paddingEnd="32dp"
+                                    android:text="Promotional"
+                                    android:visibility="visible"
+                                    android:textSize="@dimen/text_size_10"
+                                    android:textColor="@color/white" />
 
                             </RelativeLayout>
                         </LinearLayout>

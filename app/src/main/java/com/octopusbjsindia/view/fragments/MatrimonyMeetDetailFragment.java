@@ -68,7 +68,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
     private MatrimonyMeet meetData;
     private TextView tvMeetTitle, tvMeetType, tvMeetDate, tvMeetTime, tvMeetCity, tvMeetVenue,
             tvMeetWebLink, tvRegAmt, tvRegPeriod, tvBadgesInfo, btnViewProfiles, btnRegisterProfile,
-            tvPaymentInfo, tvMinMaxAge, tvEducation,seeMore, tvMaritalStatus, tvNote,tv_referallink_label,tv_referallink;
+            tvPaymentInfo, tvMinMaxAge, tvEducation, seeMore, tvMaritalStatus, tvNote, tv_referallink_label, tv_referallink;
     private RecyclerView rvMeetContacts, rvMeetAnalytics;
     private MeetContactsListAdapter meetContactsListAdapter;
     private ArrayList<SubordinateData> contactsList = new ArrayList<>();
@@ -87,7 +87,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
     private final String TAG = this.getClass().getSimpleName();
     private Activity activity;
     private PopupMenu popup;
-    TextView ivIconPublished;
+    TextView ivIconPublished, tvPromotional;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -180,6 +180,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         rvMeetContacts.setAdapter(meetContactsListAdapter);
 
         ivIconPublished = view.findViewById(R.id.iv_icon_published);
+        tvPromotional = view.findViewById(R.id.tv_promotional);
         if (meetData.getIs_published()) {
             ivIconPublished.setText("Published");//(getResources().getDrawable(R.drawable.ic_icon_publish));
         } else {
@@ -188,6 +189,10 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         if (meetData.getArchive()) {
             ivIconPublished.setText("Archived");
         }
+        if (meetData.getMeetPromotional()) {
+            tvPromotional.setVisibility(View.VISIBLE);
+        } else tvPromotional.setVisibility(View.GONE);
+
         if (meetData.getMeetImageUrl() != null && !meetData.getMeetImageUrl().isEmpty()) {
             ImageView ivMeetImage = view.findViewById(R.id.iv_meet_image);
             Glide.with(this)
@@ -340,7 +345,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
             view.findViewById(R.id.tv_reg_free).setVisibility(View.VISIBLE);
         } else {
             tvRegAmt.setVisibility(View.VISIBLE);
-            tvRegAmt.setText("₹ "+String.valueOf(meetData.getRegAmount()));
+            tvRegAmt.setText("₹ " + String.valueOf(meetData.getRegAmount()));
             view.findViewById(R.id.tv_reg_free).setVisibility(View.GONE);
         }
 
@@ -357,7 +362,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         if (meetData.getMeetCriteria() != null) {
             tvMinMaxAge.setText(meetData.getMeetCriteria().getMinAge() + " - " + meetData.getMeetCriteria().getMaxAge());
             if (meetData.getMeetCriteria().getQualificationCriteria() != null && meetData.getMeetCriteria().getQualificationCriteria().size() > 0) {
-                tvEducation.setText( TextUtils.join(",", meetData.getMeetCriteria().getQualificationCriteria()));
+                tvEducation.setText(TextUtils.join(",", meetData.getMeetCriteria().getQualificationCriteria()));
 
                 tvEducation.post(() -> {
                     if (tvEducation.getLineCount() > 4) {
@@ -475,9 +480,9 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
                         meetData.getMeetReferralLink();
 
                 ClipboardManager clipboardManager = (ClipboardManager) getActivity().getSystemService(getActivity().CLIPBOARD_SERVICE);
-                ClipData clipData = ClipData.newPlainText("referal text",message1);
+                ClipData clipData = ClipData.newPlainText("referal text", message1);
                 clipboardManager.setPrimaryClip(clipData);
-                Util.showToast(getActivity(),"Link has been copied.");
+                Util.showToast(getActivity(), "Link has been copied.");
                 break;
 
         }

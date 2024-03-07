@@ -85,6 +85,10 @@ public class VPMeetFragment extends Fragment implements View.OnClickListener{
             txtMeetFee.setText("Free Meet");
         }
 
+        if (meetData.getMeetPromotional()){
+            txtMeetFee.setText("Promotional");
+        }
+
     }
 
     @Override

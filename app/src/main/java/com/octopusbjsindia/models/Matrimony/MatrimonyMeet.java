@@ -20,6 +20,7 @@ public class MatrimonyMeet implements Serializable {
     @SerializedName("isMeetPromotional")
     @Expose
     private Boolean isMeetPromotional = false;
+
     @SerializedName("location")
     @Expose
     private MeetLocation location;
