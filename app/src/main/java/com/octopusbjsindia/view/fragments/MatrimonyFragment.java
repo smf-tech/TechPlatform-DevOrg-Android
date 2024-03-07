@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,7 +46,7 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     private final String MEET_DATA = "MeetData";
     private final String MEET_POS = "MeetPos";
     private MatrimonyFragmentPresenter presenter;
-    private RelativeLayout pbLayout;
+    private RelativeLayout pbLayout, ly_upcoming_meets;
     private List<MatrimonyMeet> matrimonyMeetList = new ArrayList<>();
     private ViewPager vpUpcomingMeets;
     private ArrayList<UserProfileList> newUserList = new ArrayList<UserProfileList>();
@@ -56,6 +57,7 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
     private boolean isFABOpen = false;
     private View view;
     boolean visibleCreatMeet = false,visibleMyTeam = false;
+    private CardView card_no_meet;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -278,13 +280,14 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
 
     public void setMatrimonyMeets(List<MatrimonyMeet> data, String earliestMeetId) {
         matrimonyMeetList.clear();
-        if (data.size() > 0) {
+        if (data!= null && data.size() > 0) {
             matrimonyMeetList.addAll(data);
             setupViewPager(earliestMeetId);
-            //setCurrentMeetData(0);
         } else {
-//            rl_meetLayout.setVisibility(View.GONE);
-//            rlNoMeet.setVisibility(View.VISIBLE);
+            ly_upcoming_meets = view.findViewById(R.id.ly_upcoming_meets);
+            ly_upcoming_meets.setVisibility(View.GONE);
+            card_no_meet = view.findViewById(R.id.card_no_meet);
+            card_no_meet.setVisibility(View.VISIBLE);
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), "No Meet available at your location.",
                     Snackbar.LENGTH_LONG);

@@ -28,15 +28,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="220dp" />
 
-                <TextView
-                    android:id="@+id/tv_msg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:visibility="gone" />
-
             </RelativeLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_no_meet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/dimen_10dp"
+                app:cardBackgroundColor="@color/blue_low"
+                app:cardElevation="0dp"
+                android:visibility="gone"
+                android:layout_margin="16dp">
+
+                <TextView
+                    android:id="@+id/tv_no_meet_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:gravity="center"
+                    android:drawablePadding="4dp"
+                    android:textAppearance="?textAppearanceSubtitle2"
+                    android:text="No meets available."
+                    app:drawableTopCompat="@drawable/ic_group_24px"
+                    app:drawableTint="@color/colorPrimary" />
+            </com.google.android.material.card.MaterialCardView>
 
             <!--new user -->
             <RelativeLayout
