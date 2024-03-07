@@ -88,12 +88,12 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
             edtMeetRegEndDate, edtRegAmt, etEducation, etMaritalStatus, etPaymentInfo, etNote;
     private TextInputLayout lyRegAmt, lyPaymentInfo;
     private RangeSlider rangeView;
-    private RadioGroup rgPaidFree, rgOnlinePayment;
-    private RadioButton rbPaid, rbFree, rbOnlineYes, rbOnlineNo;
+    private RadioGroup rgPromotional, rgPaidFree, rgOnlinePayment;
+    private RadioButton rbPromoYes, rbPromoNo, rbPaid, rbFree, rbOnlineYes, rbOnlineNo;
     private ProgressBar progressBar;
     private RelativeLayout progressBarLayout;
-    private LinearLayout lyCriteria;
-    private boolean isRegPaid, isOnlinePaymentAllowed;
+    private LinearLayout llReg, lyCriteria;
+    private boolean isMeetPromotional, isRegPaid, isOnlinePaymentAllowed;
     private int isPaidFreeRGChecked = 0, isOnlinePaymentRGChecked = 0;
     UserInfo userInfo;
     //image upload
@@ -152,8 +152,13 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
         edtMeetRegStartDate.setOnClickListener(this);
         edtMeetRegEndDate = view.findViewById(R.id.edt_meet_reg_end_date);
         edtMeetRegEndDate.setOnClickListener(this);
+        llReg = view.findViewById(R.id.ll_reg);
         lyRegAmt = view.findViewById(R.id.ly_reg_amt);
         edtRegAmt = view.findViewById(R.id.edt_reg_amt);
+        rgPromotional = view.findViewById(R.id.rg_promotional);
+        rgPromotional.setOnCheckedChangeListener(this);
+        rbPromoYes = view.findViewById(R.id.rb_promo_yes);
+        rbPromoNo = view.findViewById(R.id.rb_promo_no);
         rgPaidFree = view.findViewById(R.id.rg_paid_free);
         rgPaidFree.setOnCheckedChangeListener(this);
         rbPaid = view.findViewById(R.id.rb_paid);
@@ -492,38 +497,41 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
                     Snackbar.LENGTH_LONG);
             return false;
         }
-        if (TextUtils.isEmpty(edtMeetRegStartDate.getText().toString().trim())) {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "Please select meet registration start date.",
-                    Snackbar.LENGTH_LONG);
-            return false;
-        }
-        if (TextUtils.isEmpty(edtMeetRegEndDate.getText().toString().trim())) {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "Please select meet registration end date.",
-                    Snackbar.LENGTH_LONG);
-            return false;
-        }
-        if (isPaidFreeRGChecked == 0) {
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                            .findViewById(android.R.id.content), "Please select meet paid or free.",
-                    Snackbar.LENGTH_LONG);
-            return false;
-        }
-        if (isPaidFreeRGChecked == 2) {
-            if (TextUtils.isEmpty(edtRegAmt.getText().toString().trim())) {
+        if(!isMeetPromotional) {
+            if (TextUtils.isEmpty(edtMeetRegStartDate.getText().toString().trim())) {
                 Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "Please enter meet registration amount.",
+                                .findViewById(android.R.id.content), "Please select meet registration start date.",
                         Snackbar.LENGTH_LONG);
                 return false;
             }
-            if (isOnlinePaymentRGChecked == 0) {
+            if (TextUtils.isEmpty(edtMeetRegEndDate.getText().toString().trim())) {
                 Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
-                                .findViewById(android.R.id.content), "Please select payment through app option.",
+                                .findViewById(android.R.id.content), "Please select meet registration end date.",
                         Snackbar.LENGTH_LONG);
                 return false;
             }
+            if (isPaidFreeRGChecked == 0) {
+                Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                .findViewById(android.R.id.content), "Please select meet paid or free.",
+                        Snackbar.LENGTH_LONG);
+                return false;
+            }
+            if (isPaidFreeRGChecked == 2) {
+                if (TextUtils.isEmpty(edtRegAmt.getText().toString().trim())) {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please enter meet registration amount.",
+                            Snackbar.LENGTH_LONG);
+                    return false;
+                }
+                if (isOnlinePaymentRGChecked == 0) {
+                    Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+                                    .findViewById(android.R.id.content), "Please select payment through app option.",
+                            Snackbar.LENGTH_LONG);
+                    return false;
+                }
+            }
         }
+
 /*        if(lyCriteria.getVisibility() == View.VISIBLE){
         if (TextUtils.isEmpty(tvMinAge.getText().toString())) {
             Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
@@ -553,6 +561,7 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     private void setMeetData() {
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setTitle(edtMeetName.getText().toString());
         ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetType(selectedMeetType);
+        ((CreateMatrimonyMeetActivity) getActivity()).getMatrimonyMeet().setMeetPromotional(isMeetPromotional);
 
         MeetLocation location = new MeetLocation();
         location.setCountry(selectedCountryId);
@@ -661,6 +670,14 @@ public class CreateMeetFirstFragment extends Fragment implements View.OnClickLis
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
         switch (checkedId) {
+            case R.id.rb_promo_yes:
+                isMeetPromotional = true;
+                llReg.setVisibility(View.GONE);
+                break;
+            case R.id.rb_promo_no:
+                isMeetPromotional = false;
+                llReg.setVisibility(View.VISIBLE);
+                break;
             case R.id.rb_free:
                 isRegPaid = false;
                 isPaidFreeRGChecked = 1;

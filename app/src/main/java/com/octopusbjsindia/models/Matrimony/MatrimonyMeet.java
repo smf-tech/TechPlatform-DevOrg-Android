@@ -17,6 +17,9 @@ public class MatrimonyMeet implements Serializable {
     @SerializedName("meetType")
     @Expose
     private String meetType;
+    @SerializedName("isMeetPromotional")
+    @Expose
+    private Boolean isMeetPromotional = false;
     @SerializedName("location")
     @Expose
     private MeetLocation location;
@@ -106,6 +109,14 @@ public class MatrimonyMeet implements Serializable {
 
     public void setMeetType(String meetType) {
         this.meetType = meetType;
+    }
+
+    public Boolean getMeetPromotional() {
+        return isMeetPromotional;
+    }
+
+    public void setMeetPromotional(Boolean meetPromotional) {
+        isMeetPromotional = meetPromotional;
     }
 
     public MeetLocation getLocation() {

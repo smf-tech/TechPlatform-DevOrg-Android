@@ -19,6 +19,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -80,6 +82,8 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
     private int currentPosition;
     private static MatrimonyMeetDetailFragment instance = null;
     private RelativeLayout rlNoMeet, rl_meetLayout;
+    private LinearLayout buttonLay, llReg;
+    private CardView cvAnalysis;
     private final String TAG = this.getClass().getSimpleName();
     private Activity activity;
     private PopupMenu popup;
@@ -154,8 +158,10 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
         btnRegisterProfile = view.findViewById(R.id.btn_register_profile);
         btnViewProfiles.setOnClickListener(this);
         btnRegisterProfile.setOnClickListener(this);
-
+        buttonLay = view.findViewById(R.id.button_lay);
+        llReg = view.findViewById(R.id.ll_reg);
         rlNoMeet = view.findViewById(R.id.rl_no_meet);
+        cvAnalysis = view.findViewById(R.id.cv_analysis);
         rl_meetLayout = view.findViewById(R.id.rl_meetLayout);
         meetViewPager = view.findViewById(R.id.meet_view_pager);
         // Disable clip to padding
@@ -216,8 +222,13 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
                 popup.show();
             }
         });
+
+        if (meetData.getMeetPromotional()) {
+            buttonLay.setVisibility(View.GONE);
+            llReg.setVisibility(View.GONE);
+            cvAnalysis.setVisibility(View.GONE);
+        }
         setCurrentMeetData();
-//        getMeetsCall();
     }
 
     @Override
