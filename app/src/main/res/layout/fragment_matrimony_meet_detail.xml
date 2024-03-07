@@ -162,7 +162,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="12dp"
                     android:layout_marginTop="12dp"
-
                     app:cardCornerRadius="@dimen/dimen_10dp">
 
                     <LinearLayout
@@ -323,6 +322,11 @@
                             android:layout_marginTop="@dimen/dimen_05dp"
                             android:orientation="horizontal" />
 
+                        <LinearLayout
+                            android:id="@+id/ll_reg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -339,7 +343,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="32dp"
                             android:fontFamily="@font/opensans_semibold"
-                            android:textColor="?android:textColorPrimary" />
+                            android:textColor="?android:textColorPrimary"/>
 
                         <TextView
                             android:id="@+id/tv_reg_free"
@@ -396,6 +400,7 @@
                             android:drawablePadding="8dp"
                             android:fontFamily="@font/opensans_semibold"
                             android:visibility="gone" />
+                        </LinearLayout>
 
                         <TextView
                             android:id="@+id/tv_meet_criteria_label"
@@ -505,6 +510,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_analysis"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="12dp"
@@ -518,8 +524,6 @@
                         android:layout_height="wrap_content"
                         android:paddingVertical="16dp"
                         android:clipToPadding="false"/>
-
-                    <!--</LinearLayout>-->
 
                 </androidx.cardview.widget.CardView>
 
