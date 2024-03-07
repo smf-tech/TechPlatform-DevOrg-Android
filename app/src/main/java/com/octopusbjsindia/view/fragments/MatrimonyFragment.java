@@ -288,9 +288,9 @@ public class MatrimonyFragment extends Fragment implements APIDataListener, View
             ly_upcoming_meets.setVisibility(View.GONE);
             card_no_meet = view.findViewById(R.id.card_no_meet);
             card_no_meet.setVisibility(View.VISIBLE);
-            Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
+            /*Util.snackBarToShowMsg(getActivity().getWindow().getDecorView()
                             .findViewById(android.R.id.content), "No Meet available at your location.",
-                    Snackbar.LENGTH_LONG);
+                    Snackbar.LENGTH_LONG);*/
         }
     }
 

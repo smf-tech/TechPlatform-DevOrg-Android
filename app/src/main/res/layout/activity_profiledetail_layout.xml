@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 <LinearLayout
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -347,7 +348,10 @@
                             android:id="@+id/tv_personal_details_lebal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/dimen_10dp"
+                            android:layout_marginStart="@dimen/dimen_10dp"
+                            android:layout_marginTop="@dimen/dimen_10dp"
+                            android:layout_marginEnd="@dimen/dimen_10dp"
+                            android:layout_marginBottom="@dimen/dimen_10dp"
                             android:text="Personal Details" />
 
                         <ImageView
@@ -366,7 +370,8 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/tv_personal_details_lebal"
                             android:layout_margin="@dimen/dimen_05dp"
-                            android:visibility="gone">
+                            android:visibility="gone"
+                            tools:visibility="visible">
 
                             <View
                                 android:id="@+id/line1"
@@ -824,8 +829,6 @@
                                 android:layout_below="@+id/ly_smoke_drink"
                                 android:orientation="horizontal"
                                 android:weightSum="2">
-
-
                                 <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -843,6 +846,25 @@
                                         style="@style/StyleTextViewValue"
                                         android:layout_below="@+id/tv_disability_lable"
                                         android:text="No" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dimen_05dp"
+                                    android:layout_marginEnd="@dimen/dimen_05dp"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/tv_profile_for_lable"
+                                        style="@style/StyleTextViewLable"
+                                        android:text="Profile created for" />
+
+                                    <TextView
+                                        android:id="@+id/tv_profile_for"
+                                        style="@style/StyleTextViewValue"
+                                        android:layout_below="@+id/tv_profile_for_lable"
+                                        android:text="-" />
                                 </RelativeLayout>
                             </LinearLayout>
 

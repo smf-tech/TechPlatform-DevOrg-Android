@@ -6,7 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class Personal_details implements Serializable {
-
+    @SerializedName("profile_for")
+    @Expose
+    private String profileFor;
     @SerializedName("first_name")
     @Expose
     private String first_name;
@@ -92,6 +94,14 @@ public class Personal_details implements Serializable {
 
     public void setFirst_name(String first_name) {
         this.first_name = first_name;
+    }
+
+    public String getProfileFor() {
+        return profileFor;
+    }
+
+    public void setProfileFor(String profileFor) {
+        this.profileFor = profileFor;
     }
 
     public String getMiddle_name() {
