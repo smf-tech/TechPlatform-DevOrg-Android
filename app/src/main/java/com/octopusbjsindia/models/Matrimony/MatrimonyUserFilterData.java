@@ -11,6 +11,7 @@ public class MatrimonyUserFilterData {
     private String age_ranges;
     private String gender;
     private String user_sect;
+    private String height;
     private String qualification_degrees;
     private String education_level;
     private String marital_status;
@@ -48,6 +49,14 @@ public class MatrimonyUserFilterData {
 
     public void setUser_meet_status(String user_meet_status) {
         this.meet_status = user_meet_status;
+    }
+
+    public String getHeight_ranges() {
+        return height;
+    }
+
+    public void setHeight_ranges(String height) {
+        this.height = height;
     }
 
     public String getUser_verification_status() {

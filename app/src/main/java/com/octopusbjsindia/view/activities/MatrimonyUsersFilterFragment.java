@@ -35,6 +35,8 @@ import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Urls;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.CustomBottomSheetDialogFragment;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -51,9 +53,9 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
     private TextView txtMinAge, txtMaxAge;
     private MatrimonyUsersFilterActivityPresenter presenter;
     public List<MatrimonyMasterRequestModel.DataList.Master_data> masterDataArrayList = new ArrayList<>();
-    private EditText etMobile, etUniqueId, etName, etMeetStatus, etVerificationStatus, etCountry, etState, etGender, etSect, etQualification,et_education_level, etMaritalStatus, etPaidOrFree;
+    private EditText etMobile, etUniqueId, etName, etMinHeight, etMaxHeight, etMeetStatus, etVerificationStatus, etCountry, etState, etGender, etSect, etQualification, et_education_level, etMaritalStatus, etPaidOrFree;
     private String selectedMeetStatus, selectedVerificationStatus, selectedCountry, selectedState, selectedQualification, selectedGender, selectedSect,
-            selectedMaritalStatus, selectedPaidOrFree;
+            selectedMaritalStatus, selectedPaidOrFree, selectedMinHeight, selectedMaxHeight;
     private RangeSlider rangeView;
     private MatrimonyUserFilterData matrimonyUserFilterData;
 
@@ -81,6 +83,8 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
         pbLayout = view.findViewById(R.id.progress_bar);
         txtMinAge = view.findViewById(R.id.txt_min_age);
         txtMaxAge = view.findViewById(R.id.txt_max_age);
+        etMinHeight = view.findViewById(R.id.et_min_height);
+        etMaxHeight = view.findViewById(R.id.et_max_height);
         toolbar_title = view.findViewById(R.id.toolbar_title1);
         toolbar_title.setText("Apply Filter");
         toolbar_back_action = view.findViewById(R.id.iv_toobar_back);
@@ -123,6 +127,8 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
         etCountry.setOnClickListener(this);
         etGender.setOnClickListener(this);
         etSect.setOnClickListener(this);
+        etMinHeight.setOnClickListener(this);
+        etMaxHeight.setOnClickListener(this);
         et_education_level.setOnClickListener(this);
         etQualification.setOnClickListener(this);
         etMaritalStatus.setOnClickListener(this);
@@ -240,9 +246,17 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
             Float start = Float.parseFloat(min);
             Float end = Float.parseFloat(max);
 
-            rangeView.setValues(start,end);
+            rangeView.setValues(start, end);
             txtMinAge.setText(min);
             txtMaxAge.setText(max);
+        }
+
+        if (matrimonyUserFilterData.getHeight_ranges() != null) {
+            String[] values = matrimonyUserFilterData.getHeight_ranges().split(",");
+            selectedMinHeight = values[0];
+            selectedMaxHeight = values[1];
+            etMinHeight.setText(selectedMinHeight);
+            etMaxHeight.setText(selectedMaxHeight);
         }
     }
 
@@ -313,6 +327,18 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                     }
                     ((MatrimonyProfileListActivity) getActivity()).setSectList(tempSectList);
                     break;
+                case "height":
+                    ((MatrimonyProfileListActivity) getActivity()).getMinHeightList().clear();
+                    ((MatrimonyProfileListActivity) getActivity()).getMaxHeightList().clear();
+                    ArrayList<CustomSpinnerObject> tempHeightList = new ArrayList<>();
+                    for (String height : masterData.getValues()) {
+                        CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                        customSpinnerObject.setName(height);
+                        tempHeightList.add(customSpinnerObject);
+                    }
+                    ((MatrimonyProfileListActivity) getActivity()).getMinHeightList().addAll(tempHeightList);
+                    ((MatrimonyProfileListActivity) getActivity()).getMaxHeightList().addAll(tempHeightList);
+                    break;
                 case "paid_free":
                     ((MatrimonyProfileListActivity) getActivity()).getPaidOrFreeList().clear();
                     ArrayList<CustomSpinnerObject> tempPaidFreeList = new ArrayList<>();
@@ -363,18 +389,19 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
             }
         }
     }
+
     public void updateQualificationDegree() {
         for (MatrimonyMasterRequestModel.DataList.Master_data masterData : ((MatrimonyProfileListActivity) getActivity()).getMasterDataArrayList()) {
-            if (et_education_level.getText().toString().equalsIgnoreCase(masterData.getKey())){
-                    ((MatrimonyProfileListActivity) getActivity()).getQualificationList().clear();
-                    ArrayList<CustomSpinnerObject> tempQualificationList = new ArrayList<>();
-                    for (String qualification : masterData.getValues()) {
-                        CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-                        customSpinnerObject.setName(qualification);
-                        tempQualificationList.add(customSpinnerObject);
-                    }
-                    ((MatrimonyProfileListActivity) getActivity()).setQualificationList(tempQualificationList);
-                    break;
+            if (et_education_level.getText().toString().equalsIgnoreCase(masterData.getKey())) {
+                ((MatrimonyProfileListActivity) getActivity()).getQualificationList().clear();
+                ArrayList<CustomSpinnerObject> tempQualificationList = new ArrayList<>();
+                for (String qualification : masterData.getValues()) {
+                    CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                    customSpinnerObject.setName(qualification);
+                    tempQualificationList.add(customSpinnerObject);
+                }
+                ((MatrimonyProfileListActivity) getActivity()).setQualificationList(tempQualificationList);
+                break;
             }
         }
     }
@@ -456,12 +483,12 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
             case R.id.et_qualification:
                 if (!TextUtils.isEmpty(et_education_level.getText())) {
                     updateQualificationDegree();
-                CustomSpinnerDialogClass csdEducation = new CustomSpinnerDialogClass(getActivity(), this,
-                        "Select Qualification Degree", ((MatrimonyProfileListActivity) getActivity()).getQualificationList(), true);
-                csdEducation.show();
-                csdEducation.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-                }else {
+                    CustomSpinnerDialogClass csdEducation = new CustomSpinnerDialogClass(getActivity(), this,
+                            "Select Qualification Degree", ((MatrimonyProfileListActivity) getActivity()).getQualificationList(), true);
+                    csdEducation.show();
+                    csdEducation.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                } else {
                     Toast.makeText(getActivity(), "Please Select Education level first", Toast.LENGTH_LONG).show();
                 }
                 break;
@@ -478,6 +505,25 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 csdSect.show();
                 csdSect.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT);
+                break;
+            case R.id.et_min_height:
+                CustomSpinnerDialogClass csdMinHeight = new CustomSpinnerDialogClass(getActivity(), this,
+                        "Select Minimum Height", ((MatrimonyProfileListActivity) getActivity()).getMinHeightList(), false);
+                csdMinHeight.show();
+                csdMinHeight.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+
+                break;
+            case R.id.et_max_height:
+                if (selectedMinHeight != null && selectedMinHeight != "") {
+                    CustomSpinnerDialogClass csdMaxHeight = new CustomSpinnerDialogClass(getActivity(), this,
+                            "Select Maximum Height", ((MatrimonyProfileListActivity) getActivity()).getMaxHeightList(), false);
+                    csdMaxHeight.show();
+                    csdMaxHeight.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT);
+                } else {
+                    Util.showToast(getActivity(), "Please select minimum height value.");
+                }
                 break;
             case R.id.et_paid_free:
                 CustomSpinnerDialogClass csdPaidOrFree = new CustomSpinnerDialogClass(getActivity(), this,
@@ -563,13 +609,15 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 etVerificationStatus.setText("");
                 etCountry.setText("");
                 etState.setText("");
+                etMinHeight.setText("");
+                etMaxHeight.setText("");
                 etQualification.setText("");
                 etGender.setText("");
                 etSect.setText("");
                 etPaidOrFree.setText("");
                 etMaritalStatus.setText("");
 
-                rangeView.setValues(18f,(Float.parseFloat(((MatrimonyProfileListActivity) getActivity()).getMaxAge())));
+                rangeView.setValues(18f, (Float.parseFloat(((MatrimonyProfileListActivity) getActivity()).getMaxAge())));
                 txtMinAge.setText(String.valueOf(((MatrimonyProfileListActivity) getActivity()).getMinAge()));
                 txtMaxAge.setText(String.valueOf(((MatrimonyProfileListActivity) getActivity()).getMaxAge()));
 
@@ -613,6 +661,20 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 for (CustomSpinnerObject obj : ((MatrimonyProfileListActivity) getActivity()).getQualificationList()) {
                     if (obj.isSelected()) {
                         obj.setSelected(false);
+                    }
+                }
+
+                for (CustomSpinnerObject obj : ((MatrimonyProfileListActivity) getActivity()).getMinHeightList()) {
+                    if (obj.isSelected()) {
+                        obj.setSelected(false);
+                        break;
+                    }
+                }
+
+                for (CustomSpinnerObject obj : ((MatrimonyProfileListActivity) getActivity()).getMaxHeightList()) {
+                    if (obj.isSelected()) {
+                        obj.setSelected(false);
+                        break;
                     }
                 }
 
@@ -760,6 +822,47 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 }
                 etSect.setText(selectedSect);
                 matrimonyUserFilterData.setUser_sect(selectedSect);
+                break;
+            case "Select Minimum Height":
+                selectedMinHeight = null;
+                for (CustomSpinnerObject obj : ((MatrimonyProfileListActivity) requireActivity()).getMinHeightList()) {
+                    if (obj.isSelected()) {
+                        selectedMinHeight = obj.getName();
+                        break;
+                    }
+                }
+                etMinHeight.setText(selectedMinHeight);
+                if (selectedMaxHeight != null && !TextUtils.isEmpty(selectedMaxHeight) && selectedMinHeight != null) {
+                    if (Float.parseFloat(selectedMinHeight) <= Float.parseFloat(selectedMaxHeight)) {
+                        matrimonyUserFilterData.setHeight_ranges(selectedMinHeight + "," + selectedMaxHeight);
+                    } else {
+                        selectedMaxHeight = null;
+                        etMaxHeight.setText("");
+                        matrimonyUserFilterData.setHeight_ranges(null);
+                        Util.showToast(getActivity(), "Please select maximum height.");
+                    }
+                }
+                break;
+            case "Select Maximum Height":
+                selectedMaxHeight = null;
+                for (CustomSpinnerObject obj : ((MatrimonyProfileListActivity) requireActivity()).getMaxHeightList()) {
+                    if (obj.isSelected()) {
+                        selectedMaxHeight = obj.getName();
+                        break;
+                    }
+                }
+                etMaxHeight.setText(selectedMaxHeight);
+                if (selectedMinHeight != null && selectedMaxHeight != null) {
+                    if (Float.parseFloat(selectedMaxHeight) >= Float.parseFloat(selectedMinHeight)) {
+                        matrimonyUserFilterData.setHeight_ranges(selectedMinHeight + "," + selectedMaxHeight);
+                    } else {
+                        selectedMaxHeight = null;
+                        etMaxHeight.setText("");
+                        matrimonyUserFilterData.setHeight_ranges(null);
+                        Util.showToast(getActivity(), "Selected maximum height should be greater than selected minimum height.");
+                    }
+                }
+
                 break;
             case "Select Paid/Free":
                 selectedPaidOrFree = null;

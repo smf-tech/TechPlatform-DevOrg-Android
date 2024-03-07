@@ -20,6 +20,7 @@ import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.view.adapters.MatrimonyProfileListRecyclerAdapter;
 import com.octopusbjsindia.view.fragments.MatrimonyProfileListFragment;
 import com.octopusbjsindia.widgets.SingleSelectBottomSheet;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,8 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
     private ArrayList<CustomSpinnerObject> educationList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> genderList = new ArrayList<>();
     private ArrayList<CustomSpinnerObject> sectList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> MinHeightList = new ArrayList<>();
+    private ArrayList<CustomSpinnerObject> MaxHeightList = new ArrayList<>();
 
     public ArrayList<CustomSpinnerObject> getPaidOrFreeList() {
         return paidOrFreeList;
@@ -221,6 +224,21 @@ public class MatrimonyProfileListActivity extends BaseActivity implements View.O
         this.sectList = sectList;
     }
 
+    public ArrayList<CustomSpinnerObject> getMinHeightList() {
+        return MinHeightList;
+    }
+
+    public void setMinHeightList(ArrayList<CustomSpinnerObject> minHeightList) {
+        MinHeightList = minHeightList;
+    }
+
+    public ArrayList<CustomSpinnerObject> getMaxHeightList() {
+        return MaxHeightList;
+    }
+
+    public void setMaxHeightList(ArrayList<CustomSpinnerObject> maxHeightList) {
+        MaxHeightList = maxHeightList;
+    }
 
     public ArrayList<CustomSpinnerObject> getMaritalStatusList() {
         return maritalStatusList;

@@ -234,11 +234,59 @@
 
                 </RelativeLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:textColor="?android:textColorPrimary"
+                    android:text="Select height range" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
+                        app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
+                        app:endIconMode="custom">
+
+                        <EditText
+                            android:id="@+id/et_min_height"
+                            style="@style/RegistrationEditTextLayout"
+                            android:focusable="false"
+                            android:hint="Minimum Height"
+                            android:longClickable="false" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/textinputstyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_weight="1"
+                        app:endIconDrawable="@drawable/ic_arrow_drop_down_24"
+                        app:endIconMode="custom">
+
+                        <EditText
+                            android:id="@+id/et_max_height"
+                            style="@style/RegistrationEditTextLayout"
+                            android:focusable="false"
+                            android:hint="Maximum Height"
+                            android:longClickable="false" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/textinputstyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_10dp">
+                    android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/et_gender"
