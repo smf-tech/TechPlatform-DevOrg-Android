@@ -387,4 +387,10 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="ThemeOverlay.Catalog.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+      <!--  <item name="buttonBarPositiveButtonStyle">@style/Widget.Catalog.Button.TextButton.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.Catalog.Button.TextButton.Dialog</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.Catalog.Button.TextButton.Dialog</item>-->
+    </style>
+
 </resources>

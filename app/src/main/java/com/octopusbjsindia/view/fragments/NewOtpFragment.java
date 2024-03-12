@@ -254,6 +254,12 @@ public class NewOtpFragment extends Fragment implements View.OnClickListener, Pl
         }
     }
 
+    public static String getDeviceId(Context context) {
+        @SuppressLint("HardwareIds")
+        String id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        return id;
+    }
+
     private void setOtp(final String msg) {
         try {
             char[] otpChars = msg.toCharArray();

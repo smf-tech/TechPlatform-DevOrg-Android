@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -59,6 +60,8 @@ import com.octopusbjsindia.models.user.RoleData;
 import com.octopusbjsindia.models.user.UserInfo;
 import com.octopusbjsindia.presenter.EditProfileActivityPresenter;
 import com.octopusbjsindia.utility.Constants;
+import com.octopusbjsindia.utility.MonthYearPickerDialog;
+import com.octopusbjsindia.utility.MonthYearPickerDialogKt;
 import com.octopusbjsindia.utility.Permissions;
 import com.octopusbjsindia.utility.Util;
 import com.octopusbjsindia.view.adapters.DropDownSelectionAdapter;
@@ -647,7 +650,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
                 onBackPressed();
                 break;
             case R.id.et_user_birth_date:
-                showDateDialog(EditProfileActivity.this, findViewById(R.id.et_user_birth_date));
+                showDateDialog(findViewById(R.id.et_user_birth_date));
                 break;
             case R.id.user_profile_pic:
                 onAddImageClick();
@@ -1339,7 +1342,7 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
         toolbar_title.setText(title);
     }
 
-    private void showDateDialog(Context context, final EditText editText) {
+    /*private void showDateDialog(Context context, final EditText editText) {
         final Calendar c = Calendar.getInstance();
         final int mYear = c.get(Calendar.YEAR);
         final int mMonth = c.get(Calendar.MONTH);
@@ -1352,6 +1355,23 @@ public class EditProfileActivity extends BaseActivity implements ProfileTaskList
 
         dateDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         dateDialog.show();
+    }*/
+
+    private void showDateDialog(final EditText editText) {
+        MonthYearPickerDialog dateDialog = new MonthYearPickerDialog();
+        if (!TextUtils.isEmpty(editText.getText().toString())){
+            String currentSelectedDate = editText.getText().toString().trim();
+            String[] arrOfCurrentSelectedDate = currentSelectedDate.split("-");
+            int year = Integer.parseInt(arrOfCurrentSelectedDate[0]);
+            int month = Integer.parseInt(arrOfCurrentSelectedDate[1])-1;
+            int day = Integer.parseInt(arrOfCurrentSelectedDate[2]);
+            dateDialog.setDefaultDate(year,month,day);
+        }
+        dateDialog.setListener((datePicker, year, month, day) -> {
+            String date = year + "-" + Util.getTwoDigit(month + 1) + "-" + Util.getTwoDigit(day);
+            editText.setText(date);
+        });
+        dateDialog.show(getSupportFragmentManager(),"CustomDatePicker");
     }
 
     private void onAddImageClick() {
