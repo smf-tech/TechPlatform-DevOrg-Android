@@ -450,7 +450,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
                 Gson configDataGson = new Gson();
                 AppConfigResponse appConfigData = configDataGson.fromJson(configDataString, AppConfigResponse.class);*/
 
-                String message = "You have been invited to participate in the matrimonial meet-up organised by BJS.Click on the URL to join " + "\n" +
+                String message = "You have been invited to participate in the matrimonial meet-up organised by BJS. Click on the URL to join " + "\n" +
                         meetData.getMeetReferralLink();
 
                 Intent share = new Intent(Intent.ACTION_SEND);
