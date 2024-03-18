@@ -1,5 +1,8 @@
 package com.octopusbjsindia.utility;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Constants {
     public static boolean GET_MODELS = false;
     public static final String MARK_ATTENDANCE = "Attendance";
@@ -584,5 +587,47 @@ public class Constants {
     public static class VideoTutorialModule {
         public static final String VIDEO_SEEN = "video_seen";
         public static final String VIDEO_NOT_SEEN = "video_not_seen";
+    }
+
+    public static class HeightMasterData {
+        public static Map<String, String> heightMap = new HashMap<String, String>() {{
+            put("4", "4'");
+            put("4.01", "4' 1\"");
+            put("4.02", "4' 2\"");
+            put("4.03", "4' 3\"");
+            put("4.04", "4' 4\"");
+            put("4.05", "4' 5\"");
+            put("4.06", "4' 6\"");
+            put("4.07", "4' 7\"");
+            put("4.08", "4' 8\"");
+            put("4.09", "4' 9\"");
+            put("4.10", "4' 10\"");
+            put("4.11", "4' 11\"");
+            put("5", "5'");
+            put("5.01", "5' 1\"");
+            put("5.02", "5' 2\"");
+            put("5.03", "5' 3\"");
+            put("5.04", "5' 4\"");
+            put("5.05", "5' 5\"");
+            put("5.06", "5' 6\"");
+            put("5.07", "5' 7\"");
+            put("5.08", "5' 8\"");
+            put("5.09", "5' 9\"");
+            put("5.10", "5' 10\"");
+            put("5.11", "5' 11\"");
+            put("6", "6'");
+            put("6.01", "6' 1\"");
+            put("6.02", "6' 2\"");
+            put("6.03", "6' 3\"");
+            put("6.04", "6' 4\"");
+            put("6.05", "6' 5\"");
+            put("6.06", "6' 6\"");
+            put("6.07", "6' 7\"");
+            put("6.08", "6' 8\"");
+            put("6.09", "6' 9\"");
+            put("6.10", "6' 10\"");
+            put("6.11", "6' 11\"");
+            put("7", "7'");
+        }};
     }
 }

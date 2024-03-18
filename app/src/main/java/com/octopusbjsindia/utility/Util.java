@@ -2262,4 +2262,10 @@ public class Util {
         } else tv.setText("-");
     }
 
+    public static String getFormattedHeightValue(String height) {
+        if (Constants.HeightMasterData.heightMap.containsKey(height)) {
+            return Constants.HeightMasterData.heightMap.get(height);
+        } else return height;
+    }
+
 }

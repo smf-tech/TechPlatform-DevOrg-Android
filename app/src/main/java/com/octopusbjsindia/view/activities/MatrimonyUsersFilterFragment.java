@@ -55,7 +55,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
     public List<MatrimonyMasterRequestModel.DataList.Master_data> masterDataArrayList = new ArrayList<>();
     private EditText etMobile, etUniqueId, etName, etMinHeight, etMaxHeight, etMeetStatus, etVerificationStatus, etCountry, etState, etGender, etSect, etQualification, et_education_level, etMaritalStatus, etPaidOrFree;
     private String selectedMeetStatus, selectedVerificationStatus, selectedCountry, selectedState, selectedQualification, selectedGender, selectedSect,
-            selectedMaritalStatus, selectedPaidOrFree, selectedMinHeight, selectedMaxHeight;
+            selectedMaritalStatus, selectedPaidOrFree, selectedMinHeight, selectedMinHeightDisplay, selectedMaxHeight, selectedMaxHeightDisplay;
     private RangeSlider rangeView;
     private MatrimonyUserFilterData matrimonyUserFilterData;
 
@@ -254,9 +254,11 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
         if (matrimonyUserFilterData.getHeight_ranges() != null) {
             String[] values = matrimonyUserFilterData.getHeight_ranges().split(",");
             selectedMinHeight = values[0];
+            selectedMinHeightDisplay = Util.getFormattedHeightValue(values[0]);
             selectedMaxHeight = values[1];
-            etMinHeight.setText(selectedMinHeight);
-            etMaxHeight.setText(selectedMaxHeight);
+            selectedMaxHeightDisplay = Util.getFormattedHeightValue(values[1]);
+            etMinHeight.setText(selectedMinHeightDisplay);
+            etMaxHeight.setText(selectedMaxHeightDisplay);
         }
     }
 
@@ -333,7 +335,8 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                     ArrayList<CustomSpinnerObject> tempHeightList = new ArrayList<>();
                     for (String height : masterData.getValues()) {
                         CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
-                        customSpinnerObject.setName(height);
+                        customSpinnerObject.set_id(height);
+                        customSpinnerObject.setName(Util.getFormattedHeightValue(height));
                         tempHeightList.add(customSpinnerObject);
                     }
                     ((MatrimonyProfileListActivity) getActivity()).getMinHeightList().addAll(tempHeightList);
@@ -389,6 +392,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
             }
         }
     }
+
 
     public void updateQualificationDegree() {
         for (MatrimonyMasterRequestModel.DataList.Master_data masterData : ((MatrimonyProfileListActivity) getActivity()).getMasterDataArrayList()) {
@@ -543,6 +547,12 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 ((MatrimonyProfileListActivity) getActivity()).clearFilterCandidtaesData();
                 ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(false);
                 //matrimonyUserFilterData = new MatrimonyUserFilterData();
+                /*if (selectedMinHeight != null && selectedMinHeight != "") {
+                    if (selectedMaxHeight == null || selectedMaxHeight.isEmpty()) {
+                        Util.showToast("If you have to apply height filter, select both minimum and maximum height values.", this);
+                        return;
+                    }
+                }*/
                 if (etMobile.getText().toString().trim().length() > 0) {
                     if (etMobile.getText().toString().trim().length() == 10) {
                         matrimonyUserFilterData.setMobile_number(etMobile.getText().toString().trim());
@@ -553,48 +563,50 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                     }
                 } else {
                     matrimonyUserFilterData.setMobile_number(null);
-                    if (etUniqueId.getText().toString().trim().length() > 0) {
-                        matrimonyUserFilterData.setUniqueId(etUniqueId.getText().toString().trim());
-                        ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
-                    } else {
-                        matrimonyUserFilterData.setUser_name(null);
-                    }
-                    if (etName.getText().toString().trim().length() > 0) {
-                        matrimonyUserFilterData.setUser_name(etName.getText().toString().trim());
-                        ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
-                    } else {
-                        matrimonyUserFilterData.setUser_name(null);
-                    }
-                    if (etMeetStatus.getText().toString().trim().length() > 0) {
-                        matrimonyUserFilterData.setUser_meet_status(etMeetStatus.getText().toString().trim());
-                        ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
-                    } else {
-                        matrimonyUserFilterData.setUser_meet_status(null);
-                    }
-                    if (Integer.parseInt(txtMinAge.getText().toString()) > Integer.parseInt(((MatrimonyProfileListActivity)
-                            getActivity()).getMinAge()) || Integer.parseInt(txtMaxAge.getText().toString()) <
-                            Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMaxAge())) {
-                        matrimonyUserFilterData.setAge_ranges(txtMinAge.
-                                getText().toString() + "," + txtMaxAge.getText().toString());
-                        ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
-                    } else {
-                        matrimonyUserFilterData.setAge_ranges(null);
-                    }
-                    if (matrimonyUserFilterData.getUser_verification_status() != null
-                            || matrimonyUserFilterData.getUser_meet_status() != null
-                            || matrimonyUserFilterData.getCountry() != null
-                            || matrimonyUserFilterData.getState_names() != null
-                            || matrimonyUserFilterData.getUser_sect() != null
-                            || matrimonyUserFilterData.getQualification_degrees() != null
-                            || matrimonyUserFilterData.getGender() != null
-                            || matrimonyUserFilterData.getMarital_status() != null
-                            || matrimonyUserFilterData.getUser_paid_free() != null) {
-                        ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
-                    }
+                }
+                if (etUniqueId.getText().toString().trim().length() > 0) {
+                    matrimonyUserFilterData.setUniqueId(etUniqueId.getText().toString().trim());
+                    ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
+                } else {
+                    matrimonyUserFilterData.setUser_name(null);
+                }
+                if (etName.getText().toString().trim().length() > 0) {
+                    matrimonyUserFilterData.setUser_name(etName.getText().toString().trim());
+                    ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
+                } else {
+                    matrimonyUserFilterData.setUser_name(null);
+                }
+                if (etMeetStatus.getText().toString().trim().length() > 0) {
+                    matrimonyUserFilterData.setUser_meet_status(etMeetStatus.getText().toString().trim());
+                    ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
+                } else {
+                    matrimonyUserFilterData.setUser_meet_status(null);
+                }
+                if (Integer.parseInt(txtMinAge.getText().toString()) > Integer.parseInt(((MatrimonyProfileListActivity)
+                        getActivity()).getMinAge()) || Integer.parseInt(txtMaxAge.getText().toString()) <
+                        Integer.parseInt(((MatrimonyProfileListActivity) getActivity()).getMaxAge())) {
+                    matrimonyUserFilterData.setAge_ranges(txtMinAge.
+                            getText().toString() + "," + txtMaxAge.getText().toString());
+                    ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
+                } else {
+                    matrimonyUserFilterData.setAge_ranges(null);
+                }
+                if (matrimonyUserFilterData.getUser_verification_status() != null
+                        || matrimonyUserFilterData.getUser_meet_status() != null
+                        || matrimonyUserFilterData.getCountry() != null
+                        || matrimonyUserFilterData.getState_names() != null
+                        || matrimonyUserFilterData.getUser_sect() != null
+                        || matrimonyUserFilterData.getQualification_degrees() != null
+                        || matrimonyUserFilterData.getHeight_ranges() != null
+                        || matrimonyUserFilterData.getGender() != null
+                        || matrimonyUserFilterData.getMarital_status() != null
+                        || matrimonyUserFilterData.getUser_paid_free() != null) {
+                    ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(true);
                 }
                 ((MatrimonyProfileListActivity) getActivity()).setMatrimonyUserFilterData(matrimonyUserFilterData);
                 ((MatrimonyProfileListActivity) getActivity()).openFragment("profile_list_fragment");
                 break;
+
             case R.id.iv_toobar_back:
                 ((MatrimonyProfileListActivity) getActivity()).handleBackPressed(this);
                 break;
@@ -633,6 +645,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 matrimonyUserFilterData.setUser_paid_free(null);
                 matrimonyUserFilterData.setMarital_status(null);
                 matrimonyUserFilterData.setAge_ranges(null);
+                matrimonyUserFilterData.setHeight_ranges(null);
 
                 for (CustomSpinnerObject obj : ((MatrimonyProfileListActivity) getActivity()).getMeetStatusList()) {
                     if (obj.isSelected()) {
@@ -706,6 +719,7 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 ((MatrimonyProfileListActivity) getActivity()).setFilterApplied(false);
                 break;
         }
+
     }
 
     @Override
@@ -827,11 +841,12 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 selectedMinHeight = null;
                 for (CustomSpinnerObject obj : ((MatrimonyProfileListActivity) requireActivity()).getMinHeightList()) {
                     if (obj.isSelected()) {
-                        selectedMinHeight = obj.getName();
+                        selectedMinHeight = obj.get_id();
+                        selectedMinHeightDisplay = obj.getName();
                         break;
                     }
                 }
-                etMinHeight.setText(selectedMinHeight);
+                etMinHeight.setText(selectedMinHeightDisplay);
                 if (selectedMaxHeight != null && !TextUtils.isEmpty(selectedMaxHeight) && selectedMinHeight != null) {
                     if (Float.parseFloat(selectedMinHeight) <= Float.parseFloat(selectedMaxHeight)) {
                         matrimonyUserFilterData.setHeight_ranges(selectedMinHeight + "," + selectedMaxHeight);
@@ -847,11 +862,12 @@ public class MatrimonyUsersFilterFragment extends Fragment implements APIDataLis
                 selectedMaxHeight = null;
                 for (CustomSpinnerObject obj : ((MatrimonyProfileListActivity) requireActivity()).getMaxHeightList()) {
                     if (obj.isSelected()) {
-                        selectedMaxHeight = obj.getName();
+                        selectedMaxHeight = obj.get_id();
+                        selectedMaxHeightDisplay = obj.getName();
                         break;
                     }
                 }
-                etMaxHeight.setText(selectedMaxHeight);
+                etMaxHeight.setText(selectedMaxHeightDisplay);
                 if (selectedMinHeight != null && selectedMaxHeight != null) {
                     if (Float.parseFloat(selectedMaxHeight) >= Float.parseFloat(selectedMinHeight)) {
                         matrimonyUserFilterData.setHeight_ranges(selectedMinHeight + "," + selectedMaxHeight);

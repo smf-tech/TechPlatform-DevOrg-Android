@@ -26,9 +26,14 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.octopusbjsindia.R;
+import com.octopusbjsindia.listeners.CustomSpinnerListener;
+import com.octopusbjsindia.models.common.CustomSpinnerObject;
 import com.octopusbjsindia.utility.Constants;
 import com.octopusbjsindia.utility.Util;
+import com.octopusbjsindia.view.activities.MatrimonyProfileListActivity;
+import com.octopusbjsindia.view.customs.CustomSpinnerDialogClass;
 import com.octopusbjsindia.widgets.SingleSelectBottomSheet;
+import com.sagar.selectiverecycleviewinbottonsheetdialog.model.SelectionListObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,10 +41,11 @@ import java.util.Calendar;
 import java.util.Objects;
 
 import static com.octopusbjsindia.utility.Constants.DAY_MONTH_YEAR;
+import static com.octopusbjsindia.utility.ExtensionKt.getFormattedHeightValue;
 
 
 public class ProfileMatrimonyFragmentOne extends Fragment implements View.OnClickListener,
-        SingleSelectBottomSheet.MultiSpinnerListener {
+        SingleSelectBottomSheet.MultiSpinnerListener, CustomSpinnerListener {
 
     ArrayList<String> ListBloodGroup = new ArrayList<>();
     ArrayList<String> ListWeight = new ArrayList<>();
@@ -47,8 +53,10 @@ public class ProfileMatrimonyFragmentOne extends Fragment implements View.OnClic
     ArrayList<String> ListProfileFor = new ArrayList<>();
     ArrayList<String> ListDrink = new ArrayList<>();
     ArrayList<String> ListSmoke = new ArrayList<>();
-    ArrayList<String> listHeight = new ArrayList<>();
-    ArrayList<String> ListHeightTemp = new ArrayList<>();
+    //ArrayList<String> listHeight = new ArrayList<>();
+    ArrayList<CustomSpinnerObject> ListHeight = new ArrayList<>();
+
+    //ArrayList<String> ListHeightTemp = new ArrayList<>();
     ArrayList<String> listChildrenCount = new ArrayList<>();
     private View fragmentview;
     private Button btn_load_next;
@@ -64,6 +72,8 @@ public class ProfileMatrimonyFragmentOne extends Fragment implements View.OnClic
     private LinearLayout lyDivorce, lyChildren;
     private boolean alert = true;
     private TextInputLayout tilChildrenCount;
+
+    private String selectedHeight, selectedHeightDisplay;
 
     public static ProfileMatrimonyFragmentOne newInstance() {
         return new ProfileMatrimonyFragmentOne();
@@ -228,7 +238,7 @@ public class ProfileMatrimonyFragmentOne extends Fragment implements View.OnClic
         //et_marital_status.setEnabled(false);
         et_marital_status.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getPersonalDetails().getMaritalStatus());
 
-        et_height.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getPersonalDetails().getHeight());
+        et_height.setText(Util.getFormattedHeightValue(((RegistrationActivity) getActivity()).matrimonialProfile.getPersonalDetails().getHeight()));
 
         et_weight.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getPersonalDetails().getWeight());
         et_complexion.setText(((RegistrationActivity) getActivity()).matrimonialProfile.getPersonalDetails().getComplexion());
@@ -403,12 +413,34 @@ public class ProfileMatrimonyFragmentOne extends Fragment implements View.OnClic
                 }
                 break;
             case R.id.et_height:
-                for (int i = 0; i < ((RegistrationActivity) getActivity()).MasterDataArrayList.size(); i++) {
-                    if (((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("height")) {
-                        listHeight = (ArrayList<String>) ((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getValues();
-//                        ListHeightTemp = getlistHeight((ArrayList<String>) ((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getValues());
-                        showMultiSelectBottomsheet("Height (in feet)", "et_height", listHeight);
-                        break;
+                if (!ListHeight.isEmpty()) {
+                    CustomSpinnerDialogClass csdMinHeight = new CustomSpinnerDialogClass(getActivity(), this,
+                            "Height (in feet)", ListHeight, false);
+                    csdMinHeight.show();
+                    csdMinHeight.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                }else {
+                    for (int i = 0; i < ((RegistrationActivity) getActivity()).MasterDataArrayList.size(); i++) {
+                        if (((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getKey().equalsIgnoreCase("height")) {
+                            ListHeight.clear();
+                            ArrayList<CustomSpinnerObject> tempHeightList = new ArrayList<>();
+                            for (String height : ((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getValues()) {
+                                CustomSpinnerObject customSpinnerObject = new CustomSpinnerObject();
+                                customSpinnerObject.set_id(height);
+                                customSpinnerObject.setName(Util.getFormattedHeightValue(height));
+                                tempHeightList.add(customSpinnerObject);
+                            }
+                            ListHeight.addAll(tempHeightList);
+
+                            CustomSpinnerDialogClass csdMinHeight = new CustomSpinnerDialogClass(getActivity(), this,
+                                    "Height (in feet)", ListHeight, false);
+                            csdMinHeight.show();
+                            csdMinHeight.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.MATCH_PARENT);
+
+                            //listHeight = (ArrayList<String>) ((RegistrationActivity) getActivity()).MasterDataArrayList.get(i).getValues();
+                            // showMultiSelectBottomsheet("Height (in feet)", "et_height", listHeight);
+                            break;
+                        }
                     }
                 }
                 break;
@@ -458,7 +490,7 @@ public class ProfileMatrimonyFragmentOne extends Fragment implements View.OnClic
                                     etChildrenCount.getText().toString().trim());
                         }
                     }
-                    ((RegistrationActivity) getActivity()).personalDetails.setHeight(et_height.getText().toString());
+                    ((RegistrationActivity) getActivity()).personalDetails.setHeight(selectedHeight);
                     ((RegistrationActivity) getActivity()).personalDetails.setWeight(et_weight.getText().toString());
                     ((RegistrationActivity) getActivity()).personalDetails.setComplexion(et_complexion.getText().toString());
                     ((RegistrationActivity) getActivity()).personalDetails.setMatchPatrika(et_patrika_match.getText().toString().trim().equalsIgnoreCase("yes"));
@@ -518,7 +550,7 @@ public class ProfileMatrimonyFragmentOne extends Fragment implements View.OnClic
         return ageS;
     }
 
-    private ArrayList<String> getlistHeight(ArrayList<String> values) {
+   /* private ArrayList<String> getlistHeight(ArrayList<String> values) {
         ListHeightTemp.clear();
         for (int i = 0; i < values.size(); i++) {
             int cm = Integer.parseInt(values.get(i));
@@ -528,7 +560,7 @@ public class ProfileMatrimonyFragmentOne extends Fragment implements View.OnClic
             ListHeightTemp.add(feet + " feet " + inches + " inches");
         }
         return ListHeightTemp;
-    }
+    }*/
 
     public void createTempArrayList() {
         ListBloodGroup.add("A+");
@@ -629,6 +661,23 @@ public class ProfileMatrimonyFragmentOne extends Fragment implements View.OnClic
                 break;
             case "et_children_count":
                 etChildrenCount.setText(selectedValues);
+                break;
+        }
+    }
+
+    @Override
+    public void onCustomSpinnerSelection(String type) {
+        switch (type) {
+            case "Height (in feet)":
+                selectedHeight = null;
+                for (CustomSpinnerObject obj : ListHeight) {
+                    if (obj.isSelected()) {
+                        selectedHeight = obj.get_id();
+                        selectedHeightDisplay = obj.getName();
+                        break;
+                    }
+                }
+                et_height.setText(selectedHeightDisplay);
                 break;
         }
     }

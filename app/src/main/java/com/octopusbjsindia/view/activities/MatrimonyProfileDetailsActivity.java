@@ -306,7 +306,7 @@ public class MatrimonyProfileDetailsActivity extends BaseActivity implements Vie
         }
 
 
-        tv_height.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getHeight());
+        tv_height.setText(Util.getFormattedHeightValue(userProfileList.getMatrimonial_profile().getPersonal_details().getHeight()));
         tv_weight_tile.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getWeight());
         tv_skin_tone.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getComplexion());
         tv_manglik.setText(userProfileList.getMatrimonial_profile().getPersonal_details().getIs_manglik());
