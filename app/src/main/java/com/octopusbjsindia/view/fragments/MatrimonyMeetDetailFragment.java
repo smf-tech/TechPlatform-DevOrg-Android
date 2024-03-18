@@ -332,7 +332,7 @@ public class MatrimonyMeetDetailFragment extends Fragment implements View.OnClic
             tvMeetWebLink.setVisibility(View.GONE);
         }
 
-        if (meetData.getMeetReferralLink() != null && meetData.getMeetReferralLink().trim().length() > 0) {
+        if (meetData.getMeetReferralLink() != null && !meetData.getMeetReferralLink().trim().isEmpty() && !meetData.getMeetPromotional()) {
             tv_referallink.setText(meetData.getMeetReferralLink());
         } else {
             view.findViewById(R.id.tv_referallink_label).setVisibility(View.GONE);
